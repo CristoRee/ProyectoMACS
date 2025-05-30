@@ -6,6 +6,7 @@
   <title>BinaryTEC - Reparación y Servicio Técnico</title>
   <link rel="stylesheet" href="estiloInx.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
   <header>
@@ -34,15 +35,15 @@
       <h3>Nuestros Servicios</h3>
       <div class="cards">
         <div class="card">
-          <h4>Reparación de PCs</h4>
+          <h4><i class="fas fa-laptop"></i> Reparación de PCs</h4>
           <p>Diagnóstico y reparación de computadoras de escritorio y portátiles.</p>
         </div>
         <div class="card">
-          <h4>Optimización de Sistemas</h4>
+          <h4><i class="fas fa-cogs"></i> Optimización de Sistemas</h4>
           <p>Mejoramos el rendimiento de tus equipos para que funcionen como nuevos.</p>
         </div>
         <div class="card">
-          <h4>Servicio Técnico Móvil</h4>
+          <h4><i class="fas fa-mobile-alt"></i> Servicio Técnico Móvil</h4>
           <p>Atención a domicilio o en empresa. Vamos a donde estés.</p>
         </div>
       </div>
