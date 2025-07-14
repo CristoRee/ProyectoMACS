@@ -11,7 +11,9 @@
 <body>
   <header>
     <div class="container">
-      <h1>BinaryTEC</h1>
+      <h1>  <div>
+      
+      </div>BinaryTEC</h1>
       <nav>
         <ul>
           <li><a href="#servicios">Servicios</a></li>
