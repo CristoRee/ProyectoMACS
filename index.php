@@ -65,6 +65,11 @@ switch ($accion) {
          break;
 
 
+    case 'misSolicitudes': // <-- AÑADE ESTE CASE
+        $controller = new ProductoController();
+        $controller->misSolicitudes();
+        break;
+
         
     case 'guardar':
         $controller = new ProductoController();

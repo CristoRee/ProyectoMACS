@@ -1,60 +1,40 @@
 <?php 
-$titulo = "Lista de Productos";
-include('views/includes/header.php'); 
+$titulo = "Mis Solicitudes";
+// El header y footer son cargados por el controlador.
 ?>
 
-<div class="row">
-    <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Lista de Productos</h2>
-            <a href="index.php?accion=crear" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Crear nuevo producto
-            </a>
-        </div>
-        
-        <?php if (empty($resultados)): ?>
-            <div class="alert alert-info">
-                No hay productos registrados. <a href="index.php?accion=crear">Crear el primero</a>
-            </div>
-        <?php else: ?>
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($resultados as $p): ?>
-                                <tr>
-                                    <td><?= $p['id'] ?></td>
-                                    <td><?= htmlspecialchars($p['nombre']) ?></td>
-                                    <td>$<?= number_format($p['precio'], 2) ?></td>
-                                    <td>
-                                        <div class="btn-group-actions d-flex">
-                                            <a href="index.php?accion=editar&id=<?= $p['id'] ?>" 
-                                               class="btn btn-sm btn-outline-primary">
-                                                Editar
-                                            </a>
-                                            <?php if ($_SESSION['rol'] === 'admin'): ?>
-                                            <a href="index.php?accion=borrar&id=<?= $p['id'] ?>" class="btn btn-danger" onclick="return confirmarBorrar();">Borrar</a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
+<div class="container mt-4 mb-5">
+    <h2 class="pb-2 border-bottom">Mis Solicitudes de Reparación</h2>
+    <p class="text-muted">Aquí puedes ver el estado de todos los dispositivos que has ingresado.</p>
+    
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Ticket #</th>
+                    <th scope="col">Dispositivo</th>
+                    <th scope="col">Problema Descrito</th>
+                    <th scope="col">Fecha de Ingreso</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (!empty($solicitudes)): ?>
+                    <?php foreach ($solicitudes as $solicitud): ?>
+                        <tr>
+                            <th scope="row"><?= htmlspecialchars($solicitud['id_ticket']) ?></th>
+                            <td><?= htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca'] . ' ' . $solicitud['modelo']) ?></td>
+                            <td><?= htmlspecialchars($solicitud['descripcion_problema']) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($solicitud['fecha_ingreso'])) ?></td>
+                            <td><span class="badge rounded-pill bg-primary"><?= htmlspecialchars($solicitud['nombre_estado']) ?></span></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5" class="text-center py-4">No tienes ninguna solicitud de reparación registrada.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
-
-<?php include('views/includes/footer.php'); ?>
