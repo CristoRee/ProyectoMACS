@@ -1,7 +1,8 @@
 <?php
-include('includes/header.php'); 
+// El controlador se encarga de cargar el header antes que esta vista.
+// Se eliminó un <link> a style.css que era redundante y podía causar errores.
 ?>
-<link rel="stylesheet" href="../assets/css/style.css">
+
 <div class="container py-5">
 
     <!-- Sección de Presentación Principal -->
@@ -11,14 +12,18 @@ include('includes/header.php');
             <p class="fs-4 col-md-10 mx-auto">Somos una empresa dedicada a ofrecer soluciones y reparaciones tecnológicas de confianza. Si tienes un problema, nosotros tenemos la solución. Puede hacer su solicitud ahora mismo para que nuestro equipo lo atienda a la brevedad.</p>
             
             <!-- Botón de Solicitud con enlace al controlador de productos -->
-            <a class="btn btn-primary btn-lg mt-4 custom-btn" href="../index.php?accion=crear" role="button">
+            <!-- CORRECCIÓN: Se eliminó ../ para que la ruta sea más fiable -->
+            <a class="btn btn-primary btn-lg mt-4 custom-btn" href="index.php?accion=crear" role="button">
                 Solicitud de Reparación
             </a>
         </div>
     </div>
 
-    <!-- Sección "Sobre Nosotros" -->
-    <div class="row align-items-md-stretch">
+    <!-- 
+        ===== CAMBIO AQUÍ =====
+        Se añadió un id="sobre-nosotros" para crear el ancla de destino.
+    -->
+    <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
             <div class="h-100 p-5 border rounded-3">
                 <h2 class="pb-2 border-bottom mb-4">Sobre Nosotros</h2>
@@ -34,5 +39,4 @@ include('includes/header.php');
 
 <?php
 // El controlador también se encargará de cargar el footer.
-// Por ejemplo: include 'views/includes/footer.php';
 ?>

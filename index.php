@@ -9,7 +9,8 @@ require_once("controllers/UsuarioController.php");
 $accion = $_GET['accion'] ?? 'index';
 
 // Definir acciones públicas (que no requieren autenticación)
-$acciones_publicas = ['login', 'autenticar'];
+// ===== CAMBIO AQUÍ: Añadimos las acciones para el registro =====
+$acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar'];
 
 // Verificar autenticación para acciones privadas
 if (!in_array($accion, $acciones_publicas)) {
@@ -36,6 +37,18 @@ switch ($accion) {
         $controller = new UsuarioController();
         $controller->logout();
         break;
+
+    // ===== NUEVOS CASES AÑADIDOS AQUÍ =====
+    case 'mostrarRegistro':
+        $controller = new UsuarioController();
+        $controller->mostrarRegistro();
+        break;
+
+    case 'registrar':
+        $controller = new UsuarioController();
+        $controller->registrar();
+        break;
+    // ===== FIN DE LOS NUEVOS CASES =====
     
     // === ACCIONES DE PRODUCTOS ===
     case 'crear':
@@ -69,19 +82,22 @@ switch ($accion) {
         $controller->borrar();
         break;
     
-    // === ACCIÓN POR DEFECTO (LISTAR PRODUCTOS) ===
-    case 'index':
-    default:
-        $controller = new ProductoController();
-        $controller->index();
-        break;
-
+    // === ACCIÓN POR DEFECTO Y DE INICIO ===
     case 'inicio':
         // Carga el header, la vista de inicio y el footer
         include 'views/includes/header.php';
         include 'views/inicio.php';
         include 'views/includes/footer.php';
         break;
+
+    case 'index':
+    default:
+        // Si el usuario está logueado, lo mandamos a inicio. Si no, a login.
+        if (isset($_SESSION['usuario'])) {
+            header("Location: index.php?accion=inicio");
+        } else {
+            header("Location: index.php?accion=login");
+        }
+        exit;
 }
 ?>
-

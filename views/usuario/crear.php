@@ -3,35 +3,51 @@
     require_once("views/templates/css.css");
 ?>
 
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
 
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">Crear Nueva Cuenta</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-muted">Complete el formulario para registrar un nuevo usuario en el sistema.</p>
+                    
+                    <!-- 
+                      - El 'action' ahora apunta al controlador con la acción 'registrar'.
+                      - Esta acción llamará a la función segura 'crear()' de tu modelo.
+                    -->
+                    <form method="POST" action="index.php?accion=registrar">
+                        
+                        <!-- Campo Nombre de Usuario -->
+                        <div class="mb-3">
+                            <label for="nombre_usuario" class="form-label">Nombre de Usuario:</label>
+                            <input type="text" id="nombre_usuario" name="nombre_usuario" class="form-control" placeholder="Ej: cris_tecnico" required>
+                        </div>
+                        
+                        <!-- Campo Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Ej: correo@ejemplo.com" required>
+                        </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Usuario</title>
-</head>
+                        <!-- Campo Contraseña -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña:</label>
+                            <input type="password" id="password" name="password" class="form-control" required>
+                        </div>
+                        
+                        <!-- Botones de acción -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="index.php?accion=login" class="btn btn-secondary me-md-2">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Registrar Usuario</button>
+                        </div>
 
-<header>
-    <h2>Crear Usuario</h2>
-</header>
+                    </form>
+                </div>
+            </div>
 
-<body>
-    
-    <form method="POST" action="UsuarioI.php?accion=guardar">
-        
-        Usuario: <input type="text" name="nombre"><br>
-        
-        Email: <input type="mail" name="email"><br>
-
-        Contraseña: <input type="password" name="password"><br>
-        
-        <input type="submit" value="Guardar">
-
-    </form>
-    
-</body>
-
-</html>
-<link rel="stylesheet" href="css.css">
+        </div>
+    </div>
+</div>
