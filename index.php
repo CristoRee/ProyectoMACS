@@ -9,7 +9,6 @@ require_once("controllers/UsuarioController.php");
 $accion = $_GET['accion'] ?? 'index';
 
 // Definir acciones públicas (que no requieren autenticación)
-// ===== CAMBIO AQUÍ: Añadimos las acciones para el registro =====
 $acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar'];
 
 // Verificar autenticación para acciones privadas
@@ -38,7 +37,6 @@ switch ($accion) {
         $controller->logout();
         break;
 
-    // ===== NUEVOS CASES AÑADIDOS AQUÍ =====
     case 'mostrarRegistro':
         $controller = new UsuarioController();
         $controller->mostrarRegistro();
@@ -48,55 +46,23 @@ switch ($accion) {
         $controller = new UsuarioController();
         $controller->registrar();
         break;
-    // ===== FIN DE LOS NUEVOS CASES =====
     
     // === ACCIONES DE PRODUCTOS ===
     case 'crear':
         $controller = new ProductoController();
         $controller->crear();
         break;
-
-
     
-// CAMBIA ESTE CASE O AÑADE EL NUEVO
-    case 'guardarSolicitud': // El action del nuevo formulario apunta aquí
-         $controller = new ProductoController();
-         $controller->guardarSolicitud();
-         break;
+    case 'guardarSolicitud':
+        $controller = new ProductoController();
+        $controller->guardarSolicitud();
+        break;
 
-
-    case 'misSolicitudes': // <-- AÑADE ESTE CASE
+    case 'misSolicitudes':
         $controller = new ProductoController();
         $controller->misSolicitudes();
         break;
-
         
-    case 'guardar':
-        $controller = new ProductoController();
-        $controller->guardar();
-        break;
-        
-    case 'editar':
-        $controller = new ProductoController();
-        $controller->editar();
-        break;
-        
-    case 'actualizar':
-        $controller = new ProductoController();
-        $controller->actualizar();
-        break;
-        
-    // Ejemplo: solo los admin pueden borrar productos
-    case 'borrar':
-        if ($_SESSION['rol'] !== 'admin') {
-            // Puedes mostrar un mensaje o redirigir
-            header("Location: index.php?error=No tienes permisos para borrar");
-            exit;
-        }
-        $controller = new ProductoController();
-        $controller->borrar();
-        break;
-    
     // === ACCIÓN POR DEFECTO Y DE INICIO ===
     case 'inicio':
         // Carga el header, la vista de inicio y el footer

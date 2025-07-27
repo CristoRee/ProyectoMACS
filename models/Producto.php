@@ -8,20 +8,77 @@ class Producto {
         $this->db = conectar();
     }
 
-    // ... (tu función crearSolicitudCompleta que ya funciona) ...
     public function crearSolicitudCompleta($datosProducto, $datosTicket, $rutasFotos) {
-        // ...
-    }
+        $this->db->begin_transaction();
 
-    // ===== FUNCIÓN NUEVA =====
-    /**
-     * Obtiene todos los tickets de un cliente específico desde la base de datos.
-     *
-     * @param int $idCliente El ID del cliente logueado.
-     * @return array Un array con todas las solicitudes del cliente.
-     */
+        try {
+            // Paso 1: Insertar en la tabla Productos
+            $sqlProducto = "INSERT INTO Productos (tipo_producto, marca, modelo, id_cliente) VALUES (?, ?, ?, ?)";
+            $stmtProducto = $this->db->prepare($sqlProducto);
+            if ($stmtProducto === false) {
+                throw new Exception("Error al preparar la consulta de Producto: " . $this->db->error);
+            }
+            $stmtProducto->bind_param(
+                "sssi",
+                $datosProducto['tipo_producto'],
+                $datosProducto['marca'],
+                $datosProducto['modelo'],
+                $datosProducto['id_cliente']
+            );
+            $stmtProducto->execute();
+            $id_producto = $this->db->insert_id;
+
+            if ($id_producto === 0) {
+                throw new Exception("Fallo al ejecutar la inserción en Productos: " . $stmtProducto->error);
+            }
+
+            // Paso 2: Insertar en la tabla Tickets
+            $sqlTicket = "INSERT INTO Tickets (descripcion_problema, id_cliente, id_producto, id_estado) VALUES (?, ?, ?, ?)";
+            $stmtTicket = $this->db->prepare($sqlTicket);
+            if ($stmtTicket === false) {
+                throw new Exception("Error al preparar la consulta de Ticket: " . $this->db->error);
+            }
+            $estado_inicial = 1;
+            $stmtTicket->bind_param(
+                "siii",
+                $datosTicket['descripcion_problema'],
+                $datosTicket['id_cliente'],
+                $id_producto,
+                $estado_inicial
+            );
+            $stmtTicket->execute();
+            $id_ticket = $this->db->insert_id;
+
+            if ($id_ticket === 0) {
+                throw new Exception("Fallo al ejecutar la inserción en Tickets: " . $stmtTicket->error);
+            }
+
+            // Paso 3: Insertar en la tabla Fotos_Ticket
+            if (!empty($rutasFotos)) {
+                $sqlFoto = "INSERT INTO Fotos_Ticket (url_imagen, id_ticket) VALUES (?, ?)";
+                $stmtFoto = $this->db->prepare($sqlFoto);
+                if ($stmtFoto === false) {
+                    throw new Exception("Error al preparar la consulta de Foto: " . $this->db->error);
+                }
+                foreach ($rutasFotos as $ruta) {
+                    $stmtFoto->bind_param("si", $ruta, $id_ticket);
+                    $stmtFoto->execute();
+                }
+            }
+
+            $this->db->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->db->rollback();
+            // --- CAMBIO IMPORTANTE PARA DEPURACIÓN ---
+            // Registramos el error específico en el log de errores de PHP.
+            error_log("Error en transacción crearSolicitudCompleta: " . $e->getMessage());
+            return false;
+        }
+    }
+    
     public function listarPorCliente($idCliente) {
-        // Preparamos una consulta que une la información de Tickets, Productos y Estados.
         $sql = "SELECT 
                     t.id_ticket,
                     t.descripcion_problema,
@@ -41,7 +98,6 @@ class Producto {
         $stmt->execute();
         $resultado = $stmt->get_result();
         
-        // Devolvemos todos los resultados como un array asociativo.
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
 }

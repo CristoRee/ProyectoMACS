@@ -1,6 +1,5 @@
 <?php
-// El controlador se encarga de cargar el header antes que esta vista.
-$mostrar_modal = isset($_GET['status']) && $_GET['status'] === 'success';
+// El header es cargado por el controlador o el index.php antes que esta vista.
 ?>
 
 <div class="container py-5">
@@ -32,8 +31,11 @@ $mostrar_modal = isset($_GET['status']) && $_GET['status'] === 'success';
 
 </div>
 
-<?php if ($mostrar_modal): ?>
-<!-- Modal de Éxito -->
+<?php 
+// Si la URL contiene el parámetro de éxito, imprimimos el HTML del modal.
+if (isset($_GET['status']) && $_GET['status'] === 'success'): 
+?>
+<!-- Modal de Éxito (solo el HTML) -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center border-0 shadow-lg">
@@ -51,16 +53,6 @@ $mostrar_modal = isset($_GET['status']) && $_GET['status'] === 'success';
     </div>
   </div>
 </div>
-
-<!-- Script para mostrar el modal automáticamente -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
-        successModal.show();
-    });
-</script>
-<?php endif; ?>
-
-<?php
-// El controlador también se encargará de cargar el footer.
+<?php 
+endif; 
 ?>
