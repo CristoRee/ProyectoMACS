@@ -75,5 +75,13 @@ switch ($accion) {
         $controller = new ProductoController();
         $controller->index();
         break;
+
+    case 'inicio':
+        // Carga el header, la vista de inicio y el footer
+        include 'views/includes/header.php';
+        include 'views/inicio.php';
+        include 'views/includes/footer.php';
+        break;
 }
 ?>
+

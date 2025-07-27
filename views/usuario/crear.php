@@ -4,6 +4,7 @@
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,9 +21,11 @@
     
     <form method="POST" action="UsuarioI.php?accion=guardar">
         
-        Nombre: <input type="text" name="nombre"><br>
+        Usuario: <input type="text" name="nombre"><br>
         
         Email: <input type="mail" name="email"><br>
+
+        Contraseña: <input type="password" name="password"><br>
         
         <input type="submit" value="Guardar">
 

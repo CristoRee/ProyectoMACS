@@ -14,7 +14,7 @@ class UsuarioController {
             session_start();
             $_SESSION['usuario'] = $user['usuario'];
             $_SESSION['rol'] = $user['rol'];
-            header("Location: index.php");
+            header("Location: index.php?accion=inicio");
         } else {
             $error = "Usuario o contraseña incorrectos";
             include("views/usuario/login.php");

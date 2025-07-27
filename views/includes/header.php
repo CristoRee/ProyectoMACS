@@ -1,38 +1,54 @@
-<?php 
-// session_start();
-// if (!isset($_SESSION['usuario'])) {
-//     header("Location: index.php?accion=login");
-//     exit;
-// }
+<?php
+// session_start(); // Asegúrate de que la sesión esté iniciada en tu index.php principal
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $titulo ?? 'CRUD Productos' ?></title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    
-    <!-- CSS personalizado -->
+    <title><?= $titulo ?? 'BinaryTEC' ?></title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">CRUD Productos</a>
-            <div class="navbar-nav ms-auto">
+
+<header class="bg-primary position-relative">
+    <nav class="navbar navbar-expand-lg navbar-dark container">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            
+            <a class="navbar-brand fs-4 fw-bold" href="index.php">BinaryTEC</a>
+            
+            <div id="logo-container">
+                <a href="index.php" aria-label="Inicio">
+                    <i id="logo-wrench" class="fas fa-wrench"></i>
+                </a>
+            </div>
+
+            <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['usuario'])): ?>
-                    <span class="navbar-text me-3">
-                        Hola, <?= htmlspecialchars($_SESSION['usuario']) ?> (<?= htmlspecialchars($_SESSION['rol']) ?>)
-                    </span>
-                    <a class="nav-link" href="index.php?accion=logout">Salir</a>
+                    
+                    <a class="nav-link text-white me-4" href="index.php?accion=about">Sobre Nosotros</a>
+
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://i.pravatar.cc/40?u=<?= htmlspecialchars($_SESSION['usuario']) ?>" class="profile-pic rounded-circle" alt="Perfil">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.php?accion=logout">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+
                 <?php endif; ?>
             </div>
         </div>
     </nav>
-    
-    <div class="container mt-4">
+</header>
+
+<div class="container mt-4">
