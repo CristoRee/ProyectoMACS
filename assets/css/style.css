@@ -19,7 +19,7 @@ header.bg-primary {
 #logo-wrench {
     font-size: 3rem; /* Tamaño del ícono */
     color: #ffffff; /* Color del ícono (blanco) */
-    background-color: #226fe2; /* Color de fondo (mismo azul que el header) */
+    background-color: #0d6efd; /* Color de fondo (mismo azul que el header) */
     border: 5px solid #ffffff; /* Borde blanco grueso */
     border-radius: 50%; /* Lo hace perfectamente circular */
     padding: 20px; /* Espacio entre el ícono y el borde */
@@ -49,7 +49,7 @@ header.bg-primary {
 }
 
 
-/* ---- Estilos generales (de tu código anterior) ---- */
+/* ---- Estilos generales ---- */
 
 .card {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -64,8 +64,7 @@ header.bg-primary {
     background-color: #f8f9fa;
 }
 
-
-* ---- Estilos para el Botón Personalizado de la Página de Inicio ---- */
+/* ---- Estilos para el Botón Personalizado de la Página de Inicio ---- */
 
 .custom-btn {
     /* Prepara el botón para la animación */
@@ -87,4 +86,63 @@ header.bg-primary {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
-* ---- ---- */
+
+
+/* ---- Estilos para el Modal de Éxito ---- */
+
+.checkmark-container {
+    width: 80px;
+    height: 80px;
+    display: block;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #4CAF50;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 3;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 10% auto;
+    box-shadow: inset 0px 0px 0px #4CAF50;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 40px #4CAF50;
+    }
+}

@@ -55,6 +55,16 @@ switch ($accion) {
         $controller = new ProductoController();
         $controller->crear();
         break;
+
+
+    
+// CAMBIA ESTE CASE O AÑADE EL NUEVO
+    case 'guardarSolicitud': // El action del nuevo formulario apunta aquí
+         $controller = new ProductoController();
+         $controller->guardarSolicitud();
+         break;
+
+
         
     case 'guardar':
         $controller = new ProductoController();

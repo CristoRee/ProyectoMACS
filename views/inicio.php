@@ -1,6 +1,6 @@
 <?php
 // El controlador se encarga de cargar el header antes que esta vista.
-// Se eliminó un <link> a style.css que era redundante y podía causar errores.
+$mostrar_modal = isset($_GET['status']) && $_GET['status'] === 'success';
 ?>
 
 <div class="container py-5">
@@ -11,18 +11,13 @@
             <h1 class="display-4 fw-bold">Bienvenido a BinaryTEC</h1>
             <p class="fs-4 col-md-10 mx-auto">Somos una empresa dedicada a ofrecer soluciones y reparaciones tecnológicas de confianza. Si tienes un problema, nosotros tenemos la solución. Puede hacer su solicitud ahora mismo para que nuestro equipo lo atienda a la brevedad.</p>
             
-            <!-- Botón de Solicitud con enlace al controlador de productos -->
-            <!-- CORRECCIÓN: Se eliminó ../ para que la ruta sea más fiable -->
             <a class="btn btn-primary btn-lg mt-4 custom-btn" href="index.php?accion=crear" role="button">
                 Solicitud de Reparación
             </a>
         </div>
     </div>
 
-    <!-- 
-        ===== CAMBIO AQUÍ =====
-        Se añadió un id="sobre-nosotros" para crear el ancla de destino.
-    -->
+    <!-- Sección "Sobre Nosotros" -->
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
             <div class="h-100 p-5 border rounded-3">
@@ -36,6 +31,35 @@
     </div>
 
 </div>
+
+<?php if ($mostrar_modal): ?>
+<!-- Modal de Éxito -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center border-0 shadow-lg">
+      <div class="modal-body p-5">
+        <div class="checkmark-container mx-auto mb-3">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </div>
+        <h4 class="modal-title fw-bold" id="successModalLabel">Solicitud creada con éxito</h4>
+        <p class="text-muted mt-2">Siga su caso en "mis solicitudes".</p>
+        <a href="index.php?accion=inicio" class="btn btn-primary mt-3 px-5">Continuar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para mostrar el modal automáticamente -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    });
+</script>
+<?php endif; ?>
 
 <?php
 // El controlador también se encargará de cargar el footer.
