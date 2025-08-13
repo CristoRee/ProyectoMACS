@@ -1,5 +1,5 @@
 <?php
-// El header ya fue cargado por el controlador antes de llegar aquí.
+
 ?>
 
 <div class="container">
@@ -12,13 +12,13 @@
                 <div class="card-body p-4">
                     
                     <?php 
-                    // Muestra un mensaje de error si la autenticación falló
+                    
                     if (isset($_GET['error'])): ?>
                         <div class="alert alert-danger">Usuario o contraseña incorrectos.</div>
                     <?php endif; ?>
 
                     <?php 
-                    // Muestra un mensaje de éxito si el registro fue exitoso
+                    
                     if (isset($_GET['registro']) && $_GET['registro'] === 'exitoso'): ?>
                         <div class="alert alert-success">¡Registro exitoso! Por favor, inicie sesión.</div>
                     <?php endif; ?>
@@ -37,11 +37,11 @@
                         </div>
                     </form>
                     
-                    <!-- ===== SECCIÓN AÑADIDA ===== -->
+                   
                     <div class="text-center mt-3">
                         <p class="mb-0">¿No tienes cuenta? <a href="index.php?accion=mostrarRegistro">Regístrate</a></p>
                     </div>
-                    <!-- ===== FIN DE LA SECCIÓN AÑADIDA ===== -->
+                    
 
                 </div>
             </div>

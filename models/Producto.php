@@ -12,7 +12,7 @@ class Producto {
         $this->db->begin_transaction();
 
         try {
-            // Paso 1: Insertar en la tabla Productos
+            
             $sqlProducto = "INSERT INTO Productos (tipo_producto, marca, modelo, id_cliente) VALUES (?, ?, ?, ?)";
             $stmtProducto = $this->db->prepare($sqlProducto);
             if ($stmtProducto === false) {
@@ -32,7 +32,7 @@ class Producto {
                 throw new Exception("Fallo al ejecutar la inserción en Productos: " . $stmtProducto->error);
             }
 
-            // Paso 2: Insertar en la tabla Tickets
+            
             $sqlTicket = "INSERT INTO Tickets (descripcion_problema, id_cliente, id_producto, id_estado) VALUES (?, ?, ?, ?)";
             $stmtTicket = $this->db->prepare($sqlTicket);
             if ($stmtTicket === false) {
@@ -53,7 +53,7 @@ class Producto {
                 throw new Exception("Fallo al ejecutar la inserción en Tickets: " . $stmtTicket->error);
             }
 
-            // Paso 3: Insertar en la tabla Fotos_Ticket
+            
             if (!empty($rutasFotos)) {
                 $sqlFoto = "INSERT INTO Fotos_Ticket (url_imagen, id_ticket) VALUES (?, ?)";
                 $stmtFoto = $this->db->prepare($sqlFoto);
@@ -71,8 +71,7 @@ class Producto {
 
         } catch (Exception $e) {
             $this->db->rollback();
-            // --- CAMBIO IMPORTANTE PARA DEPURACIÓN ---
-            // Registramos el error específico en el log de errores de PHP.
+            
             error_log("Error en transacción crearSolicitudCompleta: " . $e->getMessage());
             return false;
         }

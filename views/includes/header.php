@@ -1,5 +1,5 @@
 <?php
-// session_start(); // Asegúrate de que la sesión esté iniciada en tu index.php principal
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,7 +36,7 @@
                             <img src="https://i.pravatar.cc/40?u=<?= htmlspecialchars($_SESSION['usuario']) ?>" class="profile-pic rounded-circle" alt="Perfil">
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <!-- ===== CAMBIO AQUÍ ===== -->
+                            
                             <li><a class="dropdown-item" href="index.php?accion=misSolicitudes">Mis Solicitudes</a></li>
                             <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="#">Configuración</a></li>
