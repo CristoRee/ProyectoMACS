@@ -3,33 +3,29 @@ class Usuario {
     private $db;
 
     public function __construct() {
-        // Asumo que tienes una función global conectar() que devuelve la conexión.
+       
         $this->db = conectar();
     }
 
-    /**
-     * ===== FUNCIÓN AÑADIDA AQUÍ =====
-     * Crea un nuevo usuario en la base de datos con una contraseña segura.
-     */
+   
     public function crear($nombre, $email, $password_plana) {
-        // 1. Hasheamos la contraseña para guardarla de forma segura.
+       
         $hash_seguro = password_hash($password_plana, PASSWORD_DEFAULT);
 
-        // 2. Preparamos la consulta para insertar el HASH, no la contraseña plana.
+     
         $stmt = $this->db->prepare(
             "INSERT INTO Usuarios (nombre_usuario, email, password_hash, id_rol) VALUES (?, ?, ?, ?)"
         );
         
-        // Si no se pudo preparar la consulta, devuelve false.
+       
         if (!$stmt) {
             return false;
         }
 
-        // Asumimos un rol por defecto para nuevos registros (ej: 3 para 'Cliente').
-        // ¡Asegúrate de que el id_rol 3 exista en tu tabla Roles!
+       
         $rol_por_defecto = 3; 
 
-        // 3. Vinculamos los parámetros y ejecutamos.
+ 
         $stmt->bind_param("sssi", $nombre, $email, $hash_seguro, $rol_por_defecto);
         
         if ($stmt->execute()) {
@@ -39,11 +35,60 @@ class Usuario {
         }
     }
 
-    /**
-     * Verifica las credenciales del usuario de forma segura.
-     */
+
+
+     public function actualizar($id, $nombre, $email, $telefono, $id_rol) {
+        $stmt = $this->db->prepare(
+            "UPDATE Usuarios SET nombre_usuario = ?, email = ?, telefono = ?, id_rol = ? WHERE id_usuario = ?"
+        );
+        $stmt->bind_param("sssii", $nombre, $email, $telefono, $id_rol, $id);
+        return $stmt->execute();
+    }
+
+  
+    public function eliminar($id) {
+        
+        $stmt_check = $this->db->prepare("SELECT id_rol FROM Usuarios WHERE id_usuario = ?");
+        $stmt_check->bind_param("i", $id);
+        $stmt_check->execute();
+        $resultado = $stmt_check->get_result()->fetch_assoc();
+
+        if ($resultado && $resultado['id_rol'] == 1) {
+            
+            return false;
+        }
+
+        
+        $stmt = $this->db->prepare("DELETE FROM Usuarios WHERE id_usuario = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+
+
+     public function obtenerTodos() {
+        $usuarios = [];
+
+       
+        $sql = "SELECT u.id_usuario, u.id_rol, u.nombre_usuario, u.email, u.telefono, r.nombre_rol 
+                FROM Usuarios u
+                JOIN Roles r ON u.id_rol = r.id_rol
+                ORDER BY u.nombre_usuario ASC";
+
+        $resultado = $this->db->query($sql);
+
+        if ($resultado && $resultado->num_rows > 0) {
+            while($fila = $resultado->fetch_assoc()) {
+                $usuarios[] = $fila;
+            }
+        }
+        
+        return $usuarios;
+    }
+
+  
     public function verificar($nombre_usuario, $password_plana) {
-        // Preparamos la consulta para obtener el usuario por su nombre
+    
         $stmt = $this->db->prepare("SELECT * FROM Usuarios WHERE nombre_usuario = ? LIMIT 1");
         $stmt->bind_param("s", $nombre_usuario);
         $stmt->execute();
@@ -52,14 +97,14 @@ class Usuario {
         if ($resultado->num_rows === 1) {
             $usuario = $resultado->fetch_assoc();
 
-            // Usamos password_verify para comparar la contraseña plana contra el hash.
+          
             if (password_verify($password_plana, $usuario['password_hash'])) {
-                // Si la contraseña es correcta, devolvemos los datos del usuario.
+               
                 return $usuario;
             }
         }
         
-        // Si el usuario no existe o la contraseña es incorrecta, devuelve false.
+       
         return false;
     }
 }

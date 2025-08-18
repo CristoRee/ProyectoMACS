@@ -1,33 +1,30 @@
 <?php
-// El controlador siempre debe requerir el modelo que va a utilizar.
+
 require_once 'models/Usuario.php';
 
 class UsuarioController {
     
     private $model;
 
-    // El constructor prepara el modelo para que todas las funciones lo usen.
+    
     public function __construct() {
         $this->model = new Usuario();
     }
 
-    // Muestra la vista del formulario de login.
+    
     public function login() {
         include 'views/includes/header.php';
         include 'views/usuario/login.php';
         include 'views/includes/footer.php';
     }
 
-    // ===== ¡FUNCIÓN AÑADIDA! =====
-    // Muestra la vista del formulario de registro.
+    
     public function mostrarRegistro() {
         include 'views/includes/header.php';
-        include 'views/usuario/crear.php'; // Carga la vista de registro
+        include 'views/usuario/crear.php'; 
         include 'views/includes/footer.php';
     }
-    // ===== FIN DE LA FUNCIÓN AÑADIDA =====
-
-    // Procesa el registro de un nuevo usuario.
+    
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre_usuario'];
@@ -45,7 +42,49 @@ class UsuarioController {
         }
     }
 
-    // Procesa la autenticación del usuario.
+     public function listarUsuarios() {
+        
+        $todosLosUsuarios = $this->model->obtenerTodos();
+
+        
+        include 'views/includes/header.php';
+        include 'views/usuario/listar.php'; 
+        include 'views/includes/footer.php';
+    }
+
+
+    
+    public function actualizarUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id_usuario'];
+            $nombre = $_POST['nombre_usuario'];
+            $email = $_POST['email'];
+            $telefono = $_POST['telefono'];
+            $id_rol = $_POST['id_rol'];
+
+            $this->model->actualizar($id, $nombre, $email, $telefono, $id_rol);
+
+            
+            header("Location: index.php?accion=listarUsuarios&status=edit_success");
+            exit();
+        }
+    }
+
+    
+    public function eliminarUsuario() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id_usuario'];
+            
+            $this->model->eliminar($id);
+
+           
+            header("Location: index.php?accion=listarUsuarios&status=delete_success");
+            exit();
+        }
+    }
+
+
+    
     public function autenticar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre_usuario = $_POST['usuario']; 
@@ -67,7 +106,7 @@ class UsuarioController {
         }
     }
 
-    // Cierra la sesión del usuario.
+   
     public function logout() {
         session_destroy();
         header("Location: index.php?accion=login");

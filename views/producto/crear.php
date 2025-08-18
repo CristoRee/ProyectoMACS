@@ -1,6 +1,6 @@
 <?php 
 $titulo = "Nueva Solicitud de Reparación";
-// El header ya lo carga el controlador o el index.php
+
 ?>
 
 <div class="container mt-4 mb-5">
@@ -13,7 +13,7 @@ $titulo = "Nueva Solicitud de Reparación";
                 <div class="card-body">
                     <p class="card-text text-muted">Por favor, complete todos los campos para generar el ticket de reparación.</p>
                     
-                    <!-- IMPORTANTE: enctype es necesario para subir archivos -->
+                    
                     <form method="POST" action="index.php?accion=guardarSolicitud" enctype="multipart/form-data">
                         
                         <h5 class="mt-4">1. Datos del Dispositivo</h5>

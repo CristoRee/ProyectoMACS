@@ -1,17 +1,17 @@
 <?php
 session_start();
 
-// Incluir controladores
+
 require_once("controllers/ProductoController.php");
 require_once("controllers/UsuarioController.php");
 
-// Obtener la acción solicitada
+
 $accion = $_GET['accion'] ?? 'index';
 
-// Definir acciones públicas (que no requieren autenticación)
+
 $acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar'];
 
-// Verificar autenticación para acciones privadas
+
 if (!in_array($accion, $acciones_publicas)) {
     if (!isset($_SESSION['usuario'])) {
         header("Location: index.php?accion=login");
@@ -19,9 +19,9 @@ if (!in_array($accion, $acciones_publicas)) {
     }
 }
 
-// Enrutamiento de acciones
+
 switch ($accion) {
-    // === ACCIONES DE USUARIO ===
+   
     case 'login':
         $controller = new UsuarioController();
         $controller->login();
@@ -47,10 +47,25 @@ switch ($accion) {
         $controller->registrar();
         break;
     
-    // === ACCIONES DE PRODUCTOS ===
+    
     case 'crear':
         $controller = new ProductoController();
         $controller->crear();
+        break;
+
+    case 'listarUsuarios':
+        $controller = new UsuarioController();
+        $controller->listarUsuarios();
+        break;
+
+    case 'actualizarUsuario':
+        $controller = new UsuarioController();
+        $controller->actualizarUsuario();
+        break;
+
+    case 'eliminarUsuario':
+        $controller = new UsuarioController();
+        $controller->eliminarUsuario();
         break;
     
     case 'guardarSolicitud':
@@ -63,9 +78,9 @@ switch ($accion) {
         $controller->misSolicitudes();
         break;
         
-    // === ACCIÓN POR DEFECTO Y DE INICIO ===
+   
     case 'inicio':
-        // Carga el header, la vista de inicio y el footer
+        
         include 'views/includes/header.php';
         include 'views/inicio.php';
         include 'views/includes/footer.php';
@@ -73,7 +88,7 @@ switch ($accion) {
 
     case 'index':
     default:
-        // Si el usuario está logueado, lo mandamos a inicio. Si no, a login.
+       
         if (isset($_SESSION['usuario'])) {
             header("Location: index.php?accion=inicio");
         } else {

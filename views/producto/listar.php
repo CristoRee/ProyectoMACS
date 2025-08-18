@@ -1,6 +1,6 @@
 <?php 
 $titulo = "Mis Solicitudes";
-// El header y footer son cargados por el controlador.
+
 ?>
 
 <div class="container mt-4 mb-5">

@@ -1,9 +1,9 @@
-// Scripts personalizados
+
 function confirmarBorrar() {
     return confirm('¿Estás seguro de que quieres borrar este producto?');
 }
 
-// Validación básica de formularios
+
 document.addEventListener('DOMContentLoaded', function() {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {

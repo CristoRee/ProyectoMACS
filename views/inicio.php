@@ -1,10 +1,10 @@
 <?php
-// El header es cargado por el controlador o el index.php antes que esta vista.
+
 ?>
 
 <div class="container py-5">
 
-    <!-- Sección de Presentación Principal -->
+  
     <div class="p-5 mb-4 bg-light rounded-3 text-center shadow-sm">
         <div class="container-fluid py-5">
             <h1 class="display-4 fw-bold">Bienvenido a BinaryTEC</h1>
@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <!-- Sección "Sobre Nosotros" -->
+    
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
             <div class="h-100 p-5 border rounded-3">
@@ -32,10 +32,10 @@
 </div>
 
 <?php 
-// Si la URL contiene el parámetro de éxito, imprimimos el HTML del modal.
+
 if (isset($_GET['status']) && $_GET['status'] === 'success'): 
 ?>
-<!-- Modal de Éxito (solo el HTML) -->
+
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center border-0 shadow-lg">

@@ -1,13 +1,9 @@
-<?php
-// session_start(); // Asegúrate de que la sesión esté iniciada en tu index.php principal
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $titulo ?? 'BinaryTEC' ?></title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="assets/css/style.css" rel="stylesheet">
@@ -35,13 +31,23 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://i.pravatar.cc/40?u=<?= htmlspecialchars($_SESSION['usuario']) ?>" class="profile-pic rounded-circle" alt="Perfil">
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <!-- ===== CAMBIO AQUÍ ===== -->
-                            <li><a class="dropdown-item" href="index.php?accion=misSolicitudes">Mis Solicitudes</a></li>
-                            <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Configuración</a></li>
+                        
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
+                            <li><h6 class="dropdown-header">Hola, <?= htmlspecialchars($_SESSION['usuario']) ?></h6></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="index.php?accion=logout">Cerrar Sesión</a></li>
+
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1): // Admin ?>
+                                <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i>Gestionar Usuarios</a></li>
+                            <?php endif; ?>
+
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 3): // Cliente ?>
+                                <li><a class="dropdown-item" href="index.php?accion=misSolicitudes"><i class="fas fa-folder-open me-2"></i>Mis Solicitudes</a></li>
+                            <?php endif; ?>
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="index.php?accion=logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
                         </ul>
                     </div>
 
