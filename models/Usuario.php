@@ -107,4 +107,20 @@ class Usuario {
        
         return false;
     }
+
+    public function obtenerTodosLosTecnicos() {
+        $tecnicos = [];
+        $id_rol_tecnico = 2;
+
+        $sql = "SELECT id_usuario, nombre_usuario FROM Usuarios WHERE id_rol = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_rol_tecnico);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        while($fila = $resultado->fetch_assoc()) {
+            $tecnicos[] = $fila;
+        }
+        return $tecnicos;
+    }
 }

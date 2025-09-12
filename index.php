@@ -4,6 +4,7 @@ session_start();
 
 require_once("controllers/ProductoController.php");
 require_once("controllers/UsuarioController.php");
+require_once("controllers/TicketController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -76,6 +77,27 @@ switch ($accion) {
     case 'misSolicitudes':
         $controller = new ProductoController();
         $controller->misSolicitudes();
+        break;
+
+  
+    case 'misTickets':
+        $controller = new TicketController();
+        $controller->mostrarMisTickets();
+        break;
+    
+    case 'actualizarTicketEstado':
+        $controller = new TicketController();
+        $controller->actualizarEstado();
+        break;
+    
+     case 'gestionarTickets':
+        $controller = new TicketController();
+        $controller->mostrarGestionTickets();
+        break;
+
+    case 'asignarTecnico':
+        $controller = new TicketController();
+        $controller->asignarTecnico();
         break;
         
    

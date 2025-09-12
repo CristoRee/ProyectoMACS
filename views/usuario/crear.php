@@ -1,6 +1,6 @@
 <?
     require_once("config/conexion.php");
-    require_once("views/templates/css.css");
+
 ?>
 
 <div class="container mt-5 mb-5">
