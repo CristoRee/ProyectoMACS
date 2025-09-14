@@ -99,4 +99,18 @@ class Producto {
         
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
+
+     public function eliminarSolicitud($id_ticket, $id_cliente) {
+        $sql = "DELETE FROM Tickets WHERE id_ticket = ? AND id_cliente = ?";
+        
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false) {
+            error_log("Error al preparar la consulta de eliminación: " . $this->db->error);
+            return false;
+        }
+        
+        $stmt->bind_param("ii", $id_ticket, $id_cliente);
+        return $stmt->execute();
+    }
+
 }

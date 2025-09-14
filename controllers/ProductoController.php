@@ -83,4 +83,21 @@ class ProductoController {
         include 'views/producto/listar.php';
         include 'views/includes/footer.php';
     }
+
+    public function eliminar() {
+       
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            $id_ticket = $_POST['id_ticket'];
+            $id_cliente = $_SESSION['id_usuario'];
+
+            $exito = $this->model->eliminarSolicitud($id_ticket, $id_cliente);
+            header("Location: index.php?accion=misSolicitudes&status=deleted");
+            exit();
+        } else {
+            header("Location: index.php?accion=inicio");
+            exit();
+        }
+    }
+
 }

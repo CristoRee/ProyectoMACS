@@ -79,6 +79,11 @@ switch ($accion) {
         $controller->misSolicitudes();
         break;
 
+    case 'eliminarSolicitud':
+        $controller = new ProductoController();
+        $controller->eliminar();
+        break;
+
   
     case 'misTickets':
         $controller = new TicketController();
