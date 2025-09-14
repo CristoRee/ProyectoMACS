@@ -9,9 +9,8 @@ $titulo = "Mis Solicitudes";
     
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
-            <thead class="table-light">
+            <thead class="table-dark">
                 <tr>
-                    <th scope="col">Ticket #</th>
                     <th scope="col">Dispositivo</th>
                     <th scope="col">Problema Descrito</th>
                     <th scope="col">Fecha de Ingreso</th>
@@ -22,7 +21,6 @@ $titulo = "Mis Solicitudes";
                 <?php if (!empty($solicitudes)): ?>
                     <?php foreach ($solicitudes as $solicitud): ?>
                         <tr>
-                            <th scope="row"><?= htmlspecialchars($solicitud['id_ticket']) ?></th>
                             <td><?= htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca'] . ' ' . $solicitud['modelo']) ?></td>
                             <td><?= htmlspecialchars($solicitud['descripcion_problema']) ?></td>
                             <td><?= date('d/m/Y H:i', strtotime($solicitud['fecha_ingreso'])) ?></td>
