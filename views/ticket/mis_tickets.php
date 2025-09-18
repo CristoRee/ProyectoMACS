@@ -6,7 +6,6 @@
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th># Ticket</th>
                     <th>Cliente</th>
                     <th>Dispositivo</th>
                     <th>Problema Reportado</th>
@@ -17,7 +16,6 @@
             <tbody>
                 <?php foreach ($misTickets as $ticket): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($ticket['id_ticket']); ?></td>
                     <td><?php echo htmlspecialchars($ticket['nombre_cliente']); ?></td>
                     <td><?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca'] . ' ' . $ticket['modelo']); ?></td>
                     <td><?php echo htmlspecialchars($ticket['descripcion_problema']); ?></td>

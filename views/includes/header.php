@@ -33,30 +33,30 @@
                         </a>
                         
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-    <li><h6 class="dropdown-header">Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?></h6></li>
-    <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Hola, <?php echo htmlspecialchars($_SESSION['usuario']); ?></h6></li>
+                            <li><hr class="dropdown-divider"></li>
 
-    
-    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1): ?>
-        <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i>Gestionar Usuarios</a></li>
-        <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i>Gestionar Tickets</a></li>
-    <?php endif; ?>
+                            
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1): ?>
+                                <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i>Gestionar Usuarios</a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i>Gestionar Tickets</a></li>
+                            <?php endif; ?>
 
-    
-    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2): ?>
-        <li><a class="dropdown-item" href="index.php?accion=misTickets"><i class="fas fa-ticket-alt me-2"></i>Mis Tickets</a></li>
-    <?php endif; ?>
+                            
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2): ?>
+                                <li><a class="dropdown-item" href="index.php?accion=misTickets"><i class="fas fa-ticket-alt me-2"></i>Mis Tickets</a></li>
+                            <?php endif; ?>
 
-    
-    <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 3): ?>
-        <li><a class="dropdown-item" href="index.php?accion=misSolicitudes"><i class="fas fa-folder-open me-2"></i>Mis Solicitudes</a></li>
-    <?php endif; ?>
+                            
+                            <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 3): ?>
+                                <li><a class="dropdown-item" href="index.php?accion=misSolicitudes"><i class="fas fa-folder-open me-2"></i>Mis Solicitudes</a></li>
+                            <?php endif; ?>
 
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Mi Perfil</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item text-danger" href="index.php?accion=logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
-</ul>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Mi Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="index.php?accion=logout"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                        </ul>
                     </div>
 
                 <?php endif; ?>

@@ -8,7 +8,7 @@ class UsuarioController {
         $this->model = new Usuario();
     }
     
-    // ... otros métodos como login, etc. ...
+   
 
     public function mostrarRegistro() {
         include 'views/includes/header.php';
@@ -16,9 +16,7 @@ class UsuarioController {
         include 'views/includes/footer.php';
     }
     
-    // =======================================================
-    // MÉTODO REGISTRAR MODIFICADO                             
-    // =======================================================
+ 
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre_usuario'];
