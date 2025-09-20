@@ -10,12 +10,12 @@ require_once("controllers/TicketController.php");
 $accion = $_GET['accion'] ?? 'index';
 
 
-$acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar'];
+$acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar', 'inicio'];
 
 
 if (!in_array($accion, $acciones_publicas)) {
     if (!isset($_SESSION['usuario'])) {
-        header("Location: index.php?accion=login");
+        header("Location: index.php?accion=inicio");
         exit;
     }
 }
@@ -107,7 +107,6 @@ switch ($accion) {
         
    
     case 'inicio':
-        
         include 'views/includes/header.php';
         include 'views/inicio.php';
         include 'views/includes/footer.php';
