@@ -5,6 +5,7 @@ session_start();
 require_once("controllers/ProductoController.php");
 require_once("controllers/UsuarioController.php");
 require_once("controllers/TicketController.php");
+require_once("controllers/ChatController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -103,6 +104,21 @@ switch ($accion) {
     case 'asignarTecnico':
         $controller = new TicketController();
         $controller->asignarTecnico();
+        break;
+
+    case 'cargarChat':
+        $controller = new ChatController();
+        $controller->cargarChat();
+        break;
+
+    case 'enviarMensaje':
+        $controller = new ChatController();
+        $controller->enviarMensaje();
+        break;
+
+    case 'cargarListaChats':
+        $controller = new ChatController();
+        $controller->cargarListaChats();
         break;
         
    

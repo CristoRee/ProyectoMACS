@@ -6,7 +6,6 @@
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                   
                     <th>Cliente</th>
                     <th>Dispositivo</th>
                     <th>Estado</th>
@@ -17,7 +16,6 @@
             <tbody>
                 <?php foreach ($todosLosTickets as $ticket): ?>
                 <tr>
-                    
                     <td><?php echo htmlspecialchars($ticket['nombre_cliente']); ?></td>
                     <td><?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca']); ?></td>
                     <td><span class="badge bg-info"><?php echo htmlspecialchars($ticket['nombre_estado']); ?></span></td>
@@ -34,6 +32,16 @@
                                 data-tecnico-actual-id="<?php echo $ticket['id_tecnico_asignado'] ?? ''; ?>">
                             <i class="fas fa-user-plus"></i> Asignar
                         </button>
+
+                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear con Cliente">
+                            <i class="fas fa-comments"></i>
+                        </button>
+                        
+                        <?php if ($ticket['id_tecnico_asignado']): ?>
+                        <button type="button" class="btn btn-sm btn-info" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear con Técnico">
+                            <i class="fas fa-headset"></i>
+                        </button>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -54,7 +62,7 @@
           <input type="hidden" name="id_ticket" id="form-ticket-id">
           <div class="mb-3">
             <label for="form-tecnico-id" class="form-label"><strong>Seleccionar Técnico:</strong></label>
-            <select class="form-select" name="id_tecnico" id="form-tecnico-id" required>
+            <select class="form-select" name="id_tecnico" id="form-tecnico-id">
               <option value="">-- Sin asignar --</option>
               <?php foreach ($listaDeTecnicos as $tecnico): ?>
                 <option value="<?php echo $tecnico['id_usuario']; ?>"><?php echo htmlspecialchars($tecnico['nombre_usuario']); ?></option>
@@ -73,6 +81,13 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+   
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+   
     const asignarTecnicoModal = document.getElementById('asignarTecnicoModal');
     asignarTecnicoModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
@@ -80,10 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const ticketId = button.getAttribute('data-ticket-id');
         const tecnicoActualId = button.getAttribute('data-tecnico-actual-id');
         
+       
         document.getElementById('modal-ticket-id').textContent = ticketId;
         document.getElementById('form-ticket-id').value = ticketId;
-        
-        
         document.getElementById('form-tecnico-id').value = tecnicoActualId;
     });
 });

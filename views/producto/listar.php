@@ -14,7 +14,8 @@ $titulo = "Mis Solicitudes";
                     <th scope="col">Problema Descrito</th>
                     <th scope="col">Fecha de Ingreso</th>
                     <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th> </tr>
+                    <th scope="col">Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 <?php if (!empty($solicitudes)): ?>
@@ -25,9 +26,9 @@ $titulo = "Mis Solicitudes";
                             <td><?php echo date('d/m/Y H:i', strtotime($solicitud['fecha_ingreso'])); ?></td>
                             <td><span class="badge rounded-pill bg-primary"><?php echo htmlspecialchars($solicitud['nombre_estado']); ?></span></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
+                                <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
                                     <i class="fas fa-comments"></i>
-                                </a>
+                                </button>
                                 
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSolicitudModal"
                                         data-id="<?php echo $solicitud['id_ticket']; ?>"
@@ -72,20 +73,19 @@ $titulo = "Mis Solicitudes";
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-   
+ 
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    
     const eliminarSolicitudModal = document.getElementById('eliminarSolicitudModal');
     eliminarSolicitudModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
         const ticketId = button.getAttribute('data-id');
         const dispositivo = button.getAttribute('data-dispositivo');
 
-     
+      
         const modalBodyDispositivo = eliminarSolicitudModal.querySelector('#dispositivo-a-eliminar');
         const hiddenInputId = eliminarSolicitudModal.querySelector('#id-ticket-a-eliminar');
 
