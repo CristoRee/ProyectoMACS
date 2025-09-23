@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cerrarChatBtn = document.getElementById('cerrar-chat');
         let infoPopover = null;
         
-        // ---- Lógica del Lanzador y Lista de Chats ----
+       
         chatLauncher.addEventListener('click', async function() {
             const isListOpen = chatList.style.display === 'block';
             if (isListOpen) {
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // ---- Lógica de la Ventana de Chat ----
+       
         window.abrirChat = async function(id_ticket) {
             chatLauncher.classList.add('moved');
             chatList.style.display = 'none';
