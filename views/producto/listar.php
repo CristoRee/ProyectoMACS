@@ -26,13 +26,19 @@ $titulo = "Mis Solicitudes";
                             <td><?php echo date('d/m/Y H:i', strtotime($solicitud['fecha_ingreso'])); ?></td>
                             <td><span class="badge rounded-pill bg-primary"><?php echo htmlspecialchars($solicitud['nombre_estado']); ?></span></td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
-                                    <i class="fas fa-comments"></i>
-                                </button>
+                                <?php if (!empty($solicitud['id_tecnico_asignado'])): ?>
+                                    <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
+                                        <i class="fas fa-comments"></i>
+                                    </button>
+                                <?php else: ?>
+                                    <button type="button" class="btn btn-sm btn-secondary disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Aún no tienes un técnico asignado">
+                                        <i class="fas fa-comments"></i>
+                                    </button>
+                                <?php endif; ?>
                                 
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSolicitudModal"
                                         data-id="<?php echo $solicitud['id_ticket']; ?>"
-                                        data-dispositivo="<?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca']); ?>">
+                                        data-dispositivo="<?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca']); ?>" title="Eliminar solicitud">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -73,7 +79,6 @@ $titulo = "Mis Solicitudes";
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
- 
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -85,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const ticketId = button.getAttribute('data-id');
         const dispositivo = button.getAttribute('data-dispositivo');
 
-      
         const modalBodyDispositivo = eliminarSolicitudModal.querySelector('#dispositivo-a-eliminar');
         const hiddenInputId = eliminarSolicitudModal.querySelector('#id-ticket-a-eliminar');
 

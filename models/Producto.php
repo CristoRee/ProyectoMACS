@@ -77,11 +77,12 @@ class Producto {
         }
     }
     
-    public function listarPorCliente($idCliente) {
+     public function listarPorCliente($idCliente) {
         $sql = "SELECT 
                     t.id_ticket,
                     t.descripcion_problema,
                     t.fecha_ingreso,
+                    t.id_tecnico_asignado, 
                     p.tipo_producto,
                     p.marca,
                     p.modelo,
