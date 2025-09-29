@@ -5,7 +5,12 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
 }
 ?>
 <div class="container mt-4">
-    <h2>Gestionar Estados</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Gestionar Estados</h2>
+        <a href="index.php?accion=crearEstado" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Estado
+        </a>
+    </div>
     <table class="table table-bordered">
         <thead>
             <tr>

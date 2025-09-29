@@ -39,7 +39,7 @@
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1):?>
                                 <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i>Gestionar Usuarios</a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i>Gestionar Tickets</a></li>
-                                <li><a class="dropdown-item" href="index.php?accion=crearEstado"><i class="fas fa-plus me-2"></i>Agregar Estado</a></li>
+                                 <!-- Solo un botón de Gestionar Estados, el duplicado ha sido eliminado -->
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarEstados"><i class="fas fa-list me-2"></i>Gestionar Estados</a></li>
                             <?php endif; ?>
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2):?>

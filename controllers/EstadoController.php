@@ -10,7 +10,6 @@ class EstadoController {
         $this->modeloEstado = new Estado();
     }
 
-    // Muestra el formulario para crear un nuevo estado (solo admin)
     public function crearEstadoForm() {
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             header('Location: index.php?accion=inicio');
@@ -21,7 +20,6 @@ class EstadoController {
         include 'views/includes/footer.php';
     }
 
-    // Procesa el guardado del nuevo estado
     public function guardarEstado() {
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             header('Location: index.php?accion=inicio');
@@ -72,7 +70,6 @@ class EstadoController {
         }
     }
 
-    // Método para actualizar el estado (usado en index.php)
     public function actualizarEstado() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_estado = $_POST['id_estado'] ?? null;
@@ -90,7 +87,6 @@ class EstadoController {
         }
     }
 
-    // Eliminar estado solo para admin
     public function eliminarEstado() {
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             header('Location: index.php?accion=inicio');
@@ -109,7 +105,6 @@ class EstadoController {
         }
     }
 
-    // Muestra la vista de gestión de estados solo para admin
     public function mostrarGestionEstados() {
         if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 1) {
             header('Location: index.php?accion=inicio');
