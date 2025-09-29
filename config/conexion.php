@@ -1,11 +1,11 @@
 <?php
 function conectar() {
-    $host = 'localhost';
+    $host = 'localhost:3306';
     $usuario = 'root';
-    $clave = 'c9831512';
+    $clave = '';
     $base_datos = 'basemacs';
 
-    $conexion = new mysqli($host, $usuario, $clave, $base_datos);
+    $conexion = new mysqli($host, $usuario, null, $base_datos);
 
     if ($conexion->connect_error) {
         die('Error de conexión: ' . $conexion->connect_error);

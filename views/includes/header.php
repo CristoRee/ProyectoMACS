@@ -39,6 +39,8 @@
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1):?>
                                 <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i>Gestionar Usuarios</a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i>Gestionar Tickets</a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=crearEstado"><i class="fas fa-plus me-2"></i>Agregar Estado</a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=gestionarEstados"><i class="fas fa-list me-2"></i>Gestionar Estados</a></li>
                             <?php endif; ?>
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2):?>
                                 <li><a class="dropdown-item" href="index.php?accion=misTickets"><i class="fas fa-ticket-alt me-2"></i>Mis Tickets</a></li>

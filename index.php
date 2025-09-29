@@ -1,3 +1,6 @@
+    
+   
+    
 <?php
 session_start();
 
@@ -6,6 +9,7 @@ require_once("controllers/ProductoController.php");
 require_once("controllers/UsuarioController.php");
 require_once("controllers/TicketController.php");
 require_once("controllers/ChatController.php");
+require_once("controllers/EstadoController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -24,6 +28,8 @@ if (!in_array($accion, $acciones_publicas)) {
 
 switch ($accion) {
    
+    
+    
     case 'login':
         $controller = new UsuarioController();
         $controller->login();
@@ -120,8 +126,31 @@ switch ($accion) {
         $controller = new ChatController();
         $controller->cargarListaChats();
         break;
-        
-   
+     
+     case 'actualizarEstado':
+        $controller = new EstadoController();
+        $controller->actualizarEstado();
+        break;    
+   case 'crearEstado':
+        $controller = new EstadoController();
+        $controller->crearEstadoForm();
+        break;
+
+    case 'guardarEstado':
+        $controller = new EstadoController();
+        $controller->guardarEstado();
+        break;
+
+    case 'gestionarEstados':
+        $controller = new EstadoController();
+        $controller->mostrarGestionEstados();
+        break;
+
+    case 'eliminarEstado':
+        $controller = new EstadoController();
+        $controller->eliminarEstado();
+        break;
+    
     case 'inicio':
         include 'views/includes/header.php';
         include 'views/inicio.php';

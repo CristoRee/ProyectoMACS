@@ -48,10 +48,45 @@
 </div>
 
 <div class="modal fade" id="editarTicketModal" tabindex="-1" aria-labelledby="editarTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formEditarTicket" method="POST" action="index.php?accion=actualizarTicketEstado">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarTicketModalLabel">Editar Estado del Ticket</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                      <input type="hidden" name="id_ticket" id="modal_id_ticket">
+                                <div class="mb-3">
+                                    <label for="modal_estado" class="form-label">Estado</label>
+                                    <select class="form-select" name="id_estado" id="modal_estado" required>
+                                        <option value="">Seleccione un estado</option>
+                                        <?php foreach ($todosLosEstados as $estado): ?>
+                                            <option value="<?php echo $estado['id_estado']; ?>"><?php echo htmlspecialchars($estado['nombre_estado']); ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-
+    var editarTicketModal = document.getElementById('editarTicketModal');
+    if (editarTicketModal) {
+        editarTicketModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var id_ticket = button.getAttribute('data-ticket-id');
+            var estado_actual_id = button.getAttribute('data-estado-actual-id');
+            document.getElementById('modal_id_ticket').value = id_ticket;
+            document.getElementById('modal_estado').value = estado_actual_id;
+        });
+    }
 });
 </script>
