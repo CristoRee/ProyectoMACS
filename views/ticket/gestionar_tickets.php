@@ -33,12 +33,12 @@
                             <i class="fas fa-user-plus"></i> Asignar
                         </button>
 
-                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear con Cliente">
+                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'ticket')" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver chat del Ticket (público)">
                             <i class="fas fa-comments"></i>
                         </button>
                         
                         <?php if ($ticket['id_tecnico_asignado']): ?>
-                        <button type="button" class="btn btn-sm btn-info" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear con Técnico">
+                        <button type="button" class="btn btn-sm btn-info" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'tecnico')" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear en privado con Técnico">
                             <i class="fas fa-headset"></i>
                         </button>
                         <?php endif; ?>
@@ -81,21 +81,17 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-   
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-   
     const asignarTecnicoModal = document.getElementById('asignarTecnicoModal');
     asignarTecnicoModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
-        
         const ticketId = button.getAttribute('data-ticket-id');
         const tecnicoActualId = button.getAttribute('data-tecnico-actual-id');
         
-       
         document.getElementById('modal-ticket-id').textContent = ticketId;
         document.getElementById('form-ticket-id').value = ticketId;
         document.getElementById('form-tecnico-id').value = tecnicoActualId;

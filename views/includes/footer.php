@@ -33,7 +33,7 @@
 </div>
 
 <style>
-
+/* --- Estilos para el Lanzador y Lista de Chats --- */
 .chat-launcher {
     position: fixed; bottom: 20px; right: 20px;
     background-color: #0d6efd; color: white;
@@ -82,7 +82,7 @@
 .chat-list-item:hover { background: #f1f1f1; }
 .chat-list-item small { color: #6c757d; }
 
-
+/* --- Estilos para la Ventana de Chat --- */
 #chat-ventana {
     position: fixed; bottom: 20px; right: 20px;
     width: 350px; height: 450px; background-color: white;
@@ -127,13 +127,13 @@
 .role-badge.admin { background-color: #ffc107; color: #343a40 !important; }
 .role-badge.tecnico { background-color: #0dcaf0; }
 
-
+/* Colores de los globos de chat */
 .mensaje.emisor .mensaje-contenido { background-color: #0d6efd; color: white; }
 .mensaje.receptor .mensaje-contenido.cliente { background-color: #e9ecef; color: #212529; }
 .mensaje.receptor .mensaje-contenido.tecnico { background-color: #cff4fc; color: #055160; }
 .mensaje.receptor .mensaje-contenido.administrador { background-color: #fff3cd; color: #664d03; }
 
-
+/* === REGLAS DE CSS QUE FALTABAN === */
 .mensaje.emisor, .mensaje.receptor { width: 100%; }
 .mensaje.emisor { align-items: flex-end; }
 .mensaje.receptor { align-items: flex-start; }
@@ -145,7 +145,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  
+    // Solo ejecuta el script de chat si los elementos existen
     if(document.getElementById('chat-ventana')) {
         const chatLauncher = document.getElementById('chat-launcher');
         const toggleBtn = document.getElementById('toggle-chat-list');
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const cerrarChatBtn = document.getElementById('cerrar-chat');
         let infoPopover = null;
         
-       
+        // ---- Lógica del Lanzador y Lista de Chats ----
         chatLauncher.addEventListener('click', async function() {
             const isListOpen = chatList.style.display === 'block';
             if (isListOpen) {
@@ -188,16 +188,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-       
-        window.abrirChat = async function(id_ticket) {
+        // ---- Lógica de la Ventana de Chat ----
+        window.abrirChat = async function(id_ticket, target = 'ticket') {
             chatLauncher.classList.add('moved');
             chatList.style.display = 'none';
             toggleBtn.classList.remove('open');
             chatVentana.classList.remove('chat-ventana-oculta');
-            document.getElementById('chat-titulo').textContent = `Chat del Ticket #${id_ticket}`;
+            
+            let tituloChat = (target === 'tecnico') 
+                ? `Chat Privado (Técnico) - Ticket #${id_ticket}` 
+                : `Chat del Ticket #${id_ticket}`;
+            document.getElementById('chat-titulo').textContent = tituloChat;
+            
             chatCuerpo.innerHTML = '<p class="text-center">Cargando...</p>';
             try {
-                const response = await fetch(`index.php?accion=cargarChat&id_ticket=${id_ticket}`);
+                const response = await fetch(`index.php?accion=cargarChat&id_ticket=${id_ticket}&target=${target}`);
                 if (!response.ok) throw new Error('Error al cargar datos del chat.');
                 const data = await response.json();
                 
@@ -210,7 +215,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 infoBtn.setAttribute('data-bs-content', popoverContent);
                 infoPopover = new bootstrap.Popover(infoBtn, {html: true});
                 
-                mostrarMensajes(data.mensajes);
+                const esCliente = <?php echo ($_SESSION['rol'] ?? 0) == 3 ? 'true' : 'false'; ?>;
+                
+                if (esCliente && !data.tecnico_asignado) {
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3">Un técnico será asignado a tu solicitud en breve. Podrás contactarlo por este medio una vez que tome tu caso.</p>';
+                    formEnviarMensaje.style.display = 'none';
+                } else {
+                    formEnviarMensaje.style.display = 'flex';
+                    mostrarMensajes(data.mensajes);
+                }
+                
             } catch (error) {
                 chatCuerpo.innerHTML = `<p class="text-center text-danger">${error.message}</p>`;
             }
@@ -220,12 +234,18 @@ document.addEventListener('DOMContentLoaded', function() {
             chatCuerpo.innerHTML = '';
             let ultimoEmisorId = null;
             if(mensajes.length === 0) {
-                chatCuerpo.innerHTML = '<p class="text-center text-muted">Aún no hay mensajes. ¡Sé el primero en escribir!</p>';
+                 const esCliente = <?php echo ($_SESSION['rol'] ?? 0) == 3 ? 'true' : 'false'; ?>;
+                 const hayTecnico = document.getElementById('chat-id-receptor').value > 0;
+                 if (esCliente && !hayTecnico) {
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3">Un técnico será asignado a tu solicitud en breve. Podrás contactarlo por este medio una vez que tome tu caso.</p>';
+                 } else {
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted">Aún no hay mensajes. ¡Sé el primero en escribir!</p>';
+                 }
                 return;
             }
             mensajes.forEach(msg => {
                 const esEmisor = (msg.id_emisor == <?php echo $_SESSION['id_usuario']; ?>);
-                const rolClase = msg.nombre_rol.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quita acentos para la clase CSS
+                const rolClase = msg.nombre_rol.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 
                 const mensajeDiv = document.createElement('div');
                 mensajeDiv.className = `mensaje ${esEmisor ? 'emisor' : 'receptor'}`;
@@ -249,10 +269,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         cerrarChatBtn.addEventListener('click', () => {
             chatVentana.classList.add('chat-ventana-oculta');
-            chatLauncher.classList.remove('moved'); 
+            chatLauncher.classList.remove('moved');
         });
 
-       
         formEnviarMensaje.addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -264,13 +283,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             });
 
-            const id_ticket = document.getElementById('chat-titulo').textContent.replace('Chat del Ticket #', '');
+            const titulo = document.getElementById('chat-titulo').textContent;
+            const id_ticket = titulo.match(/\d+/)[0];
+            const target = titulo.includes('Privado') ? 'tecnico' : 'ticket';
+            
             inputMensaje.value = '';
-            abrirChat(id_ticket);
+            abrirChat(id_ticket, target);
         });
     }
 
- 
     const successModalEl = document.getElementById('successModal');
     if (successModalEl) {
         const successModal = new bootstrap.Modal(successModalEl);
