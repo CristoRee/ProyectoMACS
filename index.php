@@ -10,6 +10,7 @@ require_once("controllers/UsuarioController.php");
 require_once("controllers/TicketController.php");
 require_once("controllers/ChatController.php");
 require_once("controllers/EstadoController.php");
+require_once("controllers/RolController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -149,6 +150,26 @@ switch ($accion) {
     case 'eliminarEstado':
         $controller = new EstadoController();
         $controller->eliminarEstado();
+        break;
+
+    case 'listarRoles':
+        $controller = new RolController();
+        $controller->listarRoles();
+        break;
+    
+    case 'crearRol':
+        $controller = new RolController();
+        $controller->crearRol();
+        break;
+
+    case 'editarRol':
+        $controller = new RolController();
+        $controller->editarRol();
+        break;
+
+    case 'eliminarRol':
+        $controller = new RolController();
+        $controller->eliminarRol();
         break;
     
     case 'inicio':
