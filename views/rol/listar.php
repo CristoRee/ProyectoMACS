@@ -2,7 +2,7 @@
     <h2 class="mb-3">Gestión de Roles</h2>
     <a href="index.php?accion=crearRol" class="btn btn-success mb-3"> Crear Rol</a>
     <table class="table table-bordered table-striped">
-        <thead>
+        <thead class="table-dark">
             <tr>
                 <th>ID</th>
                 <th>Nombre del Rol</th>

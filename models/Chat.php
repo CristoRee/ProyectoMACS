@@ -7,10 +7,7 @@ class Chat {
     public function __construct() {
         $this->db = conectar();
     }
-
-    /**
-     * MODIFICADO: Ahora maneja tipos de conversación (TICKET o PRIVADA).
-     */
+    
     public function obtenerOCrearConversacion($id_ticket, $tipo = 'TICKET', $id_participante1 = null, $id_participante2 = null) {
         if ($tipo === 'TICKET') {
             $stmt = $this->db->prepare("SELECT id_conversacion FROM Conversaciones WHERE id_ticket = ? AND tipo = 'TICKET'");
@@ -24,8 +21,7 @@ class Chat {
             $stmt_insert = $this->db->prepare("INSERT INTO Conversaciones (id_ticket, tipo) VALUES (?, 'TICKET')");
             $stmt_insert->bind_param("i", $id_ticket);
 
-        } else { // Tipo PRIVADA
-            // Busca la conversación privada sin importar el orden de los participantes
+        } else { 
             $stmt = $this->db->prepare("SELECT id_conversacion FROM Conversaciones WHERE id_ticket = ? AND tipo = 'PRIVADA' AND ((id_participante1 = ? AND id_participante2 = ?) OR (id_participante1 = ? AND id_participante2 = ?))");
             $stmt->bind_param("iiiii", $id_ticket, $id_participante1, $id_participante2, $id_participante2, $id_participante1);
             $stmt->execute();
@@ -91,9 +87,9 @@ class Chat {
                 FROM Conversaciones c
                 JOIN Tickets t ON c.id_ticket = t.id_ticket
                 {$extra_join_condition}
-                WHERE (t.id_cliente = ? OR t.id_tecnico_asignado = ? OR ? = 1) AND c.tipo = 'TICKET'"; // Admin (rol 1) ve todos los chats de ticket
+                WHERE (t.id_cliente = ? OR t.id_tecnico_asignado = ? OR ? = 1) AND c.tipo = 'TICKET'"; 
         
-        $admin_rol_id = 1; // ID del rol de Administrador
+        $admin_rol_id = 1; 
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param("iii", $id_usuario, $id_usuario, $_SESSION['rol']);
         $stmt->execute();
