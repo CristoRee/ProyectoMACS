@@ -31,14 +31,15 @@ class UsuarioController {
                 exit();
             }
 
-            $exito = $this->model->crear($nombre, $email, $password);
-
-            if ($exito) {
-              
+			$exito = $this->model->crear($nombre, $email, $password);
+            if ($exito === true) {
                 header("Location: index.php?accion=login&registro=exitoso");
                 exit();
+            } elseif ($exito === 'duplicate') {
+                // Email ya registrado
+                header("Location: index.php?accion=mostrarRegistro&error=email_duplicate");
+                exit();
             } else {
-                
                 header("Location: index.php?accion=mostrarRegistro&error=db");
                 exit();
             }

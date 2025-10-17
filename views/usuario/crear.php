@@ -12,6 +12,14 @@
                     if (isset($_GET['error']) && $_GET['error'] === 'password'): ?>
                         <div class="alert alert-danger">Las contraseñas no coinciden. Por favor, inténtelo de nuevo.</div>
                     <?php endif; ?>
+                    <?php 
+                    if (isset($_GET['error']) && $_GET['error'] === 'email_duplicate'): ?>
+                        <div class="alert alert-danger">El correo electrónico ya está registrado. Intente iniciar sesión o use otro correo.</div>
+                    <?php endif; ?>
+                    <?php 
+                    if (isset($_GET['error']) && $_GET['error'] === 'db'): ?>
+                        <div class="alert alert-danger">Ocurrió un error en la base de datos. Por favor inténtelo más tarde.</div>
+                    <?php endif; ?>
                     
                     <form method="POST" action="index.php?accion=registrar" id="registroForm">
                         <div class="mb-3">

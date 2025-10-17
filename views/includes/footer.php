@@ -36,6 +36,43 @@
 
 <?php endif; ?>
 
+<?php
+// Mostrar el botón del manual solo en la pantalla inicial
+$showManualButton = false;
+// Condiciones: 1) No hay 'accion' en GET (ruta por defecto), 2) accion == 'inicio'
+if (!isset($_GET['accion']) || (isset($_GET['accion']) && $_GET['accion'] === 'inicio')) {
+    $showManualButton = true;
+}
+if (isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI'] === '/ProyectoMACS/' || $_SERVER['REQUEST_URI'] === '/ProyectoMACS/index.php')) {
+    $showManualButton = true;
+}
+
+if ($showManualButton): ?>
+
+<a href="/ProyectoMACS/Documentos/Manual_Usuario_ProyectoMACS_Usuario.php" id="manual-flotante" class="manual-flotante" title="Manual de Usuario" target="_blank" rel="noopener">Manual</a>
+
+<style>
+.manual-flotante{
+    position:fixed;
+    left:12px;
+    bottom:12px;
+    background:#0d6efd;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:13px;
+    text-decoration:none;
+    box-shadow:0 6px 14px rgba(13,110,253,0.25);
+    z-index:9999;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+}
+.manual-flotante:hover{background:#0b5ed7}
+</style>
+
+<?php endif; ?>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>

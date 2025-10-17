@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Manual de Usuario - ProyectoMACS</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;padding:0;line-height:1.45}
+    .page{max-width:900px;margin:20px auto;padding:24px;border:1px solid #e1e1e1;background:#fff}
+    h1,h2,h3{color:#0d47a1}
+    h1{font-size:26px;margin-bottom:6px}
+    .section{margin-bottom:18px}
+    .note{background:#f1f8ff;border-left:4px solid #0d6efd;padding:8px;margin:8px 0}
+    ul{margin-left:18px}
+    .steps{counter-reset:step}
+  .step{margin:10px 0;padding-left:44px;position:relative}
+  .step:before{counter-increment:step;content:counter(step);position:absolute;left:10px;top:50%;transform:translateY(-50%);background:#0d6efd;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+    footer{font-size:12px;color:#666;margin-top:18px}
+    @media print{ .page{border:none;box-shadow:none;margin:0;padding:0} }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Manual de Usuario — ProyectoMACS</h1>
+      <p>Guía paso a paso para usar la plataforma desde el navegador (sin referencias a código).</p>
+    </header>
+
+    <section class="section">
+      <h2>1. Primeros pasos</h2>
+      <p>Accede a la URL de la aplicación proporcionada por tu administrador. Recomendamos usar un navegador actualizado (Chrome, Edge, Firefox).</p>
+      <div class="note">Si no tienes cuenta, haz clic en <strong>Regístrate</strong> para crear una. Necesitarás: nombre de usuario, correo electrónico y contraseña.</div>
+    </section>
+
+    <section class="section">
+      <h2>2. Registro e inicio de sesión</h2>
+      <div class="steps">
+        <div class="step">
+          <strong>Registro:</strong>
+          <ul>
+            <li>Haz clic en "Regístrate".</li>
+            <li>Completa <em>Nombre de usuario</em>, <em>Correo electrónico</em> y <em>Contraseña</em>.</li>
+            <li>Confirma la contraseña y presiona <em>Registrar Usuario</em>.</li>
+            <li>Si el correo ya está registrado, verás un mensaje que te lo indicará.</li>
+          </ul>
+        </div>
+        <div class="step">
+          <strong>Inicio de sesión:</strong>
+          <ul>
+            <li>En la página de Login, ingresa tu nombre de usuario y contraseña.</li>
+            <li>Presiona <em>Entrar</em>. Serás redirigido al panel principal.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. Panel principal (Dashboard)</h2>
+      <p>Desde el dashboard encontrarás accesos rápidos para crear tickets, ver tus tickets y notificaciones. También verás menús para ir a Productos, Estados, Roles y Usuarios (según tu rol).</p>
+      <div class="note">La vista exacta depende de tu rol: administradores ven opciones de gestión adicionales; técnicos ven asignaciones y usuarios solo verán opciones para crear y consultar sus tickets.</div>
+    </section>
+
+    <section class="section">
+      <h2>4. Crear un ticket (solicitud)</h2>
+      <div class="step">
+        <ul>
+          <li>Haz clic en <strong>Crear ticket</strong> o en el botón similar del dashboard.</li>
+          <li>Completa los campos: <em>Título</em>, <em>Descripción</em>, selecciona el <em>Producto</em> (si aplica) y elige el <em>Estado</em> inicial si se solicita.</li>
+          <li>Adjunta una imagen o archivo si deseas (ej. foto del equipo con la falla).</li>
+          <li>Presiona <strong>Enviar</strong>. El ticket quedará registrado y aparecerá en "Mis tickets".</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. Ver y gestionar "Mis tickets"</h2>
+      <ol>
+        <li>Ve a <strong>Mis tickets</strong> para ver la lista de solicitudes que has creado.</li>
+        <li>Haz clic en un ticket para ver detalles, comentarios, historial y archivos adjuntos.</li>
+        <li>Si se permiten actualizaciones, podrás añadir comentarios o archivos adicionales en el ticket.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>6. Panel de técnico / administrador</h2>
+      <p>Los técnicos y administradores ven funcionalidades adicionales:</p>
+      <ul>
+        <li>Asignar tickets a técnicos.</li>
+        <li>Cambiar el estado del ticket (Ej.: En Proceso, En Espera, Cerrado).</li>
+        <li>Agregar comentarios y marcar resolución con evidencia.</li>
+        <li>Eliminar tickets (con confirmación) si corresponde.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>7. Estados y su uso</h2>
+      <p>Los estados permiten seguir el progreso de un ticket. Algunos estados habituales son:</p>
+      <ul>
+        <li><strong>Abierto</strong> — Ticket recién creado.</li>
+        <li><strong>En Proceso</strong> — Un técnico está trabajando en la incidencia.</li>
+        <li><strong>En Espera</strong> — Falta información o acción externa.</li>
+        <li><strong>Cerrado</strong> — Incidencia resuelta.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>8. Chat y comunicación</h2>
+      <p>Usa el chat o la sección de comentarios para comunicarte con técnicos o con el equipo. Mantén las conversaciones centradas en el ticket para conservar el contexto.</p>
+    </section>
+
+    <section class="section">
+      <h2>9. Notificaciones y seguimiento</h2>
+      <p>Recibirás notificaciones dentro de la aplicación cuando: se asigne un técnico, cambie el estado de un ticket o se agregue un comentario relevante.</p>
+    </section>
+
+    <section class="section">
+      <h2>10. Subir archivos y fotos</h2>
+      <p>Al crear o editar tickets puedes adjuntar imágenes. Asegúrate de que los archivos no excedan el tamaño permitido por la plataforma.</p>
+    </section>
+
+    <section class="section">
+      <h2>11. Seguridad y buenas prácticas</h2>
+      <ul>
+        <li>No compartas tu contraseña.</li>
+        <li>Cierra sesión al usar equipos compartidos.</li>
+        <li>Adjunta solo archivos relevantes y sin contenido sensitivo si no es necesario.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>12. Resolución de problemas comunes</h2>
+      <ul>
+        <li><strong>No puedo iniciar sesión:</strong> Verifica usuario/contraseña; si olvidaste la contraseña, contacta al administrador.</li>
+        <li><strong>No veo el botón para crear tickets:</strong> Es posible que tu rol no lo permita; contacta soporte o al administrador.</li>
+        <li><strong>Subida de archivos falla:</strong> Reintenta con una imagen más pequeña o contacta al equipo técnico.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>13. Soporte y contacto</h2>
+      <p>Si tienes problemas, contacta a la persona o equipo responsable de la aplicación en tu empresa. Proporciona:</p>
+      <ul>
+        <li>Descripción del problema.</li>
+        <li>Pasos para reproducirlo.</li>
+        <li>Capturas de pantalla si es posible.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>Manual de Usuario — ProyectoMACS. Para material adicional o capacitación, solicita soporte.</p>
+    </footer>
+  </div>
+</body>
+</html>

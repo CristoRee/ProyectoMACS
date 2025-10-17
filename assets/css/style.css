@@ -50,7 +50,7 @@ header.bg-primary {
 
 .card {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    border: 1px solid rgb(245, 245, 245);
 }
 
 .btn-group-actions {
@@ -58,14 +58,17 @@ header.bg-primary {
 }
 
 .table th {
-    background-color: #091a3d;
+    background-color: #fbfcfc;
 }
+
+/* Estilos para la vista Gestionar Estados: texto en blanco */
+/* Estilos para la vista Gestionar Estados: texto en blanco */
 
 
 .custom-btn {
     
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(248, 246, 246, 0.1);
     border: none;
 }
 

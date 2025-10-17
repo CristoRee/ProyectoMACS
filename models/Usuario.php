@@ -13,21 +13,30 @@ class Usuario {
         $hash_seguro = password_hash($password_plana, PASSWORD_DEFAULT);
 
      
+        // Verificar si el email ya existe para evitar error de duplicado
+        $stmt_check = $this->db->prepare("SELECT id_usuario FROM Usuarios WHERE email = ? LIMIT 1");
+        if ($stmt_check) {
+            $stmt_check->bind_param("s", $email);
+            $stmt_check->execute();
+            $res = $stmt_check->get_result();
+            if ($res && $res->num_rows > 0) {
+                // Email duplicado
+                return 'duplicate';
+            }
+        }
++
         $stmt = $this->db->prepare(
             "INSERT INTO Usuarios (nombre_usuario, email, password_hash, id_rol) VALUES (?, ?, ?, ?)"
         );
-        
-       
+
         if (!$stmt) {
             return false;
         }
-
-       
++
         $rol_por_defecto = 3; 
 
- 
         $stmt->bind_param("sssi", $nombre, $email, $hash_seguro, $rol_por_defecto);
-        
+
         if ($stmt->execute()) {
             return true;
         } else {

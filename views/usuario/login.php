@@ -2,6 +2,34 @@
 
 ?>
 
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const successAlert = document.querySelector('.alert-success');
+    if (successAlert) {
+        
+        const timeoutId = setTimeout(() => {
+            successAlert.style.transition = 'opacity 0.5s ease';
+            successAlert.style.opacity = '0';
+            
+            setTimeout(() => successAlert.remove(), 500);
+        }, 2000);
+
+        
+        const closeBtn = successAlert.querySelector('.btn-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                clearTimeout(timeoutId);
+                successAlert.style.transition = 'opacity 0.3s ease';
+                successAlert.style.opacity = '0';
+                setTimeout(() => successAlert.remove(), 300);
+            });
+        }
+    }
+});
+</script>
+
 <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5 col-xl-4">
         <div class="card mt-5 shadow-sm">
@@ -14,7 +42,10 @@
                     <div class="alert alert-danger">Usuario o contraseña incorrectos.</div>
                 <?php endif; ?>
                 <?php if (isset($_GET['registro']) && $_GET['registro'] === 'exitoso'): ?>
-                    <div class="alert alert-success">¡Registro exitoso! Por favor, inicie sesión.</div>
+                    <div class="alert alert-success d-flex align-items-center justify-content-between" role="alert">
+                        <div>¡Registro exitoso! Por favor, inicie sesión.</div>
+                        <button type="button" class="btn-close" aria-label="Cerrar"></button>
+                    </div>
                 <?php endif; ?>
 
                 <form method="POST" action="index.php?accion=autenticar">
