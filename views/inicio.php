@@ -1,5 +1,5 @@
 <div class="container py-5">
-    <div class="p-5 mb-4 bg-light rounded-3 text-center shadow-sm">
+    <div class="p-5 mb-4 rounded-3 text-center shadow-sm">
         <div class="container-fluid py-5">
             <h1 class="display-4 fw-bold">Bienvenido a BinaryTEC</h1>
             <p class="fs-4 col-md-10 mx-auto">Somos una empresa dedicada a ofrecer soluciones y reparaciones tecnológicas de confianza. Si tienes un problema, nosotros tenemos la solución. Puede hacer su solicitud ahora mismo para que nuestro equipo lo atienda a la brevedad.</p>
