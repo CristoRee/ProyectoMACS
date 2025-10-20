@@ -32,13 +32,9 @@
                                 data-tecnico-actual-id="<?php echo $ticket['id_tecnico_asignado'] ?? ''; ?>">
                             <i class="fas fa-user-plus"></i> Asignar
                         </button>
-
-                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'ticket')" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver chat del Ticket (público)">
-                            <i class="fas fa-comments"></i>
-                        </button>
                         
                         <?php if ($ticket['id_tecnico_asignado']): ?>
-                        <button type="button" class="btn btn-sm btn-info" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'tecnico')" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear en privado con Técnico">
+                        <button type="button" class="btn btn-sm btn-info" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'tecnico')" data-bs-toggle="tooltip" data-bs-placement="top" title="Chat Privado con Técnico">
                             <i class="fas fa-headset"></i>
                         </button>
                         <?php endif; ?>

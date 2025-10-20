@@ -9,33 +9,46 @@ class Chat {
     }
     
     public function obtenerOCrearConversacion($id_ticket, $tipo = 'TICKET', $id_participante1 = null, $id_participante2 = null) {
+        $id_conversacion = null;
+
         if ($tipo === 'TICKET') {
+           
             $stmt = $this->db->prepare("SELECT id_conversacion FROM Conversaciones WHERE id_ticket = ? AND tipo = 'TICKET'");
             $stmt->bind_param("i", $id_ticket);
             $stmt->execute();
             $resultado = $stmt->get_result();
             if ($resultado->num_rows > 0) {
-                return $resultado->fetch_assoc()['id_conversacion'];
+                $id_conversacion = $resultado->fetch_assoc()['id_conversacion'];
             }
             
-            $stmt_insert = $this->db->prepare("INSERT INTO Conversaciones (id_ticket, tipo) VALUES (?, 'TICKET')");
-            $stmt_insert->bind_param("i", $id_ticket);
+            if (!$id_conversacion) {
+                
+                $stmt_insert = $this->db->prepare("INSERT INTO Conversaciones (id_ticket, tipo) VALUES (?, 'TICKET')");
+                $stmt_insert->bind_param("i", $id_ticket);
+                $stmt_insert->execute();
+                $id_conversacion = $this->db->insert_id;
+            }
 
-        } else { 
+        } elseif ($tipo === 'PRIVADA' && $id_participante1 && $id_participante2) { 
+           
             $stmt = $this->db->prepare("SELECT id_conversacion FROM Conversaciones WHERE id_ticket = ? AND tipo = 'PRIVADA' AND ((id_participante1 = ? AND id_participante2 = ?) OR (id_participante1 = ? AND id_participante2 = ?))");
             $stmt->bind_param("iiiii", $id_ticket, $id_participante1, $id_participante2, $id_participante2, $id_participante1);
             $stmt->execute();
             $resultado = $stmt->get_result();
             if ($resultado->num_rows > 0) {
-                return $resultado->fetch_assoc()['id_conversacion'];
+                $id_conversacion = $resultado->fetch_assoc()['id_conversacion'];
             }
 
-            $stmt_insert = $this->db->prepare("INSERT INTO Conversaciones (id_ticket, tipo, id_participante1, id_participante2) VALUES (?, 'PRIVADA', ?, ?)");
-            $stmt_insert->bind_param("iii", $id_ticket, $id_participante1, $id_participante2);
+            if (!$id_conversacion) {
+            
+                $stmt_insert = $this->db->prepare("INSERT INTO Conversaciones (id_ticket, tipo, id_participante1, id_participante2) VALUES (?, 'PRIVADA', ?, ?)");
+                $stmt_insert->bind_param("iii", $id_ticket, $id_participante1, $id_participante2);
+                $stmt_insert->execute();
+                $id_conversacion = $this->db->insert_id;
+            }
         }
         
-        $stmt_insert->execute();
-        return $this->db->insert_id;
+        return $id_conversacion;
     }
 
     public function obtenerMensajes($id_conversacion) {
@@ -73,25 +86,46 @@ class Chat {
     }
     
     public function obtenerConversacionesActivas($id_usuario, $rol_usuario) {
-        $extra_join_condition = "";
-        $other_user_column = "";
-        if ($rol_usuario === 'Cliente') {
-            $other_user_column = "tecnico.nombre_usuario AS otro_participante";
-            $extra_join_condition = "LEFT JOIN Usuarios tecnico ON t.id_tecnico_asignado = tecnico.id_usuario";
-        } else { 
-            $other_user_column = "cliente.nombre_usuario AS otro_participante";
-            $extra_join_condition = "JOIN Usuarios cliente ON t.id_cliente = cliente.id_usuario";
+        $queries = [];
+        $params = [];
+        $types = "";
+
+      
+        if ($rol_usuario === 'Cliente' || $rol_usuario === 'Técnico') {
+            $queries[] = "(SELECT DISTINCT c.id_ticket, 
+                                     (CASE WHEN t.id_cliente = ? THEN tec.nombre_usuario ELSE cli.nombre_usuario END) AS otro_participante,
+                                     'ticket' AS target
+                          FROM Conversaciones c
+                          JOIN Tickets t ON c.id_ticket = t.id_ticket
+                          JOIN Usuarios cli ON t.id_cliente = cli.id_usuario
+                          LEFT JOIN Usuarios tec ON t.id_tecnico_asignado = tec.id_usuario
+                          WHERE c.tipo = 'TICKET' AND (t.id_cliente = ? OR t.id_tecnico_asignado = ?))";
+            $params = array_merge($params, [$id_usuario, $id_usuario, $id_usuario]);
+            $types .= "iii";
         }
 
-        $sql = "SELECT DISTINCT c.id_ticket, {$other_user_column}
-                FROM Conversaciones c
-                JOIN Tickets t ON c.id_ticket = t.id_ticket
-                {$extra_join_condition}
-                WHERE (t.id_cliente = ? OR t.id_tecnico_asignado = ? OR ? = 1) AND c.tipo = 'TICKET'"; 
-        
-        $admin_rol_id = 1; 
+
+        if ($rol_usuario === 'Técnico' || $rol_usuario === 'Administrador') {
+           
+            $queries[] = "(SELECT t.id_ticket, 
+                                  otro_usuario.nombre_usuario AS otro_participante, 
+                                  'tecnico' as target
+                           FROM Conversaciones c
+                           JOIN Tickets t ON c.id_ticket = t.id_ticket
+                           JOIN Usuarios otro_usuario ON otro_usuario.id_usuario = IF(c.id_participante1 = ?, c.id_participante2, c.id_participante1)
+                           WHERE c.tipo = 'PRIVADA' AND (c.id_participante1 = ? OR c.id_participante2 = ?))";
+            
+            $params = array_merge($params, [$id_usuario, $id_usuario, $id_usuario]);
+            $types .= "iii";
+        }
+
+        if (empty($queries)) {
+            return []; 
+        }
+
+        $sql = implode(" UNION ", $queries);
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("iii", $id_usuario, $id_usuario, $_SESSION['rol']);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }

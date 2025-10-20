@@ -36,7 +36,7 @@ class UsuarioController {
                 header("Location: index.php?accion=login&registro=exitoso");
                 exit();
             } elseif ($exito === 'duplicate') {
-                // Email ya registrado
+               
                 header("Location: index.php?accion=mostrarRegistro&error=email_duplicate");
                 exit();
             } else {
@@ -67,8 +67,12 @@ class UsuarioController {
             $email = $_POST['email'];
             $telefono = $_POST['telefono'];
             $id_rol = $_POST['id_rol'];
-            $this->model->actualizar($id, $nombre, $email, $telefono, $id_rol);
-            header("Location: index.php?accion=listarUsuarios&status=edit_success");
+            $exito = $this->model->actualizar($id, $nombre, $email, $telefono, $id_rol);
+            if ($exito) {
+                header("Location: index.php?accion=listarUsuarios&status=edit_success");
+            } else {
+                header("Location: index.php?accion=listarUsuarios&status=edit_error");
+            }
             exit();
         }
     }
@@ -76,8 +80,12 @@ class UsuarioController {
     public function eliminarUsuario() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_usuario'];
-            $this->model->eliminar($id);
-            header("Location: index.php?accion=listarUsuarios&status=delete_success");
+            $exito = $this->model->eliminar($id);
+            if ($exito) {
+                header("Location: index.php?accion=listarUsuarios&status=delete_success");
+            } else {
+                header("Location: index.php?accion=listarUsuarios&status=delete_error");
+            }
             exit();
         }
     }
@@ -91,6 +99,7 @@ class UsuarioController {
                 $_SESSION['id_usuario'] = $usuario_validado['id_usuario'];
                 $_SESSION['usuario'] = $usuario_validado['nombre_usuario'];
                 $_SESSION['rol'] = $usuario_validado['id_rol'];
+                $_SESSION['foto_perfil'] = $usuario['foto_perfil'];
                 header("Location: index.php?accion=inicio");
                 exit();
             } else {
@@ -100,9 +109,104 @@ class UsuarioController {
         }
     }
 
+
+
     public function logout() {
         session_destroy();
         header("Location: index.php?accion=login");
         exit();
+    }
+
+    public function miPerfil() {
+        $usuario = $this->model->obtenerPorId($_SESSION['id_usuario']);
+        include 'views/includes/header.php';
+        include 'views/usuario/perfil.php';
+        include 'views/includes/footer.php';
+    }
+
+   public function actualizarFotoPerfil() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_usuario = $_SESSION['id_usuario'];
+            $ruta_foto = null;
+
+            if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = 'uploads/perfiles/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                
+                
+                $extension = pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION);
+                $fileName = 'user_' . $id_usuario . '_' . uniqid() . '.' . $extension; 
+                $targetFilePath = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $targetFilePath)) {
+                    $ruta_foto = $targetFilePath;
+                } else {
+                    header("Location: index.php?accion=miPerfil&status=upload_error");
+                    exit();
+                }
+            } else {
+                
+                header("Location: index.php?accion=miPerfil&status=no_file");
+                exit();
+            }
+
+            
+            if ($ruta_foto_actualizada = $this->model->actualizarFoto($id_usuario, $ruta_foto)) {
+                $_SESSION['foto_perfil'] = $ruta_foto_actualizada; 
+                header("Location: index.php?accion=miPerfil&status=photo_success");
+            } else {
+                header("Location: index.php?accion=miPerfil&status=error");
+            }
+            exit();
+        }
+    }
+
+  
+    public function actualizarPerfil() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_usuario = $_SESSION['id_usuario'];
+            $nombre = $_POST['nombre_usuario'];
+            $email = $_POST['email'];
+            $telefono = $_POST['telefono'];
+
+            
+            if ($this->model->actualizarPerfil($id_usuario, $nombre, $email, $telefono, null)) {
+                $_SESSION['usuario'] = $nombre;
+                header("Location: index.php?accion=miPerfil&status=profile_success");
+            } else {
+                header("Location: index.php?accion=miPerfil&status=error");
+            }
+            exit();
+        }
+    }
+
+   
+    public function cambiarPassword() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_usuario = $_SESSION['id_usuario'];
+            $password_actual = $_POST['password_actual'];
+            $password_nueva = $_POST['password_nueva'];
+            $password_confirm = $_POST['password_confirm'];
+
+           
+            if ($password_nueva !== $password_confirm) {
+                header("Location: index.php?accion=miPerfil&status=pwd_mismatch");
+                exit();
+            }
+
+            $usuario_actual = $this->model->verificar($_SESSION['usuario'], $password_actual);
+            if (!$usuario_actual) {
+                header("Location: index.php?accion=miPerfil&status=pwd_incorrect");
+                exit();
+            }
+
+            $nuevo_hash = password_hash($password_nueva, PASSWORD_DEFAULT);
+            if ($this->model->actualizarPassword($id_usuario, $nuevo_hash)) {
+                header("Location: index.php?accion=miPerfil&status=pwd_success");
+            } else {
+                header("Location: index.php?accion=miPerfil&status=error");
+            }
+            exit();
+        }
     }
 }

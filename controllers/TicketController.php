@@ -34,10 +34,12 @@ class TicketController {
             $id_ticket = $_POST['id_ticket'];
             $id_estado = $_POST['id_estado'];
             
-            $this->model->actualizarEstadoTicket($id_ticket, $id_estado);
-
-            
-            header("Location: index.php?accion=misTickets&status=success");
+            $exito = $this->model->actualizarEstadoTicket($id_ticket, $id_estado);
+            if ($exito) {
+                header("Location: index.php?accion=misTickets&status=success");
+            } else {
+                header("Location: index.php?accion=misTickets&status=error");
+            }
             exit();
         }
     }
@@ -59,9 +61,13 @@ class TicketController {
             $id_tecnico = $_POST['id_tecnico'];
             
             
-            $this->model->asignarTecnicoTicket($id_ticket, $id_tecnico);
+            $exito = $this->model->asignarTecnicoTicket($id_ticket, $id_tecnico);
             
-            header("Location: index.php?accion=gestionarTickets&status=assign_success");
+            if ($exito) {
+                header("Location: index.php?accion=gestionarTickets&status=assign_success");
+            } else {
+                header("Location: index.php?accion=gestionarTickets&status=assign_error");
+            }
             exit();
         }
     }

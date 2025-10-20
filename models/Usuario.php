@@ -13,18 +13,18 @@ class Usuario {
         $hash_seguro = password_hash($password_plana, PASSWORD_DEFAULT);
 
      
-        // Verificar si el email ya existe para evitar error de duplicado
+        
         $stmt_check = $this->db->prepare("SELECT id_usuario FROM Usuarios WHERE email = ? LIMIT 1");
         if ($stmt_check) {
             $stmt_check->bind_param("s", $email);
             $stmt_check->execute();
             $res = $stmt_check->get_result();
             if ($res && $res->num_rows > 0) {
-                // Email duplicado
+              
                 return 'duplicate';
             }
         }
-+
+
         $stmt = $this->db->prepare(
             "INSERT INTO Usuarios (nombre_usuario, email, password_hash, id_rol) VALUES (?, ?, ?, ?)"
         );
@@ -32,9 +32,9 @@ class Usuario {
         if (!$stmt) {
             return false;
         }
-+
-        $rol_por_defecto = 3; 
 
+        $rol_por_defecto = 3; 
+        $foto_perfil_por_defecto = 'uploads/perfiles/default-avatar.png';
         $stmt->bind_param("sssi", $nombre, $email, $hash_seguro, $rol_por_defecto);
 
         if ($stmt->execute()) {
@@ -132,4 +132,54 @@ class Usuario {
         }
         return $tecnicos;
     }
+
+    public function obtenerPrimerAdminId() {
+        $id_rol_admin = 1;
+        $sql = "SELECT id_usuario FROM Usuarios WHERE id_rol = ? ORDER BY id_usuario ASC LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_rol_admin);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+        return $resultado ? $resultado['id_usuario'] : null;
+    }
+
+    public function obtenerPorId($id_usuario) {
+        $stmt = $this->db->prepare("SELECT id_usuario, nombre_usuario, email, telefono, foto_perfil FROM Usuarios WHERE id_usuario = ?");
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+   
+    public function actualizarPerfil($id_usuario, $nombre, $email, $telefono, $ruta_foto = null) {
+        
+        if ($ruta_foto) {
+            $sql = "UPDATE Usuarios SET nombre_usuario = ?, email = ?, telefono = ?, foto_perfil = ? WHERE id_usuario = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("ssssi", $nombre, $email, $telefono, $ruta_foto, $id_usuario);
+        } else {
+            $sql = "UPDATE Usuarios SET nombre_usuario = ?, email = ?, telefono = ? WHERE id_usuario = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("sssi", $nombre, $email, $telefono, $id_usuario);
+        }
+        return $stmt->execute();
+    }
+
+  
+    public function actualizarPassword($id_usuario, $nuevo_password_hash) {
+        $stmt = $this->db->prepare("UPDATE Usuarios SET password_hash = ? WHERE id_usuario = ?");
+        $stmt->bind_param("si", $nuevo_password_hash, $id_usuario);
+        return $stmt->execute();
+    }
+
+    public function actualizarFoto($id_usuario, $ruta_foto) {
+        $stmt = $this->db->prepare("UPDATE Usuarios SET foto_perfil = ? WHERE id_usuario = ?");
+        $stmt->bind_param("si", $ruta_foto, $id_usuario);
+        if ($stmt->execute()) {
+            return $ruta_foto; 
+        }
+        return false;
+    }
+
+
 }

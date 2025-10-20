@@ -1,4 +1,3 @@
-<link href="assets/css/footerChat.css" rel="stylesheet">
 </div> <?php if (isset($_SESSION['id_usuario'])): ?>
 
 <div class="chat-launcher" id="chat-launcher">
@@ -37,39 +36,13 @@
 <?php endif; ?>
 
 <?php
-// Mostrar el botón del manual solo en la pantalla inicial
-$showManualButton = false;
-// Condiciones: 1) No hay 'accion' en GET (ruta por defecto), 2) accion == 'inicio'
-if (!isset($_GET['accion']) || (isset($_GET['accion']) && $_GET['accion'] === 'inicio')) {
-    $showManualButton = true;
-}
-if (isset($_SERVER['REQUEST_URI']) && ($_SERVER['REQUEST_URI'] === '/ProyectoMACS/' || $_SERVER['REQUEST_URI'] === '/ProyectoMACS/index.php')) {
-    $showManualButton = true;
-}
+
+$accion = $_GET['accion'] ?? 'inicio';
+$showManualButton = ($accion === 'inicio');
 
 if ($showManualButton): ?>
 
-<a href="/ProyectoMACS/Documentos/Manual_Usuario_ProyectoMACS_Usuario.php" id="manual-flotante" class="manual-flotante" title="Manual de Usuario" target="_blank" rel="noopener">Manual</a>
-
-<style>
-.manual-flotante{
-    position:fixed;
-    left:12px;
-    bottom:12px;
-    background:#0d6efd;
-    color:#fff;
-    padding:8px 12px;
-    border-radius:20px;
-    font-size:13px;
-    text-decoration:none;
-    box-shadow:0 6px 14px rgba(13,110,253,0.25);
-    z-index:9999;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-}
-.manual-flotante:hover{background:#0b5ed7}
-</style>
+<a href="/ProyectoMACS/Documentos/Manual_Usuario_ProyectoMACS_Usuario.html" id="manual-flotante" class="manual-flotante" title="Manual de Usuario" target="_blank" rel="noopener">Manual</a>
 
 <?php endif; ?>
 
@@ -77,6 +50,8 @@ if ($showManualButton): ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const currentUserId = document.body.dataset.userId;
+
     if(document.getElementById('chat-ventana')) {
         const chatLauncher = document.getElementById('chat-launcher');
         const toggleBtn = document.getElementById('toggle-chat-list');
@@ -106,8 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         const listItem = document.createElement('li');
                         listItem.className = 'chat-list-item';
                         listItem.innerHTML = `<div>${conv.otro_participante || 'Técnico no asignado'}</div><small>Ticket #${conv.id_ticket}</small>`;
-                        listItem.onclick = () => {
-                            abrirChat(conv.id_ticket);
+                        listItem.onclick = () => { 
+                            abrirChat(conv.id_ticket, conv.target);
                             chatList.style.display = 'none';
                             toggleBtn.classList.remove('open');
                         };
@@ -126,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chatVentana.classList.remove('chat-ventana-oculta');
             
             let tituloChat = (target === 'tecnico') 
-                ? `Chat Privado (Técnico) - Ticket #${id_ticket}` 
+                ? `Chat Privado - Ticket #${id_ticket}` 
                 : `Chat del Ticket #${id_ticket}`;
             document.getElementById('chat-titulo').textContent = tituloChat;
             
@@ -136,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) throw new Error('Error al cargar datos del chat.');
                 const data = await response.json();
                 
+          
+                chatVentana.dataset.ticketId = id_ticket;
+                chatVentana.dataset.target = target;
                 document.getElementById('chat-id-conversacion').value = data.id_conversacion;
                 document.getElementById('chat-id-receptor').value = data.id_receptor;
                 
@@ -174,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             mensajes.forEach(msg => {
-                const esEmisor = (msg.id_emisor == <?php echo $_SESSION['id_usuario']; ?>);
+                const esEmisor = (msg.id_emisor == currentUserId);
                 const rolClase = msg.nombre_rol.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 
                 const mensajeDiv = document.createElement('div');
@@ -213,12 +191,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: formData
             });
 
-            const titulo = document.getElementById('chat-titulo').textContent;
-            const id_ticket = titulo.match(/\d+/)[0];
-            const target = titulo.includes('Privado') ? 'tecnico' : 'ticket';
+           
+            const id_ticket = chatVentana.dataset.ticketId;
+            const target = chatVentana.dataset.target;
             
             inputMensaje.value = '';
-            abrirChat(id_ticket, target);
+            abrirChat(id_ticket, target); 
         });
     }
 
@@ -229,6 +207,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
+<style>
+/* Estilos para el Modo Oscuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+.dark-mode .card, 
+.dark-mode .modal-content, 
+.dark-mode .table,
+.dark-mode .list-group-item {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-color: #2c2c2c;
+}
+.dark-mode .table-dark th {
+    background-color: #000 !important;
+}
+.dark-mode .form-control, .dark-mode .form-select {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #444;
+}
+.dark-mode .form-control:focus, .dark-mode .form-select:focus {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+.dark-mode .text-muted {
+    color: #888 !important;
+}
+</style>
 </body>
 </html>

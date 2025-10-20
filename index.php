@@ -171,6 +171,26 @@ switch ($accion) {
         $controller = new RolController();
         $controller->eliminarRol();
         break;
+
+    case 'miPerfil':
+        $controller = new UsuarioController();
+        $controller->miPerfil();
+        break;
+
+    case 'actualizarPerfil':
+        $controller = new UsuarioController();
+        $controller->actualizarPerfil();
+        break;
+
+    case 'cambiarPassword':
+        $controller = new UsuarioController();
+        $controller->cambiarPassword();
+        break;
+
+    case 'actualizarFotoPerfil':
+        $controller = new UsuarioController();
+        $controller->actualizarFotoPerfil();
+        break;
     
     case 'inicio':
         include 'views/includes/header.php';
