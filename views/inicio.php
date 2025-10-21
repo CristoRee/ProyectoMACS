@@ -28,7 +28,31 @@
             </div>
         </div>
     </div>
-</div>
+
+    <div class="text-center py-4">
+        <video 
+            src="Documentos/logo_animacion.mp4" 
+            width="300"
+            hight="100"
+            autoplay 
+            muted 
+            loop
+            style="cursor: pointer; border-radius: 10px;"
+            title="Haz clic para pausar o reanudar"
+        ></video>
+    </div>
+
+    <script>
+        const video = document.querySelector('video');
+        video.addEventListener('click', function() {
+            if (this.paused) {
+                this.play();
+            } else {
+                this.pause();
+            }
+        });
+    </script>
+    </div>
 
 <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
     <?php endif; ?>
