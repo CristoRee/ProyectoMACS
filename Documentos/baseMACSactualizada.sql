@@ -29,7 +29,8 @@ CREATE TABLE Usuarios (
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     telefono VARCHAR(50),
-    especializacion VARCHAR(255), 
+    especializacion VARCHAR(255),
+    foto_perfil VARCHAR(255) NULL DEFAULT NULL,
     id_rol INT NOT NULL,
     FOREIGN KEY (id_rol) REFERENCES Roles(id_rol) ON DELETE RESTRICT ON UPDATE CASCADE
 );

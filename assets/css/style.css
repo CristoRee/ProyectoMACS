@@ -61,8 +61,6 @@ header.bg-primary {
     background-color: #fbfcfc;
 }
 
-/* Estilos para la vista Gestionar Estados: texto en blanco */
-/* Estilos para la vista Gestionar Estados: texto en blanco */
 
 
 .custom-btn {
@@ -144,4 +142,127 @@ header.bg-primary {
     100% {
         box-shadow: inset 0px 0px 0px 40px #4CAF50;
     }
+}
+
+
+
+
+
+
+
+
+
+
+.btn-solicitar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-solicitar .icon-wrapper {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    margin-right: 15px;
+}
+
+.btn-solicitar .text {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.btn-solicitar:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.5);
+    transform: translateY(-3px);
+}
+
+.btn-solicitar:hover .icon-wrapper {
+    transform: rotate(20deg);
+}
+
+
+.btn-solicitar:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+}
+
+
+.card-hover {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-mode .card-hover:hover {
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.08) !important;
+}
+
+
+
+
+
+
+.dashboard-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem; 
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: white;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.dashboard-button .dashboard-button-text {
+    margin-top: 1rem;
+}
+
+/* Botón Primario */
+.dashboard-button.primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.dashboard-button.primary:hover {
+    background-color: #fff;
+    color: #0d6efd;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+}
+
+
+.dashboard-button.secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.dashboard-button.secondary:hover {
+    background-color: #fff;
+    color: #6c757d;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(108, 117, 125, 0.3);
+}
+
+.dashboard-button:active {
+    transform: translateY(0);
+    box-shadow: none;
 }

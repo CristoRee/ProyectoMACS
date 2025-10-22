@@ -1,21 +1,113 @@
+<?php
+$rol = $_SESSION['rol'] ?? 0;
+?>
+
 <div class="container py-5">
-    <div class="p-5 mb-4 rounded-3 text-center shadow-sm">
-        <div class="container-fluid py-5">
-            <h1 class="display-4 fw-bold">Bienvenido a BinaryTEC</h1>
-            <p class="fs-4 col-md-10 mx-auto">Somos una empresa dedicada a ofrecer soluciones y reparaciones tecnológicas de confianza. Si tienes un problema, nosotros tenemos la solución. Puede hacer su solicitud ahora mismo para que nuestro equipo lo atienda a la brevedad.</p>
-            
-            <?php
-            if (isset($_SESSION['usuario'])) {
-                $enlace_solicitud = "index.php?accion=crear";
-            } else {
-                $enlace_solicitud = "index.php?accion=login";
-            }
-            ?>
-            <a class="btn btn-primary btn-lg mt-4 custom-btn" href="<?php echo $enlace_solicitud; ?>" role="button">
-                Solicitud de Reparación
+
+    <?php if ($rol == 3 || $rol == 0): ?>
+    <div class="text-center">
+        <h1 class="display-4 fw-bold">¿Tu dispositivo se averió?</h1>
+        <p class="fs-4 col-md-10 mx-auto text-muted">Cuéntanos cuál es el problema y nuestro equipo de expertos se encargará de solucionarlo.</p>
+
+        <div class="row justify-content-center mt-5 gx-4 gy-4">
+            <div class="col-md-5 col-lg-4">
+                <?php
+                    $enlace_solicitud = isset($_SESSION['usuario']) ? "index.php?accion=crear" : "index.php?accion=login";
+                ?>
+                <a href="<?php echo $enlace_solicitud; ?>" class="dashboard-button primary">
+                    <i class="fas fa-tools fa-2x"></i>
+                    <span class="dashboard-button-text">Solicitar Reparación</span>
+                </a>
+            </div>
+
+            <?php if ($rol == 3): ?>
+            <div class="col-md-5 col-lg-4">
+                <a href="index.php?accion=misSolicitudes" class="dashboard-button secondary">
+                    <i class="fas fa-folder-open fa-2x"></i>
+                    <span class="dashboard-button-text">Solicitudes Creadas</span>
+                </a>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+
+    <?php if ($rol == 2): ?>
+    <div class="text-center">
+        <h1 class="display-4 fw-bold">Panel del Técnico</h1>
+        <p class="fs-4 text-muted">Accede a tus trabajos de reparación asignados.</p>
+        <div class="row justify-content-center mt-5 gx-4 gy-4">
+            <div class="col-md-5 col-lg-4">
+                <a href="index.php?accion=misTickets" class="dashboard-button primary">
+                    <i class="fas fa-ticket-alt fa-2x"></i>
+                    <span class="dashboard-button-text">Ver Mis Encargos</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+
+    <?php if ($rol == 1): ?>
+    <div class="text-center">
+        <h1 class="display-4 fw-bold">Panel de Administración</h1>
+        <p class="fs-4 text-muted">Gestiona todos los aspectos del sistema.</p>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-4 text-center">
+        <div class="col">
+            <a href="index.php?accion=gestionarTickets" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-tasks fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Gestionar Tickets</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+             <a href="index.php?accion=listarUsuarios" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-users-cog fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Gestionar Usuarios</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+             <a href="index.php?accion=listarRoles" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-user-tag fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Gestionar Roles</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+             <a href="index.php?accion=gestionarEstados" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Gestionar Estados</h4>
+                    </div>
+                </div>
             </a>
         </div>
     </div>
+    <?php endif; ?>
+
+    <div id="sobre-nosotros" class="row align-items-md-stretch pt-5 mt-5">
+        </div>
+
+    <div class="text-center py-4">
+        </div>
+</div>
+
+
+<?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
+    <?php endif; ?>
 
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
