@@ -141,3 +141,13 @@ CREATE TABLE Mensajes (
     FOREIGN KEY (id_emisor) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE,
     FOREIGN KEY (id_receptor) REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
 );
+
+CREATE TABLE Historial (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NULL,
+    id_ticket INT NULL,
+    accion VARCHAR(255) NOT NULL,
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario) ON DELETE SET NULL,
+    FOREIGN KEY (id_ticket) REFERENCES Tickets(id_ticket) ON DELETE CASCADE
+);

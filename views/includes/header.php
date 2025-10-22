@@ -47,6 +47,7 @@
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i>Gestionar Tickets</a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarEstados"><i class="fas fa-list me-2"></i>Gestionar Estados</a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=listarRoles"><i class="fas fa-user-tag me-2"></i>Gestionar Roles</a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=verHistorial"><i class="fas fa-history me-2"></i>Historial</a></li>
                             <?php endif; ?>
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2):?>
                                 <li><a class="dropdown-item" href="index.php?accion=misTickets"><i class="fas fa-ticket-alt me-2"></i>Mis Tickets</a></li>

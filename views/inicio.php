@@ -54,7 +54,7 @@ $rol = $_SESSION['rol'] ?? 0;
         <h1 class="display-4 fw-bold">Panel de Administración</h1>
         <p class="fs-4 text-muted">Gestiona todos los aspectos del sistema.</p>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 g-4 mt-4 text-center">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 text-center">
         <div class="col">
             <a href="index.php?accion=gestionarTickets" class="text-decoration-none">
                 <div class="card h-100 shadow-sm card-hover">
@@ -91,6 +91,16 @@ $rol = $_SESSION['rol'] ?? 0;
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
                         <h4 class="card-title">Gestionar Estados</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+             <a href="index.php?accion=verHistorial" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-history fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Historial del Sistema</h4>
                     </div>
                 </div>
             </a>

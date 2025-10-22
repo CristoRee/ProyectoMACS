@@ -11,6 +11,7 @@ require_once("controllers/TicketController.php");
 require_once("controllers/ChatController.php");
 require_once("controllers/EstadoController.php");
 require_once("controllers/RolController.php");
+require_once("controllers/HistorialController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -190,6 +191,11 @@ switch ($accion) {
     case 'actualizarFotoPerfil':
         $controller = new UsuarioController();
         $controller->actualizarFotoPerfil();
+        break;
+
+    case 'verHistorial':
+        $controller = new HistorialController();
+        $controller->listar();
         break;
     
     case 'inicio':

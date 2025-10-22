@@ -38,6 +38,9 @@
                             <i class="fas fa-headset"></i>
                         </button>
                         <?php endif; ?>
+                         <a href="index.php?accion=verHistorial&id_ticket=<?php echo $ticket['id_ticket']; ?>" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver historial del ticket">
+                            <i class="fas fa-history"></i>
+                         </a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

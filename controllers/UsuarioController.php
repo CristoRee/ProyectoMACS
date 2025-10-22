@@ -1,5 +1,6 @@
 <?php
 require_once 'models/Usuario.php';
+require_once 'models/HistorialLogger.php';
 
 class UsuarioController {
     private $model;
@@ -8,15 +9,12 @@ class UsuarioController {
         $this->model = new Usuario();
     }
     
-   
-
     public function mostrarRegistro() {
         include 'views/includes/header.php';
         include 'views/usuario/crear.php'; 
         include 'views/includes/footer.php';
     }
     
- 
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nombre = $_POST['nombre_usuario'];
@@ -24,19 +22,18 @@ class UsuarioController {
             $password = $_POST['password'];
             $password_confirm = $_POST['password_confirm']; 
 
-            
             if ($password !== $password_confirm) {
-                
                 header("Location: index.php?accion=mostrarRegistro&error=password");
                 exit();
             }
 
-			$exito = $this->model->crear($nombre, $email, $password);
+            $exito = $this->model->crear($nombre, $email, $password);
             if ($exito === true) {
+               
+                HistorialLogger::registrar("Se registró un nuevo usuario: '{$nombre}'.");
                 header("Location: index.php?accion=login&registro=exitoso");
                 exit();
             } elseif ($exito === 'duplicate') {
-               
                 header("Location: index.php?accion=mostrarRegistro&error=email_duplicate");
                 exit();
             } else {
@@ -45,7 +42,6 @@ class UsuarioController {
             }
         }
     }
-
     
     public function login() {
         include 'views/includes/header.php';
@@ -69,6 +65,9 @@ class UsuarioController {
             $id_rol = $_POST['id_rol'];
             $exito = $this->model->actualizar($id, $nombre, $email, $telefono, $id_rol);
             if ($exito) {
+              
+                $admin_nombre = $_SESSION['usuario'];
+                HistorialLogger::registrar("El admin '{$admin_nombre}' actualizó el perfil del usuario #{$id}.");
                 header("Location: index.php?accion=listarUsuarios&status=edit_success");
             } else {
                 header("Location: index.php?accion=listarUsuarios&status=edit_error");
@@ -82,6 +81,9 @@ class UsuarioController {
             $id = $_POST['id_usuario'];
             $exito = $this->model->eliminar($id);
             if ($exito) {
+           
+                $admin_nombre = $_SESSION['usuario'];
+                HistorialLogger::registrar("El admin '{$admin_nombre}' eliminó al usuario #{$id}.");
                 header("Location: index.php?accion=listarUsuarios&status=delete_success");
             } else {
                 header("Location: index.php?accion=listarUsuarios&status=delete_error");
@@ -99,7 +101,10 @@ class UsuarioController {
                 $_SESSION['id_usuario'] = $usuario_validado['id_usuario'];
                 $_SESSION['usuario'] = $usuario_validado['nombre_usuario'];
                 $_SESSION['rol'] = $usuario_validado['id_rol'];
-                $_SESSION['foto_perfil'] = $usuario['foto_perfil'];
+                $_SESSION['foto_perfil'] = $usuario_validado['foto_perfil'];
+
+                HistorialLogger::registrar("El usuario '{$usuario_validado['nombre_usuario']}' inició sesión.", $usuario_validado['id_usuario']);
+
                 header("Location: index.php?accion=inicio");
                 exit();
             } else {
@@ -109,9 +114,12 @@ class UsuarioController {
         }
     }
 
-
-
     public function logout() {
+      
+        if (isset($_SESSION['usuario'])) {
+            $nombre_usuario = $_SESSION['usuario'];
+            HistorialLogger::registrar("El usuario '{$nombre_usuario}' cerró sesión.", $_SESSION['id_usuario']);
+        }
         session_destroy();
         header("Location: index.php?accion=login");
         exit();
@@ -124,7 +132,7 @@ class UsuarioController {
         include 'views/includes/footer.php';
     }
 
-   public function actualizarFotoPerfil() {
+    public function actualizarFotoPerfil() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_usuario = $_SESSION['id_usuario'];
             $ruta_foto = null;
@@ -132,7 +140,6 @@ class UsuarioController {
             if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = 'uploads/perfiles/';
                 if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-                
                 
                 $extension = pathinfo($_FILES['foto_perfil']['name'], PATHINFO_EXTENSION);
                 $fileName = 'user_' . $id_usuario . '_' . uniqid() . '.' . $extension; 
@@ -145,14 +152,15 @@ class UsuarioController {
                     exit();
                 }
             } else {
-                
                 header("Location: index.php?accion=miPerfil&status=no_file");
                 exit();
             }
-
             
             if ($ruta_foto_actualizada = $this->model->actualizarFoto($id_usuario, $ruta_foto)) {
                 $_SESSION['foto_perfil'] = $ruta_foto_actualizada; 
+
+                HistorialLogger::registrar("El usuario '{$_SESSION['usuario']}' actualizó su foto de perfil.");
+
                 header("Location: index.php?accion=miPerfil&status=photo_success");
             } else {
                 header("Location: index.php?accion=miPerfil&status=error");
@@ -160,18 +168,20 @@ class UsuarioController {
             exit();
         }
     }
-
-  
+ 
     public function actualizarPerfil() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_usuario = $_SESSION['id_usuario'];
             $nombre = $_POST['nombre_usuario'];
             $email = $_POST['email'];
             $telefono = $_POST['telefono'];
-
             
             if ($this->model->actualizarPerfil($id_usuario, $nombre, $email, $telefono, null)) {
                 $_SESSION['usuario'] = $nombre;
+
+               
+                HistorialLogger::registrar("El usuario '{$nombre}' actualizó sus datos de perfil.");
+
                 header("Location: index.php?accion=miPerfil&status=profile_success");
             } else {
                 header("Location: index.php?accion=miPerfil&status=error");
@@ -179,8 +189,7 @@ class UsuarioController {
             exit();
         }
     }
-
-   
+    
     public function cambiarPassword() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_usuario = $_SESSION['id_usuario'];
@@ -188,7 +197,6 @@ class UsuarioController {
             $password_nueva = $_POST['password_nueva'];
             $password_confirm = $_POST['password_confirm'];
 
-           
             if ($password_nueva !== $password_confirm) {
                 header("Location: index.php?accion=miPerfil&status=pwd_mismatch");
                 exit();
@@ -202,6 +210,9 @@ class UsuarioController {
 
             $nuevo_hash = password_hash($password_nueva, PASSWORD_DEFAULT);
             if ($this->model->actualizarPassword($id_usuario, $nuevo_hash)) {
+                
+                HistorialLogger::registrar("El usuario '{$_SESSION['usuario']}' cambió su contraseña.");
+
                 header("Location: index.php?accion=miPerfil&status=pwd_success");
             } else {
                 header("Location: index.php?accion=miPerfil&status=error");
@@ -210,3 +221,4 @@ class UsuarioController {
         }
     }
 }
+?>

@@ -86,5 +86,20 @@ class Ticket {
         $stmt->bind_param("ii", $id_tecnico, $id_ticket);
         return $stmt->execute();
     }
+
+    public function obtenerInfoSimpleTicket($id_ticket) {
+        $stmt = $this->db->prepare("SELECT t.*, e.nombre_estado FROM Tickets t JOIN Estados e ON t.id_estado = e.id_estado WHERE t.id_ticket = ?");
+        $stmt->bind_param("i", $id_ticket);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    public function obtenerNombreEstadoPorId($id_estado) {
+        $stmt = $this->db->prepare("SELECT nombre_estado FROM Estados WHERE id_estado = ?");
+        $stmt->bind_param("i", $id_estado);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+        return $resultado['nombre_estado'] ?? 'Desconocido';
+    }
 }
 ?>
