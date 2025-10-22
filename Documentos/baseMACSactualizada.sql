@@ -10,7 +10,8 @@ CREATE TABLE Roles (
 
 CREATE TABLE Estados (
     id_estado INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_estado VARCHAR(100) NOT NULL UNIQUE
+    nombre_estado VARCHAR(100) NOT NULL UNIQUE,
+    notificar_cliente BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 

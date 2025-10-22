@@ -13,6 +13,9 @@ CREATE TABLE Estados (
     nombre_estado VARCHAR(100) NOT NULL UNIQUE
 );
 
+ALTER TABLE `Estados`
+ADD COLUMN `notificar_cliente` BOOLEAN NOT NULL DEFAULT FALSE AFTER `nombre_estado`;
+
 
 CREATE TABLE Repuestos (
     id_repuesto INT AUTO_INCREMENT PRIMARY KEY,

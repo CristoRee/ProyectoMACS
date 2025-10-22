@@ -101,5 +101,18 @@ class Ticket {
         $resultado = $stmt->get_result()->fetch_assoc();
         return $resultado['nombre_estado'] ?? 'Desconocido';
     }
+
+    public function obtenerInfoParaEmail($id_ticket) {
+        $sql = "SELECT t.id_ticket, u.nombre_usuario, u.email 
+                FROM Tickets t 
+                JOIN Usuarios u ON t.id_cliente = u.id_usuario 
+                WHERE t.id_ticket = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("i", $id_ticket);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_assoc();
+    }
+
+    
 }
 ?>

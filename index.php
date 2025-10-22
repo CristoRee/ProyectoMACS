@@ -12,6 +12,7 @@ require_once("controllers/ChatController.php");
 require_once("controllers/EstadoController.php");
 require_once("controllers/RolController.php");
 require_once("controllers/HistorialController.php");
+require_once("controllers/AjustesController.php");
 
 
 $accion = $_GET['accion'] ?? 'index';
@@ -196,6 +197,16 @@ switch ($accion) {
     case 'verHistorial':
         $controller = new HistorialController();
         $controller->listar();
+        break;
+
+    case 'ajustes':
+        $controller = new AjustesController();
+        $controller->mostrar();
+        break;
+        
+    case 'guardarAjustesNotificaciones':
+        $controller = new AjustesController();
+        $controller->guardarNotificaciones();
         break;
     
     case 'inicio':
