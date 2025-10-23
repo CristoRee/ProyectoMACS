@@ -1,4 +1,5 @@
 <?php
+// Determinamos el rol del usuario. Si no está logueado, el rol es 0 (visitante).
 $rol = $_SESSION['rol'] ?? 0;
 ?>
 
@@ -105,23 +106,22 @@ $rol = $_SESSION['rol'] ?? 0;
                 </div>
             </a>
         </div>
+        <div class="col">
+             <a href="index.php?accion=ajustes" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-cog fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title">Ajustes</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div>
     <?php endif; ?>
 
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-5 mt-5">
-        </div>
-
-    <div class="text-center py-4">
-        </div>
-</div>
-
-
-<?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-    <?php endif; ?>
-
-    <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
-            <div class="h-100 p-5 border rounded-3">
+            <div class="card card-body h-100 p-5 rounded-3">
                 <h2 class="pb-2 border-bottom mb-4">Sobre Nosotros</h2>
                 <p>
                     <strong>BinaryTEC</strong> es una iniciativa que nace de <strong>BinaryMACS</strong>, un proyecto de fin de año desarrollado por estudiantes de informática en <strong>UTU</strong>. 
@@ -134,8 +134,8 @@ $rol = $_SESSION['rol'] ?? 0;
     <div class="text-center py-4">
         <video 
             src="Documentos/logo_animacion.mp4" 
-            width="300"
-            hight="100"
+            width="400"
+            height="350"
             autoplay 
             muted 
             loop
@@ -145,16 +145,19 @@ $rol = $_SESSION['rol'] ?? 0;
     </div>
 
     <script>
-        const video = document.querySelector('video');
-        video.addEventListener('click', function() {
-            if (this.paused) {
-                this.play();
-            } else {
-                this.pause();
-            }
-        });
+        // Este script solo debe estar una vez
+        if (document.querySelector('video')) {
+            const video = document.querySelector('video');
+            video.addEventListener('click', function() {
+                if (this.paused) {
+                    this.play();
+                } else {
+                    this.pause();
+                }
+            });
+        }
     </script>
-    </div>
+</div>
 
 <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
     <?php endif; ?>
