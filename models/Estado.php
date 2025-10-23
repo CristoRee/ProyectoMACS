@@ -39,9 +39,9 @@ class Estado {
         return true;
     }
     
-    public function update($id_estado, $nombre_estado) {
-        $stmt = $this->db->prepare("UPDATE Estados SET nombre_estado = ? WHERE id_estado = ?");
-        $stmt->bind_param("si", $nombre_estado, $id_estado);
+    public function update($id_estado, $nombre_estado, $color) {
+        $stmt = $this->db->prepare("UPDATE Estados SET nombre_estado = ?, color = ? WHERE id_estado = ?");
+        $stmt->bind_param("ssi", $nombre_estado, $color, $id_estado);
         return $stmt->execute();
     }
     

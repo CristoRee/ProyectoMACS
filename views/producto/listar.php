@@ -1,11 +1,23 @@
 <?php 
 $titulo = "Mis Solicitudes";
+$vista_actual = $_GET['vista'] ?? 'activos';
 ?>
 
 <div class="container mt-4 mb-5">
     <h2 class="pb-2 border-bottom">Mis Solicitudes de Reparación</h2>
     <p class="text-muted">Aquí puedes ver el estado de todos los dispositivos que has ingresado.</p>
     
+    <div class="d-flex justify-content-end mb-3">
+        <div class="btn-group">
+            <a href="index.php?accion=misSolicitudes&vista=activos" class="btn <?php echo $vista_actual === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                Solicitudes Activas
+            </a>
+            <a href="index.php?accion=misSolicitudes&vista=finalizados" class="btn <?php echo $vista_actual === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                Solicitudes Finalizadas
+            </a>
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
@@ -24,29 +36,38 @@ $titulo = "Mis Solicitudes";
                             <td><?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca'] . ' ' . $solicitud['modelo']); ?></td>
                             <td><?php echo htmlspecialchars($solicitud['descripcion_problema']); ?></td>
                             <td><?php echo date('d/m/Y H:i', strtotime($solicitud['fecha_ingreso'])); ?></td>
-                            <td><span class="badge rounded-pill bg-primary"><?php echo htmlspecialchars($solicitud['nombre_estado']); ?></span></td>
                             <td>
-                                <?php if (!empty($solicitud['id_tecnico_asignado'])): ?>
-                                    <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
-                                        <i class="fas fa-comments"></i>
+                                <span class="badge" style="background-color: <?php echo htmlspecialchars($solicitud['estado_color']); ?> !important; font-size: 0.9rem;">
+                                    <?php echo htmlspecialchars($solicitud['nombre_estado']); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?php if ($vista_actual === 'activos'): ?>
+                                    <?php if (!empty($solicitud['id_tecnico_asignado'])): ?>
+                                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
+                                            <i class="fas fa-comments"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button type="button" class="btn btn-sm btn-secondary disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Aún no tienes un técnico asignado">
+                                            <i class="fas fa-comments"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                    
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSolicitudModal"
+                                            data-id="<?php echo $solicitud['id_ticket']; ?>"
+                                            data-dispositivo="<?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca']); ?>"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar solicitud">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 <?php else: ?>
-                                    <button type="button" class="btn btn-sm btn-secondary disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Aún no tienes un técnico asignado">
-                                        <i class="fas fa-comments"></i>
-                                    </button>
+                                    <span class="text-muted">No hay acciones.</span>
                                 <?php endif; ?>
-                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSolicitudModal"
-                                        data-id="<?php echo $solicitud['id_ticket']; ?>"
-                                        data-dispositivo="<?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca']); ?>" title="Eliminar solicitud">
-                                    <i class="fas fa-trash"></i>
-                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" class="text-center py-4">No tienes ninguna solicitud de reparación registrada.</td>
+                        <td colspan="5" class="text-center py-4">No tienes ninguna solicitud en esta vista.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -85,16 +106,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const eliminarSolicitudModal = document.getElementById('eliminarSolicitudModal');
-    eliminarSolicitudModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const ticketId = button.getAttribute('data-id');
-        const dispositivo = button.getAttribute('data-dispositivo');
+    if (eliminarSolicitudModal) {
+        eliminarSolicitudModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const ticketId = button.getAttribute('data-id');
+            const dispositivo = button.getAttribute('data-dispositivo');
 
-        const modalBodyDispositivo = eliminarSolicitudModal.querySelector('#dispositivo-a-eliminar');
-        const hiddenInputId = eliminarSolicitudModal.querySelector('#id-ticket-a-eliminar');
+            const modalBodyDispositivo = eliminarSolicitudModal.querySelector('#dispositivo-a-eliminar');
+            const hiddenInputId = eliminarSolicitudModal.querySelector('#id-ticket-a-eliminar');
 
-        modalBodyDispositivo.textContent = dispositivo;
-        hiddenInputId.value = ticketId;
-    });
+            modalBodyDispositivo.textContent = dispositivo;
+            hiddenInputId.value = ticketId;
+        });
+    }
 });
 </script>

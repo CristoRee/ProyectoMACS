@@ -77,7 +77,10 @@ class ProductoController {
         }
         
         $idCliente = $_SESSION['id_usuario'];
-        $solicitudes = $this->model->listarPorCliente($idCliente);
+        
+        $vista = $_GET['vista'] ?? 'activos';
+
+        $solicitudes = $this->model->listarPorCliente($idCliente, $vista);
         
         include 'views/includes/header.php';
         include 'views/producto/listar.php';

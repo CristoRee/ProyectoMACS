@@ -16,6 +16,9 @@ CREATE TABLE Estados (
 ALTER TABLE `Estados`
 ADD COLUMN `notificar_cliente` BOOLEAN NOT NULL DEFAULT FALSE AFTER `nombre_estado`;
 
+ALTER TABLE `Estados` 
+ADD COLUMN `color` VARCHAR(20) NOT NULL DEFAULT '#6c757d' AFTER `nombre_estado`;
+
 
 CREATE TABLE Repuestos (
     id_repuesto INT AUTO_INCREMENT PRIMARY KEY,

@@ -15,7 +15,7 @@ require_once("controllers/HistorialController.php");
 require_once("controllers/AjustesController.php");
 
 
-$accion = $_GET['accion'] ?? 'index';
+$accion = $_REQUEST['accion'] ?? 'index';
 
 
 $acciones_publicas = ['login', 'autenticar', 'mostrarRegistro', 'registrar', 'inicio'];
@@ -132,8 +132,9 @@ switch ($accion) {
      
      case 'actualizarEstado':
         $controller = new EstadoController();
-        $controller->actualizarEstado();
-        break;    
+        $controller->guardarCambiosEstado();
+        break;  
+          
    case 'crearEstado':
         $controller = new EstadoController();
         $controller->crearEstadoForm();

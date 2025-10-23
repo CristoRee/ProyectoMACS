@@ -2,6 +2,20 @@
     <h2 class="pb-2 border-bottom mb-4">Gestionar Todos los Tickets</h2>
     <p>Asigna técnicos a los tickets de los clientes.</p>
 
+    <?php
+    $vista_actual = $_GET['vista'] ?? 'activos'; 
+?>
+<div class="d-flex justify-content-end mb-3">
+    <div class="btn-group">
+        <a href="?accion=<?php echo $_GET['accion']; ?>&vista=activos" class="btn <?php echo $vista_actual === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+            Tickets Activos
+        </a>
+        <a href="?accion=<?php echo $_GET['accion']; ?>&vista=finalizados" class="btn <?php echo $vista_actual === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+            Tickets Finalizados
+        </a>
+    </div>
+</div>
+
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
@@ -18,7 +32,7 @@
                 <tr>
                     <td><?php echo htmlspecialchars($ticket['nombre_cliente']); ?></td>
                     <td><?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca']); ?></td>
-                    <td><span class="badge bg-info"><?php echo htmlspecialchars($ticket['nombre_estado']); ?></span></td>
+                    <td><span class="badge" style="background-color: <?php echo htmlspecialchars($ticket['estado_color']); ?> !important;"><?php echo htmlspecialchars($ticket['nombre_estado']); ?></span></td>
                     <td>
                         <?php if ($ticket['nombre_tecnico']): ?>
                             <span class="badge bg-success"><?php echo htmlspecialchars($ticket['nombre_tecnico']); ?></span>
