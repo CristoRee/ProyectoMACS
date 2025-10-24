@@ -1,21 +1,21 @@
 </div> <?php if (isset($_SESSION['id_usuario'])): ?>
 
 <div class="chat-launcher" id="chat-launcher">
-    <span id="launcher-text">Chats Activos</span>
+    <span id="launcher-text"><?php echo __('active_chats'); ?></span>
     <button id="toggle-chat-list"><i class="fas fa-chevron-up"></i></button>
 </div>
 
 <div class="chat-list" id="chat-list">
-    <div class="chat-list-header">Mis Conversaciones</div>
+    <div class="chat-list-header"><?php echo __('my_conversations'); ?></div>
     <ul class="chat-list-body" id="chat-list-body">
     </ul>
 </div>
 
 <div id="chat-ventana" class="chat-ventana-oculta">
     <div class="chat-header">
-        <span id="chat-titulo">Chat del Ticket #</span>
+        <span id="chat-titulo"><?php echo __('chat_ticket'); ?></span>
         <div>
-            <button id="info-chat" type="button" data-bs-toggle="popover" data-bs-placement="left" title="Información del Ticket">
+            <button id="info-chat" type="button" data-bs-toggle="popover" data-bs-placement="left" title="<?php echo __('ticket_info'); ?>">
                 <i class="fas fa-info-circle"></i>
             </button>
             <button id="cerrar-chat" type="button">&times;</button>
@@ -28,7 +28,7 @@
             <input type="hidden" name="target" id="chat-target">
             <input type="hidden" name="id_conversacion" id="chat-id-conversacion">
             <input type="hidden" name="id_receptor" id="chat-id-receptor">
-            <input type="text" name="contenido" id="chat-input-mensaje" placeholder="Escribe un mensaje..." required>
+            <input type="text" name="contenido" id="chat-input-mensaje" placeholder="<?php echo __('type_message'); ?>" required>
             <button type="submit"><i class="fas fa-paper-plane"></i></button>
         </form>
     </div>
@@ -142,13 +142,7 @@
 
 <?php endif; ?>
 
-<?php
-$accion = $_GET['accion'] ?? 'inicio';
-$showManualButton = ($accion === 'inicio');
 
-if ($showManualButton): ?>
-<a href="/ProyectoMACS/Documentos/Manual_Usuario_ProyectoMACS_Usuario.html" id="manual-flotante" class="manual-flotante" title="Manual de Usuario" target="_blank" rel="noopener">Manual</a>
-<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -190,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         let tipoTarget = conv.tipo_chat.toLowerCase() === 'privado' ? 'privado' : 'ticket';
 
                         if(tipoTarget === 'privado') {
-                           nombreChat += ' <span class="badge bg-info text-dark">Privado</span>';
+                           nombreChat += ' <span class="badge bg-info text-dark"><?php echo __('private_chat'); ?></span>';
                         }
 
                         listItem.innerHTML = `<div>${nombreChat}</div><small>Ticket #${conv.id_ticket}</small>`;
@@ -203,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         listBody.appendChild(listItem);
                     });
                 } else {
-                    listBody.innerHTML = '<li class="chat-list-item text-muted">No tienes conversaciones activas.</li>';
+                    listBody.innerHTML = '<li class="chat-list-item text-muted"><?php echo __('no_conversations'); ?></li>';
                 }
             }
         });
@@ -213,11 +207,11 @@ document.addEventListener('DOMContentLoaded', function() {
             chatVentana.classList.remove('chat-ventana-oculta');
             
             let tituloChat = (target === 'privado') 
-                ? `Chat Privado (Técnico) - Ticket #${id_ticket}` 
-                : `Chat del Ticket #${id_ticket}`;
+                ? `<?php echo __('private_chat'); ?> (<?php echo __('technician'); ?>) - Ticket #${id_ticket}` 
+                : `<?php echo __('chat_ticket'); ?>${id_ticket}`;
             document.getElementById('chat-titulo').textContent = tituloChat;
             
-            chatCuerpo.innerHTML = '<p class="text-center">Cargando...</p>';
+            chatCuerpo.innerHTML = '<p class="text-center"><?php echo __('loading'); ?></p>';
             try {
                 const response = await fetch(`index.php?accion=cargarChat&id_conversacion=${id_conversacion}&id_ticket=${id_ticket}&target=${target}`);
                 if (!response.ok) throw new Error('Error al cargar datos del chat.');
@@ -229,8 +223,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('chat-target').value = target;
                 
                 const infoBtn = document.getElementById('info-chat');
-                const tecnicoAsignado = data.info.nombre_tecnico || 'Sin asignar';
-                const popoverContent = `<b>Cliente:</b> ${data.info.nombre_cliente}<br><b>Dispositivo:</b> ${data.info.tipo_producto} ${data.info.marca}<br><b>Técnico:</b> ${tecnicoAsignado}`;
+                const tecnicoAsignado = data.info.nombre_tecnico || '<?php echo __('unassigned'); ?>';
+                const popoverContent = `<b>Cliente:</b> ${data.info.nombre_cliente}<br><b>Dispositivo:</b> ${data.info.tipo_producto} ${data.info.marca}<br><b><?php echo __('technician'); ?>:</b> ${tecnicoAsignado}`;
                 
                 if(infoPopover) infoPopover.dispose();
                 infoBtn.setAttribute('data-bs-content', popoverContent);
@@ -239,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const esCliente = <?php echo ($_SESSION['rol'] ?? 0) == 3 ? 'true' : 'false'; ?>;
                 
                 if (esCliente && !data.tecnico_asignado) {
-                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3">Un técnico será asignado a tu solicitud en breve...</p>';
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3"><?php echo __('technician_assigned_soon'); ?></p>';
                     formEnviarMensaje.style.display = 'none';
                 } else {
                     formEnviarMensaje.style.display = 'flex';
@@ -259,10 +253,10 @@ document.addEventListener('DOMContentLoaded', function() {
                  const esCliente = <?php echo ($_SESSION['rol'] ?? 0) == 3 ? 'true' : 'false'; ?>;
                  const hayTecnico = document.getElementById('chat-id-receptor').value && document.getElementById('chat-id-receptor').value != <?php echo $_SESSION['id_usuario']; ?>;
                  if (esCliente && !hayTecnico) {
-                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3">Un técnico será asignado a tu solicitud en breve...</p>';
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted p-3"><?php echo __('technician_assigned_soon'); ?></p>';
                     formEnviarMensaje.style.display = 'none';
                  } else {
-                    chatCuerpo.innerHTML = '<p class="text-center text-muted">Aún no hay mensajes. ¡Sé el primero en escribir!</p>';
+                    chatCuerpo.innerHTML = '<p class="text-center text-muted"><?php echo __('no_messages_yet'); ?></p>';
                  }
                 return;
             }
@@ -276,8 +270,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 let contenidoHTML = '';
                 if (msg.id_emisor !== ultimoEmisorId && !esEmisor) {
                     let badgeHTML = '';
-                    if (rolClase === 'administrador') badgeHTML = '<span class="role-badge admin">Admin</span>';
-                    if (rolClase === 'tecnico') badgeHTML = '<span class="role-badge tecnico">Técnico</span>';
+                    if (rolClase === 'administrador') badgeHTML = '<span class="role-badge admin"><?php echo __('admin'); ?></span>';
+                    if (rolClase === 'tecnico') badgeHTML = '<span class="role-badge tecnico"><?php echo __('technician'); ?></span>';
                     contenidoHTML += `<div class="mensaje-info"><span class="mensaje-emisor-nombre">${msg.emisor}</span>${badgeHTML}</div>`;
                 }
                 contenidoHTML += `<div class="mensaje-contenido ${rolClase}">${msg.contenido}</div>`;
@@ -390,6 +384,52 @@ body.dark-mode {
     border-color: #444 !important;
 }
 </style>
+
+<!-- Botón de Manual Flotante -->
+<?php
+$accion = $_GET['accion'] ?? 'inicio';
+if ($accion === 'inicio' || $accion === 'login'): ?>
+<div class="floating-manual-btn">
+    <a href="/ProyectoMACS/Documentos/manual.php" class="btn btn-primary btn-sm shadow-lg" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="right" title="<?php echo __('user_manual') . ' (' . strtoupper(Language::getCurrentLanguage()) . ')'; ?>">
+        <i class="fas fa-book"></i>
+    </a>
+</div>
+
+<style>
+.floating-manual-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1050;
+}
+
+.floating-manual-btn .btn {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+.floating-manual-btn .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4) !important;
+}
+</style>
+
+<script>
+// Inicializar tooltip del botón flotante del manual
+document.addEventListener('DOMContentLoaded', function () {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+<?php endif; ?>
 
 </body>
 </html>

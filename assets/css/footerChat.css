@@ -94,20 +94,3 @@
 .mensaje.receptor { align-items: flex-start; }
 
 
-.manual-flotante {
-    position: fixed;
-    left: 12px;
-    bottom: 12px;
-    background: #0d6efd;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    text-decoration: none;
-    box-shadow: 0 6px 14px rgba(13, 110, 253, 0.25);
-    z-index: 999; 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-.manual-flotante:hover { background: #0b5ed7; color: #fff; }

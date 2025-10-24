@@ -4,6 +4,8 @@
 <?php
 session_start();
 
+require_once("config/Language.php");
+Language::init();
 
 require_once("controllers/ProductoController.php");
 require_once("controllers/UsuarioController.php");
@@ -210,10 +212,22 @@ switch ($accion) {
         $controller->guardarNotificaciones();
         break;
     
+
+    
     case 'inicio':
         include 'views/includes/header.php';
         include 'views/inicio.php';
         include 'views/includes/footer.php';
+        break;
+        
+    case 'cambiarIdioma':
+        if (isset($_POST['language'])) {
+            Language::setLanguage($_POST['language']);
+        }
+        // Redireccionar a la página anterior o a perfil
+        $redirect = $_POST['redirect'] ?? 'index.php?accion=inicio';
+        header("Location: " . $redirect);
+        exit;
         break;
 
     case 'index':

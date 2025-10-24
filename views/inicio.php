@@ -6,8 +6,8 @@ $rol = $_SESSION['rol'] ?? 0;
 
     <?php if ($rol == 3 || $rol == 0): ?>
     <div class="text-center">
-        <h1 class="display-4 fw-bold">¿Tu dispositivo se averió?</h1>
-        <p class="fs-4 col-md-10 mx-auto text-muted">Cuéntanos cuál es el problema y nuestro equipo de expertos se encargará de solucionarlo.</p>
+        <h1 class="display-4 fw-bold"><?php echo __('device_broken'); ?></h1>
+        <p class="fs-4 col-md-10 mx-auto text-muted"><?php echo __('device_broken_desc'); ?></p>
 
         <div class="row justify-content-center mt-5 gx-4 gy-4">
             <div class="col-md-5 col-lg-4">
@@ -16,7 +16,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 ?>
                 <a href="<?php echo $enlace_solicitud; ?>" class="dashboard-button primary">
                     <i class="fas fa-tools fa-2x"></i>
-                    <span class="dashboard-button-text">Solicitar Reparación</span>
+                    <span class="dashboard-button-text"><?php echo __('request_repair'); ?></span>
                 </a>
             </div>
 
@@ -24,7 +24,7 @@ $rol = $_SESSION['rol'] ?? 0;
             <div class="col-md-5 col-lg-4">
                 <a href="index.php?accion=misSolicitudes" class="dashboard-button secondary">
                     <i class="fas fa-folder-open fa-2x"></i>
-                    <span class="dashboard-button-text">Solicitudes Creadas</span>
+                    <span class="dashboard-button-text"><?php echo __('created_requests'); ?></span>
                 </a>
             </div>
             <?php endif; ?>
@@ -35,13 +35,13 @@ $rol = $_SESSION['rol'] ?? 0;
 
     <?php if ($rol == 2): ?>
     <div class="text-center">
-        <h1 class="display-4 fw-bold">Panel del Técnico</h1>
-        <p class="fs-4 text-muted">Accede a tus trabajos de reparación asignados.</p>
+        <h1 class="display-4 fw-bold"><?php echo __('technician_panel'); ?></h1>
+        <p class="fs-4 text-muted"><?php echo __('technician_panel_desc'); ?></p>
         <div class="row justify-content-center mt-5 gx-4 gy-4">
             <div class="col-md-5 col-lg-4">
                 <a href="index.php?accion=misTickets" class="dashboard-button primary">
                     <i class="fas fa-ticket-alt fa-2x"></i>
-                    <span class="dashboard-button-text">Ver Mis Encargos</span>
+                    <span class="dashboard-button-text"><?php echo __('view_my_assignments'); ?></span>
                 </a>
             </div>
         </div>
@@ -51,8 +51,8 @@ $rol = $_SESSION['rol'] ?? 0;
 
     <?php if ($rol == 1): ?>
     <div class="text-center">
-        <h1 class="display-4 fw-bold">Panel de Administración</h1>
-        <p class="fs-4 text-muted">Gestiona todos los aspectos del sistema.</p>
+        <h1 class="display-4 fw-bold"><?php echo __('admin_panel'); ?></h1>
+        <p class="fs-4 text-muted"><?php echo __('admin_panel_desc'); ?></p>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4 text-center">
         <div class="col">
@@ -60,7 +60,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-tasks fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Gestionar Tickets</h4>
+                        <h4 class="card-title"><?php echo __('manage_tickets'); ?></h4>
                     </div>
                 </div>
             </a>
@@ -70,7 +70,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-users-cog fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Gestionar Usuarios</h4>
+                        <h4 class="card-title"><?php echo __('manage_users'); ?></h4>
                     </div>
                 </div>
             </a>
@@ -80,7 +80,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-user-tag fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Gestionar Roles</h4>
+                        <h4 class="card-title"><?php echo __('manage_roles'); ?></h4>
                     </div>
                 </div>
             </a>
@@ -90,7 +90,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Gestionar Estados</h4>
+                        <h4 class="card-title"><?php echo __('manage_states'); ?></h4>
                     </div>
                 </div>
             </a>
@@ -100,7 +100,7 @@ $rol = $_SESSION['rol'] ?? 0;
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">
                         <i class="fas fa-history fa-3x text-primary mb-3"></i>
-                        <h4 class="card-title">Historial del Sistema</h4>
+                        <h4 class="card-title"><?php echo __('history'); ?></h4>
                     </div>
                 </div>
             </a>
@@ -122,10 +122,9 @@ $rol = $_SESSION['rol'] ?? 0;
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-4">
         <div class="col-md-12">
             <div class="h-100 p-5 border rounded-3">
-                <h2 class="pb-2 border-bottom mb-4">Sobre Nosotros</h2>
+                <h2 class="pb-2 border-bottom mb-4"><?php echo __('about_us_title'); ?></h2>
                 <p>
-                    <strong>BinaryTEC</strong> es una iniciativa que nace de <strong>BinaryMACS</strong>, un proyecto de fin de año desarrollado por estudiantes de informática en <strong>UTU</strong>. 
-                    Nuestra misión es transformar y mejorar la eficiencia de los servicios técnicos en Rivera, implementando un sistema de organización claro y profesional que beneficie tanto a los técnicos como a los clientes. Buscamos aportar orden y calidad al mundo de las reparaciones tecnológicas.
+                    <?php echo __('about_us_content'); ?>
                 </p>
             </div>
         </div>

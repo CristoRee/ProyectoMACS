@@ -1,15 +1,15 @@
 <div class="container my-5">
-    <h2 class="pb-2 border-bottom mb-4">Ajustes de Notificaciones por Email</h2>
-    <p class="text-muted">Selecciona los cambios de estado que deben notificar automáticamente al cliente por correo electrónico.</p>
+    <h2 class="pb-2 border-bottom mb-4">Configuración de Notificaciones</h2>
+    <p class="text-muted">Configura qué cambios de estado de ticket generan notificaciones por email a los clientes</p>
     
     <?php if(isset($_GET['status']) && $_GET['status'] === 'success'): ?>
-        <div class="alert alert-success">Ajustes guardados con éxito.</div>
+        <div class="alert alert-success">Configuración guardada correctamente</div>
     <?php endif; ?>
 
     <form action="index.php?accion=guardarAjustesNotificaciones" method="POST">
         <div class="card shadow-sm">
             <div class="card-header">
-                <strong>Estados de los Tickets</strong>
+                <strong>Estados de Ticket</strong>
             </div>
             <div class="list-group list-group-flush">
                 <?php foreach ($estados as $estado): ?>
@@ -28,7 +28,7 @@
                 <?php endforeach; ?>
             </div>
             <div class="card-footer text-end">
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </form>

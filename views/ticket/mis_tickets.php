@@ -1,15 +1,15 @@
 <div class="container mt-4">
-    <h2 class="pb-2 border-bottom mb-4">Mis Tickets Asignados</h2>
-    <p>Estos son los trabajos de reparación que tienes a tu cargo.</p>
+    <h2 class="pb-2 border-bottom mb-4"><?php echo __('my_assigned_tickets'); ?></h2>
+    <p><?php echo __('repair_jobs_assigned'); ?></p>
 
     <?php $vista_actual = $_GET['vista'] ?? 'activos'; ?>
     <div class="d-flex justify-content-end mb-3">
         <div class="btn-group">
             <a href="index.php?accion=misTickets&vista=activos" class="btn <?php echo $vista_actual === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                Tickets Activos
+                <?php echo __('active_tickets'); ?>
             </a>
             <a href="index.php?accion=misTickets&vista=finalizados" class="btn <?php echo $vista_actual === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                Tickets Finalizados
+                <?php echo __('finished_tickets'); ?>
             </a>
         </div>
     </div>
@@ -18,11 +18,11 @@
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th>Cliente</th>
-                    <th>Dispositivo</th>
-                    <th>Problema Reportado</th>
-                    <th>Estado Actual</th>
-                    <th>Acciones</th>
+                    <th><?php echo __('client'); ?></th>
+                    <th><?php echo __('device'); ?></th>
+                    <th><?php echo __('reported_problem'); ?></th>
+                    <th><?php echo __('current_status'); ?></th>
+                    <th><?php echo __('actions'); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -42,21 +42,21 @@
                                 <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editarTicketModal"
                                         data-ticket-id="<?php echo $ticket['id_ticket']; ?>"
                                         data-estado-actual-id="<?php echo $ticket['id_estado']; ?>">
-                                    <i class="fas fa-edit"></i> Editar
+                                    <i class="fas fa-edit"></i> <?php echo __('edit_status'); ?>
                                 </button>
                                 
-                                <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Chatear con el cliente">
+                                <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('chat_with_client'); ?>">
                                     <i class="fas fa-comments"></i>
                                 </button>
                             <?php else: ?>
-                                <span class="text-muted">No hay acciones.</span>
+                                <span class="text-muted"><?php echo __('no_actions_available'); ?></span>
                             <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" class="text-center">No tienes tickets en esta vista.</td>
+                        <td colspan="5" class="text-center"><?php echo __('no_tickets_to_show'); ?></td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -71,15 +71,15 @@
                 <input type="hidden" name="accion" value="actualizarTicketEstado">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editarTicketModalLabel">Editar Estado del Ticket</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h5 class="modal-title" id="editarTicketModalLabel"><?php echo __('edit_ticket_state'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo __('close'); ?>"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id_ticket" id="modal_id_ticket">
                     <div class="mb-3">
-                        <label for="modal_estado" class="form-label">Cambiar Estado a:</label>
+                        <label for="modal_estado" class="form-label"><?php echo __('change_status_to'); ?>:</label>
                         <select class="form-select" name="id_estado" id="modal_estado" required>
-                            <option value="">Seleccione un estado</option>
+                            <option value=""><?php echo __('select_status'); ?>...</option>
                             <?php foreach ($todosLosEstados as $estado): ?>
                                 <option value="<?php echo $estado['id_estado']; ?>"><?php echo htmlspecialchars($estado['nombre_estado']); ?></option>
                             <?php endforeach; ?>
@@ -87,8 +87,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" id="confirmar-editar-btn" class="btn btn-primary">Aplicar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo __('cancel'); ?></button>
+                    <button type="button" id="confirmar-editar-btn" class="btn btn-primary"><?php echo __('apply_changes'); ?></button>
                 </div>
             </form>
         </div>
@@ -96,7 +96,28 @@
 </div>
 
 <div class="modal fade" id="finalizarTicketModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo __('finalize_ticket_warning'); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo __('close'); ?>"></button>
+            </div>
+            <div class="modal-body">
+                <p><?php echo __('finalize_ticket_message'); ?></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="noVolverAMostrarFinalizar">
+                    <label class="form-check-label" for="noVolverAMostrarFinalizar">
+                        <?php echo __('dont_show_again'); ?>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo __('cancel'); ?></button>
+                <button type="button" class="btn btn-warning" id="confirmar-finalizar-btn"><?php echo __('yes_finalize'); ?></button>
+            </div>
+        </div>
     </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

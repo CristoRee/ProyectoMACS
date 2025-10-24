@@ -1,19 +1,19 @@
 <?php 
-$titulo = "Mis Solicitudes";
+$titulo = __('my_requests');
 $vista_actual = $_GET['vista'] ?? 'activos';
 ?>
 
 <div class="container mt-4 mb-5">
-    <h2 class="pb-2 border-bottom">Mis Solicitudes de Reparación</h2>
-    <p class="text-muted">Aquí puedes ver el estado de todos los dispositivos que has ingresado.</p>
+    <h2 class="pb-2 border-bottom"><?php echo __('my_repair_requests'); ?></h2>
+    <p class="text-muted"><?php echo __('repair_requests_description'); ?></p>
     
     <div class="d-flex justify-content-end mb-3">
         <div class="btn-group">
             <a href="index.php?accion=misSolicitudes&vista=activos" class="btn <?php echo $vista_actual === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                Solicitudes Activas
+                <?php echo __('active_requests'); ?>
             </a>
             <a href="index.php?accion=misSolicitudes&vista=finalizados" class="btn <?php echo $vista_actual === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
-                Solicitudes Finalizadas
+                <?php echo __('completed_requests'); ?>
             </a>
         </div>
     </div>
@@ -22,11 +22,11 @@ $vista_actual = $_GET['vista'] ?? 'activos';
         <table class="table table-striped table-hover align-middle">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Dispositivo</th>
-                    <th scope="col">Problema Descrito</th>
-                    <th scope="col">Fecha de Ingreso</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col"><?php echo __('device'); ?></th>
+                    <th scope="col"><?php echo __('described_problem'); ?></th>
+                    <th scope="col"><?php echo __('entry_date'); ?></th>
+                    <th scope="col"><?php echo __('status'); ?></th>
+                    <th scope="col"><?php echo __('actions'); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,11 +44,11 @@ $vista_actual = $_GET['vista'] ?? 'activos';
                             <td>
                                 <?php if ($vista_actual === 'activos'): ?>
                                     <?php if (!empty($solicitud['id_tecnico_asignado'])): ?>
-                                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="Charlar con el técnico">
+                                        <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $solicitud['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('chat_with_technician'); ?>">
                                             <i class="fas fa-comments"></i>
                                         </button>
                                     <?php else: ?>
-                                        <button type="button" class="btn btn-sm btn-secondary disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Aún no tienes un técnico asignado">
+                                        <button type="button" class="btn btn-sm btn-secondary disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('no_technician_assigned'); ?>">
                                             <i class="fas fa-comments"></i>
                                         </button>
                                     <?php endif; ?>
@@ -56,18 +56,18 @@ $vista_actual = $_GET['vista'] ?? 'activos';
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarSolicitudModal"
                                             data-id="<?php echo $solicitud['id_ticket']; ?>"
                                             data-dispositivo="<?php echo htmlspecialchars($solicitud['tipo_producto'] . ' ' . $solicitud['marca']); ?>"
-                                            data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar solicitud">
+                                            data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('delete_request'); ?>">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 <?php else: ?>
-                                    <span class="text-muted">No hay acciones.</span>
+                                    <span class="text-muted"><?php echo __('no_actions'); ?></span>
                                 <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5" class="text-center py-4">No tienes ninguna solicitud en esta vista.</td>
+                        <td colspan="5" class="text-center py-4"><?php echo __('no_requests_in_view'); ?></td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -79,19 +79,19 @@ $vista_actual = $_GET['vista'] ?? 'activos';
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="eliminarModalLabel">Confirmar Eliminación</h5>
+        <h5 class="modal-title" id="eliminarModalLabel"><?php echo __('confirm_deletion'); ?></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>¿Estás seguro de que quieres eliminar esta solicitud de reparación?</p>
-        <p class="text-muted">Dispositivo: <strong id="dispositivo-a-eliminar"></strong></p>
-        <p class="text-danger fw-bold">Esta acción no se puede deshacer.</p>
+        <p><?php echo __('delete_confirmation_question'); ?></p>
+        <p class="text-muted"><?php echo __('device_label'); ?> <strong id="dispositivo-a-eliminar"></strong></p>
+        <p class="text-danger fw-bold"><?php echo __('action_cannot_be_undone'); ?></p>
       </div>
       <div class="modal-footer">
         <form method="POST" action="index.php?accion=eliminarSolicitud">
           <input type="hidden" name="id_ticket" id="id-ticket-a-eliminar">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo __('cancel'); ?></button>
+          <button type="submit" class="btn btn-danger"><?php echo __('yes_delete'); ?></button>
         </form>
       </div>
     </div>

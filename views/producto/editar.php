@@ -1,5 +1,5 @@
 <?php 
-$titulo = "Editar Producto";
+$titulo = __('edit_product');
 include('views/includes/header.php'); 
 ?>
 

@@ -44,6 +44,17 @@ class UsuarioController {
     }
     
     public function login() {
+        // Manejar cambio de idioma desde login
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_language'])) {
+            $idioma = $_POST['change_language'];
+            if (in_array($idioma, ['es', 'en', 'pt'])) {
+                $_SESSION['language'] = $idioma;
+                // Recargar la página para aplicar el nuevo idioma
+                header("Location: index.php?accion=login");
+                exit();
+            }
+        }
+        
         include 'views/includes/header.php';
         include 'views/usuario/login.php';
         include 'views/includes/footer.php';
@@ -101,7 +112,7 @@ class UsuarioController {
                 $_SESSION['id_usuario'] = $usuario_validado['id_usuario'];
                 $_SESSION['usuario'] = $usuario_validado['nombre_usuario'];
                 $_SESSION['rol'] = $usuario_validado['id_rol'];
-                $_SESSION['foto_perfil'] = $usuario_validado['foto_perfil'];
+                $_SESSION['foto_perfil'] = !empty($usuario_validado['foto_perfil']) ? $usuario_validado['foto_perfil'] : 'assets/images/default-avatar.png';
 
                 HistorialLogger::registrar("El usuario '{$usuario_validado['nombre_usuario']}' inició sesión.", $usuario_validado['id_usuario']);
 
@@ -218,6 +229,32 @@ class UsuarioController {
                 header("Location: index.php?accion=miPerfil&status=error");
             }
             exit();
+        }
+    }
+
+    public function cambiarIdioma() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cambiar_idioma') {
+            $idioma = $_POST['idioma'] ?? 'es';
+            
+            // Validar que el idioma sea válido
+            if (in_array($idioma, ['es', 'en', 'pt'])) {
+                $_SESSION['language'] = $idioma;
+                
+                // Registrar en historial si hay usuario logueado
+                if (isset($_SESSION['usuario'])) {
+                    $idiomas_nombres = ['es' => 'Español', 'en' => 'Inglés', 'pt' => 'Portugués'];
+                    HistorialLogger::registrar("El usuario '{$_SESSION['usuario']}' cambió el idioma a {$idiomas_nombres[$idioma]}.");
+                }
+                
+                // Respuesta JSON para AJAX
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'language' => $idioma]);
+                exit();
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'error' => 'Idioma no válido']);
+                exit();
+            }
         }
     }
 }
