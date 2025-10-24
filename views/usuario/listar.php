@@ -150,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
+<<<<<<< HEAD
 /* Estilos específicos para arreglar alineación de botones */
 .table td {
     vertical-align: middle !important;
@@ -164,5 +165,11 @@ document.addEventListener('DOMContentLoaded', function () {
 .table .btn-group .btn {
     margin: 0 !important;
     flex-shrink: 0 !important;
+=======
+    .table .table-dark th {
+    background-color: #013467ff;  
+    color: #ffffff;             
+    border-color: #32383e;      
+>>>>>>> 425b2cb9f01fd18887e132bb99b40d0650e5b1f9
 }
 </style>

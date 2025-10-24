@@ -101,9 +101,12 @@ class Ticket {
         if (empty($id_tecnico)) {
             $id_tecnico = null;
         }
+        
         $sql = "UPDATE Tickets SET id_tecnico_asignado = ? WHERE id_ticket = ?";
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param("i", $id_tecnico); // Cambiado a 'i' porque NULL se maneja bien con 'i'
+
+        $stmt->bind_param("ii", $id_tecnico, $id_ticket);
+        
         return $stmt->execute();
     }
 

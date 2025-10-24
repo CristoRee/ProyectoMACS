@@ -169,3 +169,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
+
+<style>
+    .table .table-dark th {
+    background-color: #013467ff;  
+    color: #ffffff;             
+    border-color: #32383e;      
+}
+</style>

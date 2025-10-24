@@ -211,6 +211,41 @@ switch ($accion) {
         $controller = new AjustesController();
         $controller->guardarNotificaciones();
         break;
+
+    case 'mostrarPiezas':
+        $controller = new PiezaController();
+        $controller->mostrarPiezas();
+        break;
+
+    case 'crearPieza':
+        $controller = new PiezaController();
+        $controller->crearPieza();
+        break;
+
+    case 'verTicketConPiezas':
+        $controller = new PiezaController();
+        $controller->verTicketConPiezas();
+        break;
+
+    case 'asignarPieza':
+        $controller = new PiezaController();
+        $controller->asignarPieza();
+        break;
+
+    case 'editarPieza':
+        $controller = new PiezaController();
+        $controller->editarPieza();
+        break;
+
+    case 'eliminarPieza':
+        $controller = new PiezaController();
+        $controller->eliminarPieza();
+        break;
+
+    case 'desasignarPieza':
+        $controller = new PiezaController();
+        $controller->desasignarPieza();
+        break;
     
 
     
