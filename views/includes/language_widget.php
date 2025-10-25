@@ -84,4 +84,3 @@ if ($accion !== 'inicio') {
     }
 }
 </style>
-

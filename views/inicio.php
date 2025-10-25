@@ -121,13 +121,8 @@ $rol = $_SESSION['rol'] ?? 0;
 
     <div id="sobre-nosotros" class="row align-items-md-stretch pt-5 mt-5">
         <div class="col-md-12">
-<<<<<<< HEAD
             <div class="h-100 p-5 border rounded-3">
                 <h2 class="pb-2 border-bottom mb-4"><?php echo __('about_us_title'); ?></h2>
-=======
-            <div class="card card-body h-100 p-5 rounded-3">
-                <h2 class="pb-2 border-bottom mb-4">Sobre Nosotros</h2>
->>>>>>> 425b2cb9f01fd18887e132bb99b40d0650e5b1f9
                 <p>
                     <?php echo __('about_us_content'); ?>
                 </p>

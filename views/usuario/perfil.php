@@ -10,12 +10,6 @@
             <div class="alert alert-danger"><?php echo __('password_mismatch'); ?></div>
         <?php elseif($_GET['status'] === 'pwd_incorrect'): ?>
             <div class="alert alert-danger"><?php echo __('password_incorrect'); ?></div>
-        <?php elseif($_GET['status'] === 'photo_success'): ?>
-            <div class="alert alert-success"><?php echo __('photo_updated'); ?></div>
-        <?php elseif($_GET['status'] === 'no_file'): ?>
-            <div class="alert alert-danger"><?php echo __('no_file_selected'); ?></div>
-        <?php elseif($_GET['status'] === 'error'): ?>
-            <div class="alert alert-danger"><?php echo __('update_error'); ?></div>
         <?php endif; ?>
     <?php endif; ?>
 
@@ -47,9 +41,12 @@
                     <!-- Selector de Idioma -->
                     <div class="mb-3" id="language-section">
                         <label class="form-label"><?php echo __('language'); ?></label>
-                        <form action="index.php?accion=cambiarIdioma" method="POST" id="languageForm">
-                            <input type="hidden" name="redirect" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
-                            <div class="d-grid gap-2">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" 
+                                    type="button" 
+                                    id="languageDropdown" 
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
                                 <?php 
                                 $currentLang = Language::getCurrentLanguage();
                                 $languages = [
@@ -57,26 +54,25 @@
                                     'en' => ['name' => __('english'), 'flag' => '🇺🇸'],
                                     'pt' => ['name' => __('portuguese'), 'flag' => '🇧🇷']
                                 ];
-                                foreach ($languages as $code => $lang): ?>
-                                <button type="submit" name="language" value="<?php echo $code; ?>" 
-                                        class="btn <?php echo $currentLang === $code ? 'btn-primary' : 'btn-outline-primary'; ?> language-btn text-start position-relative" 
-                                        style="border-radius: 15px; padding: 15px 20px;">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-3 flag-emoji"><?php echo $lang['flag']; ?></span>
-                                        <div class="flex-grow-1">
-                                            <strong class="fs-6"><?php echo $lang['name']; ?></strong>
-                                        </div>
+                                echo $languages[$currentLang]['name'];
+                                ?>
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="languageDropdown">
+                                <?php foreach ($languages as $code => $lang): ?>
+                                <li>
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center <?php echo $currentLang === $code ? 'active' : ''; ?>" 
+                                       href="#" 
+                                       onclick="changeLanguage('<?php echo $code; ?>')"
+                                       data-lang="<?php echo $code; ?>">
+                                        <span><?php echo $lang['name']; ?></span>
                                         <?php if($currentLang === $code): ?>
-                                        <span class="position-absolute top-0 start-100 translate-middle p-2 bg-success border border-light rounded-circle active-language-indicator">
-                                            <i class="fas fa-check text-white" style="font-size: 0.7rem;"></i>
-                                            <span class="visually-hidden">Idioma actual</span>
-                                        </span>
+                                            <span class="text-primary">✓</span>
                                         <?php endif; ?>
-                                    </div>
-                                </button>
+                                    </a>
+                                </li>
                                 <?php endforeach; ?>
-                            </div>
-                        </form>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,9 +138,123 @@
     50% { background-color: rgba(0, 123, 255, 0.1); }
     100% { background-color: transparent; }
 }
+
+/* Estilos para el dropdown de idioma */
+#languageDropdown {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    color: #333;
+    font-size: 14px;
+}
+
+#languageDropdown:hover {
+    border-color: #adb5bd;
+    background-color: #f8f9fa;
+}
+
+#languageDropdown:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.dropdown-menu {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 4px 0;
+    margin-top: 2px;
+}
+
+.dropdown-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.dropdown-item.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    font-weight: 500;
+}
+
+.dropdown-item .text-primary {
+    color: #1976d2 !important;
+    font-weight: bold;
+}
+
+/* Modo oscuro */
+[data-theme="dark"] #languageDropdown {
+    background-color: #495057;
+    border-color: #6c757d;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"] #languageDropdown:hover {
+    background-color: #5a6268;
+    border-color: #7c8791;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background-color: #343a40;
+    border-color: #495057;
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: #f8f9fa;
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: #495057;
+    color: #f8f9fa;
+}
+
+[data-theme="dark"] .dropdown-item.active {
+    background-color: #0d6efd;
+    color: white;
+}
 </style>
 
 <script>
+function changeLanguage(langCode) {
+    // Mostrar indicador de carga
+    const btn = document.getElementById('languageDropdown');
+    const originalText = btn.textContent;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Cambiando...';
+    btn.disabled = true;
+    
+    // Crear formulario oculto para enviar el cambio de idioma
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'index.php?accion=cambiarIdioma';
+    form.style.display = 'none';
+    
+    const langInput = document.createElement('input');
+    langInput.type = 'hidden';
+    langInput.name = 'language';
+    langInput.value = langCode;
+    
+    const redirectInput = document.createElement('input');
+    redirectInput.type = 'hidden';
+    redirectInput.name = 'redirect';
+    redirectInput.value = window.location.href;
+    
+    form.appendChild(langInput);
+    form.appendChild(redirectInput);
+    document.body.appendChild(form);
+    
+    // Enviar formulario
+    form.submit();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Verificar si hay un hash en la URL
     if (window.location.hash === '#language-section') {
@@ -161,5 +271,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 300);
     }
+    
+    // Manejar clics en las opciones del dropdown
+    const dropdownItems = document.querySelectorAll('#language-section .dropdown-item');
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const langCode = this.getAttribute('data-lang');
+            if (langCode) {
+                changeLanguage(langCode);
+            }
+        });
+    });
 });
 </script>

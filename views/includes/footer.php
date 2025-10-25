@@ -138,6 +138,8 @@
 .mensaje.emisor, .mensaje.receptor { width: 100%; }
 .mensaje.emisor { align-items: flex-end; }
 .mensaje.receptor { align-items: flex-start; }
+
+
 </style>
 
 <?php endif; ?>
@@ -148,6 +150,23 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- Scroll al top después de cambio de idioma ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('lang_changed') === '1') {
+        // Hacer scroll suave al top de la página
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        // Limpiar el parámetro de la URL sin recargar la página
+        if (history.replaceState) {
+            const newUrl = window.location.href.replace(/[?&]lang_changed=1/, '');
+            const cleanUrl = newUrl.replace(/\?$/, ''); // Eliminar ? al final si queda
+            history.replaceState(null, '', cleanUrl);
+        }
+    }
     
     // --- Lógica del Chat ---
     if(document.getElementById('chat-ventana')) {

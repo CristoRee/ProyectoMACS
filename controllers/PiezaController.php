@@ -57,7 +57,7 @@ class PiezaController {
             } else {
                 $_SESSION['error'] = 'Error al crear la pieza.';
             }
-            header('Location: index.php?accion=crearPieza');
+            header('Location: index.php?accion=mostrarPiezas');
         } else {
             include 'views/includes/header.php';
             include 'views/pieza/crear.php';
@@ -68,11 +68,9 @@ class PiezaController {
     public function verTicketConPiezas() {
         $id_tecnico = $_SESSION['id_usuario'];
         $tickets = $this->ticketModel->obtenerTicketsPorTecnico($id_tecnico);
-        $fotos_tickets = [];
         $piezas_usadas = [];
 
         foreach ($tickets as $ticket) {
-            $fotos_tickets[$ticket['id_ticket']] = $this->ticketModel->obtenerFotosPorTicket($ticket['id_ticket']);
             $piezas_usadas[$ticket['id_ticket']] = $this->piezaModel->obtenerPiezasUsadasEnTicket($ticket['id_ticket']);
         }
 
@@ -150,7 +148,7 @@ class PiezaController {
             } else {
                 $_SESSION['error'] = 'Error al actualizar la pieza.';
             }
-            header('Location: index.php?accion=editarPieza&id=' . $id_pieza);
+            header('Location: index.php?accion=mostrarPiezas');
         } else {
             $pieza = $this->piezaModel->obtenerPiezaPorId($id_pieza);
             include 'views/includes/header.php';

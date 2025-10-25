@@ -49,6 +49,14 @@ class UsuarioController {
             $idioma = $_POST['change_language'];
             if (in_array($idioma, ['es', 'en', 'pt'])) {
                 $_SESSION['language'] = $idioma;
+                
+                // Si se solicita actualizar también el manual
+                if (isset($_POST['update_manual']) && $_POST['update_manual'] === '1') {
+                    // El manual ya está configurado para usar el idioma de la sesión
+                    // Solo necesitamos asegurar que la sesión esté actualizada
+                    $_SESSION['idioma'] = $idioma; // También guardar en 'idioma' por compatibilidad
+                }
+                
                 // Recargar la página para aplicar el nuevo idioma
                 header("Location: index.php?accion=login");
                 exit();
@@ -112,7 +120,7 @@ class UsuarioController {
                 $_SESSION['id_usuario'] = $usuario_validado['id_usuario'];
                 $_SESSION['usuario'] = $usuario_validado['nombre_usuario'];
                 $_SESSION['rol'] = $usuario_validado['id_rol'];
-                $_SESSION['foto_perfil'] = !empty($usuario_validado['foto_perfil']) ? $usuario_validado['foto_perfil'] : 'assets/images/default-avatar.png';
+                $_SESSION['foto_perfil'] = $usuario_validado['foto_perfil'];
 
                 HistorialLogger::registrar("El usuario '{$usuario_validado['nombre_usuario']}' inició sesión.", $usuario_validado['id_usuario']);
 

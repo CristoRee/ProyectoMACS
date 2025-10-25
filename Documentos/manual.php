@@ -12,6 +12,9 @@ Language::init();
 // Obtener el idioma actual (puede venir del login o de la sesión activa)
 $currentLang = Language::getCurrentLanguage();
 
+// Log para debugging (opcional)
+error_log("Manual solicitado en idioma: " . $currentLang);
+
 // Definir los archivos de manual según el idioma
 $manuals = [
     'es' => 'Manual_Usuario_ProyectoMACS_Usuario.html',

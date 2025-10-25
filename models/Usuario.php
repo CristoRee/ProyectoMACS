@@ -26,7 +26,7 @@ class Usuario {
         }
 
         $stmt = $this->db->prepare(
-            "INSERT INTO Usuarios (nombre_usuario, email, password_hash, id_rol, foto_perfil) VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO Usuarios (nombre_usuario, email, password_hash, id_rol) VALUES (?, ?, ?, ?)"
         );
 
         if (!$stmt) {
@@ -34,8 +34,8 @@ class Usuario {
         }
 
         $rol_por_defecto = 3; 
-        $foto_perfil_por_defecto = 'assets/images/default-avatar.png';
-        $stmt->bind_param("sssis", $nombre, $email, $hash_seguro, $rol_por_defecto, $foto_perfil_por_defecto);
+        $foto_perfil_por_defecto = 'uploads/perfiles/default-avatar.png';
+        $stmt->bind_param("sssi", $nombre, $email, $hash_seguro, $rol_por_defecto);
 
         if ($stmt->execute()) {
             return true;
@@ -147,14 +147,7 @@ class Usuario {
         $stmt = $this->db->prepare("SELECT id_usuario, nombre_usuario, email, telefono, foto_perfil FROM Usuarios WHERE id_usuario = ?");
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
-        $usuario = $stmt->get_result()->fetch_assoc();
-        
-        // Asegurar que siempre tenga una foto por defecto
-        if ($usuario && (empty($usuario['foto_perfil']) || $usuario['foto_perfil'] === null)) {
-            $usuario['foto_perfil'] = 'assets/images/default-avatar.png';
-        }
-        
-        return $usuario;
+        return $stmt->get_result()->fetch_assoc();
     }
 
    

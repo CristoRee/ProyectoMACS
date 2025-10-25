@@ -57,16 +57,8 @@ header.bg-primary {
     gap: 0.5rem;
 }
 
-/* Permitir que Bootstrap maneje los colores de thead */
-.table thead:not(.table-dark) th {
+.table th {
     background-color: #fbfcfc;
-}
-
-/* Asegurar que table-dark funcione correctamente */
-.table-dark th {
-    background-color: #212529 !important;
-    color: #ffffff !important;
-    border-color: #32383e !important;
 }
 
 
@@ -361,63 +353,6 @@ header.bg-primary {
     }
     100% {
         box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-    }
-}
-
-/* Estilos mejorados para tabla de usuarios */
-.table td {
-    vertical-align: middle;
-}
-
-.btn-group .btn {
-    margin-right: 0.25rem;
-}
-
-.btn-group .btn:last-child {
-    margin-right: 0;
-}
-
-/* Mejorar espaciado en acciones de tabla */
-.table td .btn-group {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.25rem;
-}
-
-/* Forzar alineación correcta de botones en tablas */
-.table td .btn-group {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 0.25rem !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-}
-
-.table td .btn-group .btn {
-    margin: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    white-space: nowrap !important;
-}
-
-/* Asegurar que los botones no se deformen */
-.table td .btn-sm {
-    padding: 0.25rem 0.5rem !important;
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
-}
-
-@media (max-width: 768px) {
-    .table td .btn-group {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 0.25rem !important;
-    }
-    
-    .table td .btn-group .btn {
-        margin-bottom: 0 !important;
-        margin-right: 0 !important;
-        width: 100% !important;
     }
 }
 

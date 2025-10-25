@@ -15,6 +15,7 @@ require_once("controllers/EstadoController.php");
 require_once("controllers/RolController.php");
 require_once("controllers/HistorialController.php");
 require_once("controllers/AjustesController.php");
+require_once("controllers/PiezaController.php");
 
 
 $accion = $_REQUEST['accion'] ?? 'index';
@@ -261,6 +262,11 @@ switch ($accion) {
         }
         // Redireccionar a la página anterior o a perfil
         $redirect = $_POST['redirect'] ?? 'index.php?accion=inicio';
+        
+        // Agregar parámetro para scroll al top después del cambio de idioma
+        $separator = (strpos($redirect, '?') !== false) ? '&' : '?';
+        $redirect .= $separator . 'lang_changed=1';
+        
         header("Location: " . $redirect);
         exit;
         break;

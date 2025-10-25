@@ -45,7 +45,7 @@
                                     <i class="fas fa-edit"></i> <?php echo __('edit_status'); ?>
                                 </button>
                                 
-                                <button type="button" class="btn btn-sm btn-success" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('chat_with_client'); ?>">
+                                <button type="button" class="btn btn-sm btn-primary" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('chat_with_client'); ?>">
                                     <i class="fas fa-comments"></i>
                                 </button>
                             <?php else: ?>

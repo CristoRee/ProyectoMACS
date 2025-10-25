@@ -10,7 +10,7 @@ $languages = [
 
 <div class="language-switcher-widget">
     <form action="index.php?accion=cambiarIdioma" method="POST" id="languageWidgetForm">
-        <input type="hidden" name="redirect" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
+        <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES); ?>">
         
         <!-- Botón desplegable del idioma actual -->
         <div class="dropdown">
@@ -34,7 +34,7 @@ $languages = [
                             <span class="flex-grow-1"><?php echo $lang['name']; ?></span>
                             <span class="ms-2 opacity-75"><?php echo $lang['icon']; ?></span>
                             <?php if($currentLang === $code): ?>
-                            <i class="fas fa-check text-success ms-2"></i>
+                            <i class="fas fa-check text-primary ms-2"></i>
                             <?php endif; ?>
                         </div>
                     </button>

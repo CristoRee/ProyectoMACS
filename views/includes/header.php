@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $titulo ?? 'BinaryTEC'; ?></title>
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="assets/css/style.css?v=<?php echo time(); ?>" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
     <?php if (isset($_SESSION['id_usuario'])): ?>
     <link href="assets/css/footerChat.css" rel="stylesheet">
     <?php endif; ?>
@@ -51,6 +50,7 @@
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 1):?>
                                 <li><a class="dropdown-item" href="index.php?accion=listarUsuarios"><i class="fas fa-users-cog me-2"></i><?php echo __('manage_users'); ?></a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarTickets"><i class="fas fa-tasks me-2"></i><?php echo __('manage_tickets'); ?></a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=mostrarPiezas"><i class="fas fa-cogs me-2"></i><?php echo __('manage_parts'); ?></a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=gestionarEstados"><i class="fas fa-list me-2"></i><?php echo __('manage_states'); ?></a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=listarRoles"><i class="fas fa-user-tag me-2"></i><?php echo __('manage_roles'); ?></a></li>
                                 <li><a class="dropdown-item" href="index.php?accion=verHistorial"><i class="fas fa-history me-2"></i><?php echo __('history'); ?></a></li>
@@ -58,6 +58,8 @@
                             <?php endif; ?>
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2):?>
                                 <li><a class="dropdown-item" href="index.php?accion=misTickets"><i class="fas fa-ticket-alt me-2"></i><?php echo __('my_tickets'); ?></a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=mostrarPiezas"><i class="fas fa-cogs me-2"></i><?php echo __('parts'); ?></a></li>
+                                <li><a class="dropdown-item" href="index.php?accion=verTicketConPiezas"><i class="fas fa-tools me-2"></i><?php echo __('tickets_with_parts'); ?></a></li>
                             <?php endif; ?>
                             <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] == 3):?>
                                 <li><a class="dropdown-item" href="index.php?accion=misSolicitudes"><i class="fas fa-folder-open me-2"></i><?php echo __('my_requests'); ?></a></li>

@@ -29,21 +29,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Función para cambiar idioma
-function changeLanguage(lang) {
-    // Crear formulario simple para cambiar idioma mediante sesión
+// Función para cambiar idioma de forma interactiva
+function changeLanguageInteractive(langCode, flag, name) {
+    // Mostrar indicador de carga en el botón
+    const btn = document.getElementById('languageDropdownLogin');
+    const currentText = document.getElementById('currentLanguageText');
+    const originalContent = currentText.innerHTML;
+    
+    // Cambiar a estado de carga
+    btn.disabled = true;
+    currentText.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>Cambiando...';
+    
+    // Crear formulario oculto para cambiar idioma
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = 'index.php?accion=login';
+    form.style.display = 'none';
     
     const langInput = document.createElement('input');
     langInput.type = 'hidden';
     langInput.name = 'change_language';
-    langInput.value = lang;
+    langInput.value = langCode;
+    
+    // Agregar parámetro para actualizar también el manual
+    const updateManualInput = document.createElement('input');
+    updateManualInput.type = 'hidden';
+    updateManualInput.name = 'update_manual';
+    updateManualInput.value = '1';
     
     form.appendChild(langInput);
+    form.appendChild(updateManualInput);
     document.body.appendChild(form);
-    form.submit();
+    
+    // Simular una pequeña pausa para mostrar el efecto de carga
+    setTimeout(() => {
+        form.submit();
+    }, 300);
+}
+
+// Función de compatibilidad hacia atrás
+function changeLanguage(lang) {
+    changeLanguageInteractive(lang, '', '');
 }
 </script>
 
@@ -52,22 +78,43 @@ function changeLanguage(lang) {
         <div class="card mt-5 shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h3 class="text-center mb-0 flex-grow-1"><?php echo __('login'); ?></h3>
-                <!-- Selector básico de idioma -->
+                <!-- Selector interactivo de idioma -->
                 <div class="language-selector-login">
-                    <select class="form-select form-select-sm" style="width: auto;" onchange="changeLanguage(this.value)">
-                        <?php
-                        $currentLang = Language::getCurrentLanguage();
-                        $languages = [
-                            'es' => 'Español',
-                            'en' => 'English', 
-                            'pt' => 'Português'
-                        ];
-                        foreach ($languages as $code => $name): ?>
-                            <option value="<?php echo $code; ?>" <?php echo ($currentLang === $code) ? 'selected' : ''; ?>>
-                                <?php echo $name; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <div class="dropdown">
+                        <button class="btn btn-light btn-sm dropdown-toggle" 
+                                type="button" 
+                                id="languageDropdownLogin" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false">
+                            <i class="fas fa-globe me-1"></i>
+                            <span id="currentLanguageText">
+                                <?php
+                                $currentLang = Language::getCurrentLanguage();
+                                $languages = [
+                                    'es' => ['name' => 'Español', 'flag' => '🇪🇸'],
+                                    'en' => ['name' => 'English', 'flag' => '🇺🇸'], 
+                                    'pt' => ['name' => 'Português', 'flag' => '🇧🇷']
+                                ];
+                                echo $languages[$currentLang]['flag'] . ' ' . $languages[$currentLang]['name'];
+                                ?>
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdownLogin">
+                            <?php foreach ($languages as $code => $lang): ?>
+                            <li>
+                                <a class="dropdown-item d-flex justify-content-between align-items-center <?php echo $currentLang === $code ? 'active' : ''; ?>" 
+                                   href="#" 
+                                   onclick="changeLanguageInteractive('<?php echo $code; ?>', '<?php echo $lang['flag']; ?>', '<?php echo $lang['name']; ?>')"
+                                   data-lang="<?php echo $code; ?>">
+                                    <span><?php echo $lang['flag']; ?> <?php echo $lang['name']; ?></span>
+                                    <?php if($currentLang === $code): ?>
+                                        <span class="text-primary">✓</span>
+                                    <?php endif; ?>
+                                </a>
+                            </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="card-body p-4">
@@ -97,13 +144,113 @@ function changeLanguage(lang) {
                 </form>
                 
                 <div class="text-center mt-3">
-                    <p class="mb-0"><?php echo __('no_account'); ?> <a href="index.php?accion=mostrarRegistro"><?php echo __('register'); ?></a></p>
+                    <p class="mb-2"><?php echo __('no_account'); ?> <a href="index.php?accion=mostrarRegistro"><?php echo __('register'); ?></a></p>
+                    <p class="mb-0">
+                        <a href="Documentos/manual.php" target="_blank" class="text-muted text-decoration-none" 
+                           title="<?php echo __('user_manual'); ?> (<?php echo $languages[Language::getCurrentLanguage()]['name']; ?>)">
+                            <i class="fas fa-book me-1"></i><?php echo __('user_manual'); ?>
+                            <small class="text-muted">(<?php echo $languages[Language::getCurrentLanguage()]['flag']; ?>)</small>
+                        </a>
+                    </p>
                 </div>
 
             </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Estilos para el selector de idioma en login */
+.language-selector-login {
+    position: relative;
+}
+
+.language-selector-login .dropdown-toggle {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 12px;
+    padding: 4px 8px;
+    min-width: 110px;
+    transition: all 0.2s ease;
+}
+
+.language-selector-login .dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.language-selector-login .dropdown-toggle:focus {
+    background: rgba(255, 255, 255, 1);
+    border-color: rgba(255, 255, 255, 0.7);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.language-selector-login .dropdown-menu {
+    min-width: 160px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+    margin-top: 4px;
+}
+
+.language-selector-login .dropdown-item {
+    padding: 8px 16px;
+    font-size: 14px;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.language-selector-login .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.language-selector-login .dropdown-item.active {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    font-weight: 500;
+}
+
+.language-selector-login .dropdown-item .text-primary {
+    color: #1976d2 !important;
+    font-weight: bold;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .language-selector-login .dropdown-toggle {
+        font-size: 11px;
+        padding: 3px 6px;
+        min-width: 90px;
+    }
+    
+    .language-selector-login .dropdown-menu {
+        min-width: 140px;
+    }
+    
+    .language-selector-login .dropdown-item {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+
+/* Animación para el dropdown */
+.language-selector-login .dropdown-menu.show {
+    animation: slideDownFade 0.3s ease;
+}
+
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 
 <?php
 
