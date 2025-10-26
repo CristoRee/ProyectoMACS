@@ -1,6 +1,11 @@
 <?php
 require_once __DIR__ . '/../config/conexion.php';
 
+/**
+ * Pieza - Modelo para gestión de inventario de hardware
+ * Gestiona componentes de hardware, repuestos y accesorios
+ * utilizados en reparaciones de dispositivos electrónicos.
+ */
 class Pieza {
     private $db;
 

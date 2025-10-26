@@ -97,6 +97,16 @@ $rol = $_SESSION['rol'] ?? 0;
             </a>
         </div>
         <div class="col">
+             <a href="index.php?accion=mostrarPiezas" class="text-decoration-none">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body p-4 d-flex flex-column justify-content-center">
+                        <i class="fas fa-microchip fa-3x text-primary mb-3"></i>
+                        <h4 class="card-title"><?php echo __('manage_parts'); ?></h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
              <a href="index.php?accion=verHistorial" class="text-decoration-none">
                 <div class="card h-100 shadow-sm card-hover">
                     <div class="card-body p-4 d-flex flex-column justify-content-center">

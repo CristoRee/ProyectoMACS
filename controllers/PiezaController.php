@@ -3,6 +3,11 @@ require_once __DIR__ . '/../models/Pieza.php';
 require_once __DIR__ . '/../models/Ticket.php';
 require_once __DIR__ . '/../models/Usuario.php';
 
+/**
+ * PiezaController - Controlador para gestión de inventario de hardware
+ * Maneja las operaciones CRUD para componentes de hardware y repuestos
+ * utilizados en las reparaciones de dispositivos electrónicos.
+ */
 class PiezaController {
     private $piezaModel;
     private $ticketModel;
