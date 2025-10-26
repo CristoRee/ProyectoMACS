@@ -61,6 +61,25 @@ header.bg-primary {
     background-color: #fbfcfc;
 }
 
+/* Asegurar que el scroll funcione correctamente */
+html, body {
+    height: auto !important;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+}
+
+/* Asegurar que el contenido pueda hacer scroll más allá del chat */
+body {
+    padding-bottom: 100px;
+}
+
+/* Espacio extra solo para el final de las tablas */
+.table-responsive {
+    margin-bottom: 80px;
+}
+
+
+
 
 
 .custom-btn {

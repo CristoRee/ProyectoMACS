@@ -1,11 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/conexion.php';
 
-/**
- * Pieza - Modelo para gestión de inventario de hardware
- * Gestiona componentes de hardware, repuestos y accesorios
- * utilizados en reparaciones de dispositivos electrónicos.
- */
 class Pieza {
     private $db;
 
@@ -17,6 +12,40 @@ class Pieza {
         $sql = "SELECT * FROM Repuestos ORDER BY nombre";
         $result = $this->db->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /**
+     * Obtener todas las piezas con paginación
+     */
+    public function obtenerTodasLasPiezasConPaginacion($page = 1, $perPage = 15) {
+        $offset = ($page - 1) * $perPage;
+        
+        // Obtener piezas paginadas
+        $sql = "SELECT * FROM Repuestos ORDER BY nombre LIMIT ? OFFSET ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $perPage, $offset);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        
+        $piezas = [];
+        while($fila = $resultado->fetch_assoc()) {
+            $piezas[] = $fila;
+        }
+        
+        // Obtener total de piezas
+        $sqlCount = "SELECT COUNT(*) as total FROM Repuestos";
+        $resultadoCount = $this->db->query($sqlCount);
+        $total = $resultadoCount->fetch_assoc()['total'];
+        
+        return [
+            'piezas' => $piezas,
+            'total' => $total,
+            'totalPages' => ceil($total / $perPage),
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'startRecord' => $offset + 1,
+            'endRecord' => min($offset + $perPage, $total)
+        ];
     }
 
     public function obtenerPiezaPorId($id_pieza) {

@@ -5,7 +5,7 @@
         </h2>
         <div class="badge bg-info fs-6">
             <i class="fas fa-layer-group me-1"></i>
-            <?php echo __('total_parts'); ?>: <?php echo count($piezas); ?>
+            <?php echo __('total_parts'); ?>: <?php echo $totalRecords ?? count($piezas); ?>
         </div>
     </div>
     
@@ -170,6 +170,9 @@
         </div>
     </div>
     <?php endif; ?>
+    
+    <!-- Espaciador para evitar el chat -->
+    <div style="height: 60px;"></div>
 </div>
 
 <!-- Modal para ver imagen completa -->
@@ -337,3 +340,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<style>
+/* Espacio inferior moderado para evitar el chat */
+.table-responsive {
+    margin-bottom: 60px !important;
+}
+</style>
+
+<!-- Paginación -->
+<?php if (isset($totalPages) && $totalPages > 1): ?>
+    <?php include 'views/includes/pagination.php'; ?>
+<?php endif; ?>

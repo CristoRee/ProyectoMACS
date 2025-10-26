@@ -69,7 +69,28 @@ class UsuarioController {
     }
     
     public function listarUsuarios() {
-        $todosLosUsuarios = $this->model->obtenerTodos();
+        // Obtener parámetros de paginación
+        $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $perPage = isset($_GET['per_page']) ? max(10, intval($_GET['per_page'])) : 25;
+        
+        // Obtener datos con paginación
+        $paginacion = $this->model->obtenerConPaginacion($page, $perPage);
+        
+        // Extraer variables para la vista
+        $todosLosUsuarios = $paginacion['usuarios'];
+        $totalRecords = $paginacion['total'];
+        $totalPages = $paginacion['totalPages'];
+        $currentPage = $paginacion['currentPage'];
+        $recordsPerPage = $paginacion['perPage'];
+        $startRecord = $paginacion['startRecord'];
+        $endRecord = $paginacion['endRecord'];
+        
+        // URL base para paginación
+        $baseUrl = 'index.php?accion=listarUsuarios';
+        if (isset($_GET['per_page'])) {
+            $baseUrl .= '&per_page=' . $recordsPerPage;
+        }
+        
         include 'views/includes/header.php';
         include 'views/usuario/listar.php'; 
         include 'views/includes/footer.php';

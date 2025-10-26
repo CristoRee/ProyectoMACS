@@ -3,11 +3,6 @@ require_once __DIR__ . '/../models/Pieza.php';
 require_once __DIR__ . '/../models/Ticket.php';
 require_once __DIR__ . '/../models/Usuario.php';
 
-/**
- * PiezaController - Controlador para gestión de inventario de hardware
- * Maneja las operaciones CRUD para componentes de hardware y repuestos
- * utilizados en las reparaciones de dispositivos electrónicos.
- */
 class PiezaController {
     private $piezaModel;
     private $ticketModel;
@@ -20,7 +15,28 @@ class PiezaController {
     }
 
     public function mostrarPiezas() {
-        $piezas = $this->piezaModel->obtenerTodasLasPiezas();
+        // Obtener parámetros de paginación
+        $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $perPage = isset($_GET['per_page']) ? max(10, intval($_GET['per_page'])) : 15;
+        
+        // Obtener datos con paginación
+        $paginacion = $this->piezaModel->obtenerTodasLasPiezasConPaginacion($page, $perPage);
+        
+        // Extraer variables para la vista
+        $piezas = $paginacion['piezas'];
+        $totalRecords = $paginacion['total'];
+        $totalPages = $paginacion['totalPages'];
+        $currentPage = $paginacion['currentPage'];
+        $recordsPerPage = $paginacion['perPage'];
+        $startRecord = $paginacion['startRecord'];
+        $endRecord = $paginacion['endRecord'];
+        
+        // URL base para paginación
+        $baseUrl = 'index.php?accion=mostrarPiezas';
+        if (isset($_GET['per_page'])) {
+            $baseUrl .= '&per_page=' . $recordsPerPage;
+        }
+        
         include 'views/includes/header.php';
         include 'views/pieza/listar.php';
         include 'views/includes/footer.php';

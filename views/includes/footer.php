@@ -76,7 +76,7 @@
     position: fixed; bottom: 70px; right: 20px;
     width: 300px; background: white; border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    overflow: hidden; display: none; z-index: 1000;
+        overflow: hidden; display: none; z-index: 1000;
 }
 .chat-list-header { font-weight: bold; padding: 10px; background: #f8f9fa; border-bottom: 1px solid #ddd;}
 .chat-list-body { list-style: none; margin: 0; padding: 0; max-height: 300px; overflow-y: auto; }

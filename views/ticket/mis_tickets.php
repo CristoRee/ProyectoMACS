@@ -177,3 +177,8 @@ document.addEventListener('DOMContentLoaded', function () {
     border-color: #32383e;      
 }
 </style>
+
+<!-- Paginación -->
+<?php if (isset($totalPages) && $totalPages > 1): ?>
+    <?php include 'views/includes/pagination.php'; ?>
+<?php endif; ?>

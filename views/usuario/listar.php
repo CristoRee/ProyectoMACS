@@ -5,7 +5,7 @@
         </h2>
         <div class="badge bg-info fs-6">
             <i class="fas fa-user-friends me-1"></i>
-            Total de usuarios: <?php echo count($todosLosUsuarios); ?>
+            Total de usuarios: <?php echo $totalRecords ?? count($todosLosUsuarios); ?>
         </div>
     </div>
     
@@ -21,7 +21,7 @@
 
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive" style="margin-bottom: 60px;">
                 <table class="table table-striped table-hover mb-0">
                     <thead class="table-primary">
                         <tr>
@@ -108,6 +108,14 @@
             </div>
         </div>
     </div>
+    
+    <!-- Paginación -->
+    <?php if (isset($totalPages) && $totalPages > 1): ?>
+        <?php include 'views/includes/pagination.php'; ?>
+    <?php endif; ?>
+    
+    <!-- Espaciador para evitar el chat -->
+    <div style="height: 60px;"></div>
 </div>
 
 <div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">

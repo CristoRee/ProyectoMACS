@@ -11,7 +11,7 @@
         <?php endif; ?>
         <div class="badge bg-info fs-6">
             <i class="fas fa-database me-1"></i>
-            Registros: <?php echo count($historial); ?>
+            Registros: <?php echo $totalRecords ?? count($historial); ?>
         </div>
     </div>
     
@@ -211,3 +211,8 @@
     /* Todos los estilos están limitados a este ID */
 }
 </style>
+
+<!-- Paginación -->
+<?php if (isset($totalPages) && $totalPages > 1): ?>
+    <?php include 'views/includes/pagination.php'; ?>
+<?php endif; ?>

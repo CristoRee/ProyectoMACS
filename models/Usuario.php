@@ -95,6 +95,45 @@ class Usuario {
         return $usuarios;
     }
 
+    /**
+     * Obtener usuarios con paginación
+     */
+    public function obtenerConPaginacion($page = 1, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
+        
+        // Obtener usuarios paginados
+        $sql = "SELECT u.id_usuario, u.id_rol, u.nombre_usuario, u.email, u.telefono, r.nombre_rol 
+                FROM Usuarios u
+                JOIN Roles r ON u.id_rol = r.id_rol
+                ORDER BY u.nombre_usuario ASC
+                LIMIT ? OFFSET ?";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $perPage, $offset);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        
+        $usuarios = [];
+        while($fila = $resultado->fetch_assoc()) {
+            $usuarios[] = $fila;
+        }
+        
+        // Obtener total de usuarios
+        $sqlCount = "SELECT COUNT(*) as total FROM Usuarios u JOIN Roles r ON u.id_rol = r.id_rol";
+        $resultadoCount = $this->db->query($sqlCount);
+        $total = $resultadoCount->fetch_assoc()['total'];
+        
+        return [
+            'usuarios' => $usuarios,
+            'total' => $total,
+            'totalPages' => ceil($total / $perPage),
+            'currentPage' => $page,
+            'perPage' => $perPage,
+            'startRecord' => $offset + 1,
+            'endRecord' => min($offset + $perPage, $total)
+        ];
+    }
+
   
     public function verificar($nombre_usuario, $password_plana) {
     

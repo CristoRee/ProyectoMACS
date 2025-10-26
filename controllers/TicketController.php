@@ -19,8 +19,28 @@ class TicketController {
         $id_tecnico = $_SESSION['id_usuario'];
         $vista = $_GET['vista'] ?? 'activos';
         
-        $misTickets = $this->ticketModel->obtenerTicketsPorTecnico($id_tecnico, $vista);
-       
+        // Obtener parámetros de paginación
+        $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $perPage = isset($_GET['per_page']) ? max(10, intval($_GET['per_page'])) : 15;
+        
+        // Obtener datos con paginación
+        $paginacion = $this->ticketModel->obtenerTicketsPorTecnicoConPaginacion($id_tecnico, $vista, $page, $perPage);
+        
+        // Extraer variables para la vista
+        $misTickets = $paginacion['tickets'];
+        $totalRecords = $paginacion['total'];
+        $totalPages = $paginacion['totalPages'];
+        $currentPage = $paginacion['currentPage'];
+        $recordsPerPage = $paginacion['perPage'];
+        $startRecord = $paginacion['startRecord'];
+        $endRecord = $paginacion['endRecord'];
+        
+        // URL base para paginación
+        $baseUrl = 'index.php?accion=misTickets&vista=' . $vista;
+        if (isset($_GET['per_page'])) {
+            $baseUrl .= '&per_page=' . $recordsPerPage;
+        }
+        
         $todosLosEstados = $this->estadoModel->getAll();
         
         include 'views/includes/header.php';
@@ -71,7 +91,29 @@ class TicketController {
     
     public function mostrarGestionTickets() {
         $vista = $_GET['vista'] ?? 'activos';
-        $todosLosTickets = $this->ticketModel->obtenerTodosLosTickets($vista);
+        
+        // Obtener parámetros de paginación
+        $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $perPage = isset($_GET['per_page']) ? max(10, intval($_GET['per_page'])) : 20;
+        
+        // Obtener datos con paginación
+        $paginacion = $this->ticketModel->obtenerTodosLosTicketsConPaginacion($vista, $page, $perPage);
+        
+        // Extraer variables para la vista
+        $todosLosTickets = $paginacion['tickets'];
+        $totalRecords = $paginacion['total'];
+        $totalPages = $paginacion['totalPages'];
+        $currentPage = $paginacion['currentPage'];
+        $recordsPerPage = $paginacion['perPage'];
+        $startRecord = $paginacion['startRecord'];
+        $endRecord = $paginacion['endRecord'];
+        
+        // URL base para paginación
+        $baseUrl = 'index.php?accion=gestionarTickets&vista=' . $vista;
+        if (isset($_GET['per_page'])) {
+            $baseUrl .= '&per_page=' . $recordsPerPage;
+        }
+        
         $listaDeTecnicos = $this->usuarioModel->obtenerTodosLosTecnicos();
         
         include 'views/includes/header.php';

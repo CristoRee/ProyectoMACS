@@ -10,7 +10,7 @@ $languages = [
 
 <div class="language-switcher-widget">
     <form action="index.php?accion=cambiarIdioma" method="POST" id="languageWidgetForm">
-        <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES); ?>">
+        <input type="hidden" name="redirect" value="<?php echo $_SERVER['REQUEST_URI']; ?>">
         
         <!-- Botón desplegable del idioma actual -->
         <div class="dropdown">

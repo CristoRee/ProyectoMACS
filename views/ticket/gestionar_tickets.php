@@ -5,7 +5,7 @@
         </h2>
         <div class="badge bg-info fs-6">
             <i class="fas fa-clipboard-list me-1"></i>
-            Total: <?php echo count($todosLosTickets); ?>
+            Total: <?php echo $totalRecords ?? count($todosLosTickets); ?>
         </div>
     </div>
     
@@ -222,3 +222,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 }
 </style>
+
+<!-- Paginación -->
+<?php if (isset($totalPages) && $totalPages > 1): ?>
+    <?php include 'views/includes/pagination.php'; ?>
+<?php endif; ?>

@@ -83,6 +83,9 @@
             </div>
         </div>
     </div>
+    
+    <!-- Espaciador para evitar el chat -->
+    <div style="height: 60px;"></div>
 </div>
 
 <script>
@@ -145,5 +148,10 @@ document.addEventListener('DOMContentLoaded', function() {
     .btn-group .btn {
         margin-bottom: 2px;
     }
+}
+
+/* Espacio inferior moderado para evitar el chat */
+.table-responsive {
+    margin-bottom: 60px !important;
 }
 </style>
