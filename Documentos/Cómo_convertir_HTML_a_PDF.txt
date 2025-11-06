@@ -1,0 +1,22 @@
+Instrucciones para generar el PDF del Manual Comercial
+
+Archivos generados:
+- Manual_Comercial_ProyectoMACS.html  (ubicado en Documentos/)
+
+Opción 1 — Guardar como PDF desde el navegador (recomendado, sencillo):
+1. Abre el archivo en el navegador: file:///C:/xampp/htdocs/ProyectoMACS/Documentos/Manual_Comercial_ProyectoMACS.html
+2. En el navegador, selecciona Archivo → Imprimir (o Ctrl+P).
+3. En la opción de impresora, elige "Guardar como PDF" o "Microsoft Print to PDF".
+4. Guarda el PDF en la ubicación deseada.
+
+Opción 2 — Usar Google Chrome (PowerShell) para generar PDF automáticamente:
+(Asume que Chrome está instalado en la ruta por defecto. Ejecuta en PowerShell con permisos del usuario.)
+
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless --disable-gpu --print-to-pdf="C:\xampp\htdocs\ProyectoMACS\Documentos\Manual_Comercial_ProyectoMACS.pdf" "file:///C:/xampp/htdocs/ProyectoMACS/Documentos/Manual_Comercial_ProyectoMACS.html"
+
+Notas:
+- Si la ruta de Chrome es distinta, actualiza el primer argumento con la ruta correcta.
+- El archivo PDF resultante quedará en Documentos/ con nombre Manual_Comercial_ProyectoMACS.pdf
+- Si prefieres, puedo ejecutar el comando por ti (necesito permiso para ejecutar comandos en tu entorno) o generar un PDF y subirlo aquí si el entorno lo permite.
+
+Si quieres que haga una versión en inglés, un PDF con tu logo o incluya capturas de pantalla, indícamelo y lo preparo.
