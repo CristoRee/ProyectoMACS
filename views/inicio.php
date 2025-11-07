@@ -38,6 +38,7 @@ $rol = $_SESSION['rol'] ?? 0;
     <div class="text-center">
         <h1 class="display-4 fw-bold"><?php echo __('technician_panel'); ?></h1>
         <p class="fs-4 text-muted"><?php echo __('technician_panel_desc'); ?></p>
+
     </div>
         <div class="row justify-content-center mt-5 gx-4 gy-4">
             <div class="col-md-5 col-lg-4">
@@ -61,8 +62,7 @@ $rol = $_SESSION['rol'] ?? 0;
         </div>
         
         
-    
-    <?php endif; ?>
+       <?php endif; ?>
 
 
     <?php if ($rol == 1): ?>
