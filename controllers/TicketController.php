@@ -2,23 +2,22 @@
 require_once 'models/Ticket.php';
 require_once 'models/Usuario.php';
 require_once 'models/HistorialLogger.php';
-require_once 'models/Estado.php';
-require_once 'services/EmailService.php'; // <-- Se incluye el nuevo servicio de Email
+require_once 'models/Estado.php'; // <-- AÑADIDO
+require_once 'services/EmailService.php';
 
 class TicketController {
     private $ticketModel; 
     private $usuarioModel;
-    private $estadoModel;
-    private $emailService; // <-- NUEVO: Propiedad para el servicio de email
-    private $adminEmail;   // (Esta propiedad no la usaremos aquí, pero está bien en tu constructor)
+    private $estadoModel; // <-- AÑADIDO
+    private $emailService;
+    private $adminEmail;   
 
     public function __construct() {
         $this->ticketModel = new Ticket();
         $this->usuarioModel = new Usuario();
-        $this->estadoModel = new Estado(); 
-        $this->emailService = new EmailService(); // <-- NUEVO: Se instancia el servicio de email
+        $this->estadoModel = new Estado(); // <-- AÑADIDO
+        $this->emailService = new EmailService();
         
-        // Esta parte es correcta para cargar la configuración
         $config = include __DIR__ . '/../config/email_config.php';
         $this->adminEmail = $config['notifications']['admin_email'] ?? null;
     }
@@ -45,14 +44,14 @@ class TicketController {
             $baseUrl .= '&per_page=' . $recordsPerPage;
         }
         
-        $todosLosEstados = $this->estadoModel->getAll();
+        $todosLosEstados = $this->estadoModel->getAll(); // <-- CORREGIDO
         
         include 'views/includes/header.php';
         include 'views/ticket/mis_tickets.php';
         include 'views/includes/footer.php';
     }
  
-    public function actualizarTicketEstado() { // <-- RENOMBRADO: de 'actualizarEstado' a 'actualizarTicketEstado'
+    public function actualizarTicketEstado() { // Nombre correcto de la acción
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ticket = $_POST['id_ticket'];
             $id_estado_nuevo = $_POST['id_estado'];
@@ -69,20 +68,12 @@ class TicketController {
                 $mensaje_historial = "El usuario '{$nombre_usuario}' cambió el estado del ticket #{$id_ticket} de '{$nombre_estado_anterior}' a '{$nombre_estado_nuevo}'.";
                 HistorialLogger::registrar($mensaje_historial, null, $id_ticket);
                 
-                // =============================================
-                // LÓGICA DE EMAIL ACTUALIZADA
-                // =============================================
                 if ($debe_notificar) {
                     try {
-                        // Ya no se llama a configurarMailer()
                         $info_cliente = $this->ticketModel->obtenerInfoParaEmail($id_ticket);
-                        
                         $asunto = "Actualización de tu Ticket de Reparación #" . $id_ticket;
                         $mensaje = "Hola " . htmlspecialchars($info_cliente['nombre_usuario']) . ",<br><br>Te informamos que el estado de tu ticket de reparación <strong>#" . $id_ticket . "</strong> ha sido actualizado a: <strong>" . htmlspecialchars($nombre_estado_nuevo) . "</strong>.<br><br>Gracias por confiar en BinaryTEC.";
-
-                        // Usamos el nuevo servicio de email que ya está en $this->emailService
                         $this->emailService->enviarNotificacion($info_cliente['email'], $asunto, $mensaje);
-
                     } catch (Exception $e) {
                         error_log("Error al enviar email de notificación: " . $e->getMessage());
                     }

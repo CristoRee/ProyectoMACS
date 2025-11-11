@@ -16,10 +16,10 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <p class="card-text text-muted mb-0"><?php echo __('assign_technicians_desc'); ?></p>
                         <div class="btn-group">
-                            <a href="?accion=<?php echo $_GET['accion']; ?>&vista=activos" class="btn <?php echo $vista_actual === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                            <a href="index.php?accion=gestionarTickets&vista=activos" class="btn <?php echo $vista === 'activos' ? 'btn-primary' : 'btn-outline-primary'; ?>">
                                 <i class="fas fa-play-circle me-1"></i><?php echo __('active_tickets'); ?>
                             </a>
-                            <a href="?accion=<?php echo $_GET['accion']; ?>&vista=finalizados" class="btn <?php echo $vista_actual === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
+                            <a href="index.php?accion=gestionarTickets&vista=finalizados" class="btn <?php echo $vista === 'finalizados' ? 'btn-primary' : 'btn-outline-primary'; ?>">
                                 <i class="fas fa-check-circle me-1"></i><?php echo __('finished_tickets'); ?>
                             </a>
                         </div>
@@ -35,21 +35,11 @@
                 <table class="table table-striped table-hover align-middle mb-0">
                     <thead class="table-primary">
                         <tr>
-                            <th>
-                                <i class="fas fa-user me-1"></i><?php echo __('client'); ?>
-                            </th>
-                            <th>
-                                <i class="fas fa-laptop me-1"></i><?php echo __('device'); ?>
-                            </th>
-                            <th class="text-center">
-                                <i class="fas fa-flag me-1"></i><?php echo __('state'); ?>
-                            </th>
-                            <th class="text-center">
-                                <i class="fas fa-user-cog me-1"></i><?php echo __('assigned_technician'); ?>
-                            </th>
-                            <th class="text-center" style="width: 180px;">
-                                <i class="fas fa-cogs me-1"></i><?php echo __('actions'); ?>
-                            </th>
+                            <th><i class="fas fa-user me-1"></i><?php echo __('client'); ?></th>
+                            <th><i class="fas fa-laptop me-1"></i><?php echo __('device'); ?></th>
+                            <th class="text-center"><i class="fas fa-flag me-1"></i><?php echo __('state'); ?></th>
+                            <th class="text-center"><i class="fas fa-user-cog me-1"></i><?php echo __('assigned_technician'); ?></th>
+                            <th class="text-center" style="width: 220px;"><i class="fas fa-cogs me-1"></i><?php echo __('actions'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +52,7 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-desktop me-2 text-info"></i>
-                                    <span><?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca']); ?></span>
+                                    <span><?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca'] . ' ' . $ticket['modelo']); ?></span>
                                 </div>
                             </td>
                             <td class="text-center">
@@ -85,28 +75,45 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-sm btn-outline-success" 
+                                            data-bs-toggle="modal" data-bs-target="#verTicketModal"
+                                            data-ticket-id="<?php echo $ticket['id_ticket']; ?>"
+                                            data-cliente="<?php echo htmlspecialchars($ticket['nombre_cliente']); ?>"
+                                            data-tecnico="<?php echo htmlspecialchars($ticket['nombre_tecnico'] ?? 'Sin asignar'); ?>"
+                                            data-dispositivo="<?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca'] . ' ' . $ticket['modelo']); ?>"
+                                            data-problema="<?php echo htmlspecialchars($ticket['descripcion_problema']); ?>"
+                                            data-fotos="<?php echo htmlspecialchars($ticket['fotos'] ?? ''); ?>"
+                                            title="<?php echo __('view_ticket'); ?>" data-bs-toggle="tooltip">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    
+                                    <?php if ($vista === 'activos'): ?>
                                     <button type="button" class="btn btn-sm btn-outline-primary" 
                                             data-bs-toggle="modal" data-bs-target="#asignarTecnicoModal"
                                             data-ticket-id="<?php echo $ticket['id_ticket']; ?>"
                                             data-tecnico-actual-id="<?php echo $ticket['id_tecnico_asignado'] ?? ''; ?>"
-                                            title="<?php echo __('assign'); ?> técnico"
-                                            data-bs-toggle="tooltip">
+                                            title="<?php echo __('assign'); ?> técnico" data-bs-toggle="tooltip">
                                         <i class="fas fa-user-plus"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-outline-success" 
+                                            onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'ticket')" 
+                                            title="<?php echo __('public_chat'); ?>" data-bs-toggle="tooltip">
+                                        <i class="fas fa-comments"></i>
                                     </button>
                                     
                                     <?php if ($ticket['id_tecnico_asignado']): ?>
                                     <button type="button" class="btn btn-sm btn-outline-info" 
                                             onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>, 'tecnico')" 
-                                            title="<?php echo __('private_chat_technician'); ?>"
-                                            data-bs-toggle="tooltip">
+                                            title="<?php echo __('private_chat_technician'); ?>" data-bs-toggle="tooltip">
                                         <i class="fas fa-headset"></i>
                                     </button>
+                                    <?php endif; ?>
                                     <?php endif; ?>
                                     
                                     <a href="index.php?accion=verHistorial&id_ticket=<?php echo $ticket['id_ticket']; ?>" 
                                        class="btn btn-sm btn-outline-secondary" 
-                                       title="<?php echo __('view_ticket_history'); ?>"
-                                       data-bs-toggle="tooltip">
+                                       title="<?php echo __('view_ticket_history'); ?>" data-bs-toggle="tooltip">
                                         <i class="fas fa-history"></i>
                                     </a>
                                 </div>
@@ -149,6 +156,38 @@
   </div>
 </div>
 
+<div class="modal fade" id="verTicketModal" tabindex="-1" aria-labelledby="verTicketModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verTicketModalLabel">Detalles del Ticket #<span id="modal-ver-id"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-user me-2"></i>Información del Cliente</h5>
+                <p><strong>Cliente:</strong> <span id="modal-ver-cliente"></span></p>
+                <p><strong>Técnico Asignado:</strong> <span id="modal-ver-tecnico"></span></p>
+                <hr>
+                <h5><i class="fas fa-laptop me-2"></i>Información del Dispositivo</h5>
+                <p><strong>Dispositivo:</strong> <span id="modal-ver-dispositivo"></span></p>
+                <p><strong>Problema Reportado:</strong></p>
+                <p class="text-muted" style="white-space: pre-wrap;" id="modal-ver-problema"></p>
+            </div>
+            <div class="col-md-6">
+                <h5><i class="fas fa-images me-2"></i>Fotos Adjuntas</h5>
+                <div id="modal-ver-fotos" class="row row-cols-2 g-2">
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -158,18 +197,50 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const asignarTecnicoModal = document.getElementById('asignarTecnicoModal');
-    asignarTecnicoModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const ticketId = button.getAttribute('data-ticket-id');
-        const tecnicoActualId = button.getAttribute('data-tecnico-actual-id');
-        
-        document.getElementById('modal-ticket-id').textContent = ticketId;
-        document.getElementById('form-ticket-id').value = ticketId;
-        document.getElementById('form-tecnico-id').value = tecnicoActualId;
-    });
+    if (asignarTecnicoModal) {
+        asignarTecnicoModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const ticketId = button.getAttribute('data-ticket-id');
+            const tecnicoActualId = button.getAttribute('data-tecnico-actual-id');
+            
+            document.getElementById('modal-ticket-id').textContent = ticketId;
+            document.getElementById('form-ticket-id').value = ticketId;
+            document.getElementById('form-tecnico-id').value = tecnicoActualId;
+        });
+    }
+
+    const verTicketModal = document.getElementById('verTicketModal');
+    if (verTicketModal) {
+        verTicketModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('modal-ver-id').textContent = button.getAttribute('data-ticket-id');
+            document.getElementById('modal-ver-cliente').textContent = button.getAttribute('data-cliente');
+            document.getElementById('modal-ver-tecnico').textContent = button.getAttribute('data-tecnico');
+            document.getElementById('modal-ver-dispositivo').textContent = button.getAttribute('data-dispositivo');
+            document.getElementById('modal-ver-problema').textContent = button.getAttribute('data-problema');
+            
+            const fotosContainer = document.getElementById('modal-ver-fotos');
+            fotosContainer.innerHTML = '';
+            const fotosString = button.getAttribute('data-fotos');
+            
+            if (fotosString && fotosString !== "null" && fotosString !== "") {
+                const fotosArray = fotosString.split(',');
+                fotosArray.forEach(url_imagen => {
+                    const col = document.createElement('div');
+                    col.className = 'col';
+                    col.innerHTML = `
+                        <a href="${url_imagen}" target="_blank">
+                            <img src="${url_imagen}" class="img-thumbnail" alt="Foto del ticket" style="width: 100%; height: 150px; object-fit: cover;">
+                        </a>`;
+                    fotosContainer.appendChild(col);
+                });
+            } else {
+                fotosContainer.innerHTML = '<p class="text-muted">El cliente no adjuntó fotos.</p>';
+            }
+        });
+    }
 });
 </script>
-
 <style>
 /* Estilos personalizados para gestión de tickets */
 .table th {

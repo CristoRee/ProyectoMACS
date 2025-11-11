@@ -38,19 +38,33 @@
                             </span>
                         </td>
                         <td>
-                            <?php if ($vista_actual === 'activos'): ?>
-                                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#editarTicketModal"
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-success" 
+                                        data-bs-toggle="modal" data-bs-target="#verTicketModal"
                                         data-ticket-id="<?php echo $ticket['id_ticket']; ?>"
-                                        data-estado-actual-id="<?php echo $ticket['id_estado']; ?>">
-                                    <i class="fas fa-edit"></i> <?php echo __('edit_status'); ?>
+                                        data-cliente="<?php echo htmlspecialchars($ticket['nombre_cliente']); ?>"
+                                        data-tecnico="<?php echo htmlspecialchars($_SESSION['usuario']); ?>"
+                                        data-dispositivo="<?php echo htmlspecialchars($ticket['tipo_producto'] . ' ' . $ticket['marca'] . ' ' . $ticket['modelo']); ?>"
+                                        data-problema="<?php echo htmlspecialchars($ticket['descripcion_problema']); ?>"
+                                        data-fotos="<?php echo htmlspecialchars($ticket['fotos'] ?? ''); ?>"
+                                        title="<?php echo __('view_ticket'); ?>" data-bs-toggle="tooltip">
+                                    <i class="fas fa-eye"></i>
                                 </button>
                                 
-                                <button type="button" class="btn btn-sm btn-primary" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" data-bs-toggle="tooltip" data-bs-placement="top" title="<?php echo __('chat_with_client'); ?>">
-                                    <i class="fas fa-comments"></i>
-                                </button>
-                            <?php else: ?>
-                                <span class="text-muted"><?php echo __('no_actions_available'); ?></span>
-                            <?php endif; ?>
+                                <?php if ($vista_actual === 'activos'): ?>
+                                    <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#editarTicketModal"
+                                            data-ticket-id="<?php echo $ticket['id_ticket']; ?>"
+                                            data-estado-actual-id="<?php echo $ticket['id_estado']; ?>"
+                                            title="<?php echo __('edit_status'); ?>" data-bs-toggle="tooltip">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="abrirChat(<?php echo $ticket['id_ticket']; ?>)" 
+                                            title="<?php echo __('chat_with_client'); ?>" data-bs-toggle="tooltip">
+                                        <i class="fas fa-comments"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -69,7 +83,6 @@
         <div class="modal-content">
             <form id="formEditarTicket" method="POST" action="index.php">
                 <input type="hidden" name="accion" value="actualizarTicketEstado">
-
                 <div class="modal-header">
                     <h5 class="modal-title" id="editarTicketModalLabel"><?php echo __('edit_ticket_state'); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo __('close'); ?>"></button>
@@ -119,16 +132,53 @@
     </div>
 </div>
 
+<div class="modal fade" id="verTicketModal" tabindex="-1" aria-labelledby="verTicketModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verTicketModalLabel">Detalles del Ticket #<span id="modal-ver-id"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-user me-2"></i>Información del Cliente</h5>
+                <p><strong>Cliente:</strong> <span id="modal-ver-cliente"></span></p>
+                <p><strong>Técnico Asignado:</strong> <span id="modal-ver-tecnico"></span></p>
+                <hr>
+                <h5><i class="fas fa-laptop me-2"></i>Información del Dispositivo</h5>
+                <p><strong>Dispositivo:</strong> <span id="modal-ver-dispositivo"></span></p>
+                <p><strong>Problema Reportado:</strong></p>
+                <p class="text-muted" style="white-space: pre-wrap;" id="modal-ver-problema"></p>
+            </div>
+            <div class="col-md-6">
+                <h5><i class="fas fa-images me-2"></i>Fotos Adjuntas</h5>
+                <div id="modal-ver-fotos" class="row row-cols-2 g-2">
+                    </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
     const editarTicketModalEl = document.getElementById('editarTicketModal');
-    const finalizarTicketModal = new bootstrap.Modal(document.getElementById('finalizarTicketModal'));
+    const finalizarTicketModalEl = document.getElementById('finalizarTicketModal');
+    if (!finalizarTicketModalEl) {
+        console.error('El modal de finalizar no se encontró.');
+        return;
+    }
+    const finalizarTicketModal = new bootstrap.Modal(finalizarTicketModalEl);
     const formEditarTicket = document.getElementById('formEditarTicket');
     
     const ID_ESTADO_FINALIZADO = 7;
@@ -143,42 +193,78 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
-    document.getElementById('confirmar-editar-btn').addEventListener('click', function() {
-        const selectEstado = document.getElementById('modal_estado');
-        const estadoSeleccionadoId = parseInt(selectEstado.value);
+    // Asegurarse de que el botón exista antes de añadir el listener
+    const confirmarEditarBtn = document.getElementById('confirmar-editar-btn');
+    if (confirmarEditarBtn) {
+        confirmarEditarBtn.addEventListener('click', function() {
+            const selectEstado = document.getElementById('modal_estado');
+            const estadoSeleccionadoId = parseInt(selectEstado.value);
 
-        if (estadoSeleccionadoId === ID_ESTADO_FINALIZADO) {
-        
-            if (localStorage.getItem('noMostrarAvisoFinalizar') === 'true') {
-                formEditarTicket.submit(); 
+            if (estadoSeleccionadoId === ID_ESTADO_FINALIZADO) {
+                if (localStorage.getItem('noMostrarAvisoFinalizar') === 'true') {
+                    formEditarTicket.submit(); 
+                } else {
+                    bootstrap.Modal.getInstance(editarTicketModalEl).hide();
+                    finalizarTicketModal.show(); 
+                }
             } else {
-                bootstrap.Modal.getInstance(editarTicketModalEl).hide();
-                finalizarTicketModal.show(); 
+                formEditarTicket.submit(); 
             }
-        } else {
-            formEditarTicket.submit(); 
-        }
-    });
+        });
+    }
 
-   
-    document.getElementById('confirmar-finalizar-btn').addEventListener('click', function() {
-        if (document.getElementById('noVolverAMostrarFinalizar').checked) {
-            localStorage.setItem('noMostrarAvisoFinalizar', 'true');
-        }
-        formEditarTicket.submit(); 
-    });
+    // Asegurarse de que el botón exista antes de añadir el listener
+    const confirmarFinalizarBtn = document.getElementById('confirmar-finalizar-btn');
+    if (confirmarFinalizarBtn) {
+        confirmarFinalizarBtn.addEventListener('click', function() {
+            if (document.getElementById('noVolverAMostrarFinalizar').checked) {
+                localStorage.setItem('noMostrarAvisoFinalizar', 'true');
+            }
+            formEditarTicket.submit(); 
+        });
+    }
+
+    const verTicketModal = document.getElementById('verTicketModal');
+    if (verTicketModal) {
+        verTicketModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('modal-ver-id').textContent = button.getAttribute('data-ticket-id');
+            document.getElementById('modal-ver-cliente').textContent = button.getAttribute('data-cliente');
+            document.getElementById('modal-ver-tecnico').textContent = button.getAttribute('data-tecnico');
+            document.getElementById('modal-ver-dispositivo').textContent = button.getAttribute('data-dispositivo');
+            document.getElementById('modal-ver-problema').textContent = button.getAttribute('data-problema');
+            
+            const fotosContainer = document.getElementById('modal-ver-fotos');
+            fotosContainer.innerHTML = '';
+            const fotosString = button.getAttribute('data-fotos');
+            
+            if (fotosString && fotosString !== "null") {
+                const fotosArray = fotosString.split(',');
+                fotosArray.forEach(url_imagen => {
+                    const col = document.createElement('div');
+                    col.className = 'col';
+                    col.innerHTML = `
+                        <a href="${url_imagen}" target="_blank">
+                            <img src="${url_imagen}" class="img-thumbnail" alt="Foto del ticket" style="width: 100%; height: 150px; object-fit: cover;">
+                        </a>`;
+                    fotosContainer.appendChild(col);
+                });
+            } else {
+                fotosContainer.innerHTML = '<p class="text-muted">El cliente no adjuntó fotos.</p>';
+            }
+        });
+    }
 });
 </script>
 
 <style>
     .table .table-dark th {
-    background-color: #013467ff;  
-    color: #ffffff;             
-    border-color: #32383e;      
+    background-color: #013467ff;  
+    color: #ffffff;             
+    border-color: #32383e;      
 }
 </style>
 
-<!-- Paginación -->
 <?php if (isset($totalPages) && $totalPages > 1): ?>
     <?php include 'views/includes/pagination.php'; ?>
 <?php endif; ?>
