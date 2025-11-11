@@ -105,7 +105,7 @@ switch ($accion) {
     
     case 'actualizarTicketEstado':
         $controller = new TicketController();
-        $controller->actualizarEstado();
+        $controller->actualizarTicketEstado();
         break;
     
      case 'gestionarTickets':
@@ -131,6 +131,11 @@ switch ($accion) {
     case 'cargarListaChats':
         $controller = new ChatController();
         $controller->cargarListaChats();
+        break;
+
+    case 'cargarNuevosMensajes':
+        $controller = new ChatController();
+        $controller->cargarNuevosMensajes();
         break;
      
      case 'actualizarEstado':
@@ -246,6 +251,14 @@ switch ($accion) {
     case 'desasignarPieza':
         $controller = new PiezaController();
         $controller->desasignarPieza();
+        break;
+    
+    case 'marcarMensajesLeidos':
+        (new ChatController())->marcarMensajesLeidos();
+        break;
+
+    case 'verificarNuevosMensajes':
+        (new ChatController())->verificarNuevosMensajes();
         break;
     
 

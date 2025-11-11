@@ -52,7 +52,7 @@ class TicketController {
         include 'views/includes/footer.php';
     }
  
-    public function actualizarEstado() {
+    public function actualizarTicketEstado() { // <-- RENOMBRADO: de 'actualizarEstado' a 'actualizarTicketEstado'
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_ticket = $_POST['id_ticket'];
             $id_estado_nuevo = $_POST['id_estado'];

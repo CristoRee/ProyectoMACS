@@ -3,54 +3,47 @@ require_once 'models/Chat.php';
 require_once 'models/Usuario.php'; 
 
 class ChatController {
-    private $model;
+    private $chatModel;
     private $usuarioModel;
 
     public function __construct() {
-        $this->model = new Chat();
+        $this->chatModel = new Chat();
+        $this->usuarioModel = new Usuario();
     }
 
-    
     public function cargarChat() {
-        $id_ticket = $_GET['id_ticket'];
-        $target = $_GET['target'] ?? 'ticket'; 
+        // La lógica de 'cargarChat' es la misma, se basa en id_ticket y target
+        $id_ticket = $_GET['id_ticket'] ?? 0;
+        if ($id_ticket == 0) {
+             header('HTTP/1.1 400 Bad Request');
+             echo json_encode(['error' => 'ID de ticket no proporcionado.']);
+             exit;
+        }
+
+        $target = $_GET['target'] ?? 'ticket';
         $id_usuario_actual = $_SESSION['id_usuario'];
+        $rol_usuario_actual = $_SESSION['rol'];
         
-        $infoTicket = $this->model->obtenerInfoTicketParaChat($id_ticket);
+        $infoTicket = $this->chatModel->obtenerInfoTicketParaChat($id_ticket);
         
         $id_conversacion = 0;
         $id_receptor = 0;
 
-     
-       
-        if ($target === 'tecnico' && ($_SESSION['rol'] == 1 || $_SESSION['rol'] == 2)) {
-            $this->usuarioModel = new Usuario();
-            $id_admin = $this->usuarioModel->obtenerPrimerAdminId();
+        if ($target === 'tecnico') {
+            $id_admin = $this->usuarioModel->obtenerAdminId();
             $id_tecnico = $infoTicket['id_tecnico_asignado'];
-
-            if (!$id_admin || !$id_tecnico) {
-                header('HTTP/1.1 500 Internal Server Error');
-                echo json_encode(['error' => 'No se pudo determinar los participantes del chat.']);
-                exit;
-            }
-
-            $id_conversacion = $this->model->obtenerOCrearConversacion($id_ticket, 'PRIVADA', $id_tecnico, $id_admin);
-            
-           
-            $id_receptor = ($id_usuario_actual == $id_tecnico) ? $id_admin : $id_tecnico;
-
+            $id_conversacion = $this->chatModel->obtenerOCrearConversacion($id_ticket, 'PRIVADA', $id_admin, $id_tecnico);
+            $id_receptor = ($rol_usuario_actual == 1) ? $id_tecnico : $id_admin;
         } else { 
-            $id_conversacion = $this->model->obtenerOCrearConversacion($id_ticket, 'TICKET');
-            
-           
-            if ($id_usuario_actual == $infoTicket['id_cliente']) {
+            $id_conversacion = $this->chatModel->obtenerOCrearConversacion($id_ticket, 'TICKET');
+            if ($rol_usuario_actual == 3) {
                 $id_receptor = $infoTicket['id_tecnico_asignado'];
             } else { 
                 $id_receptor = $infoTicket['id_cliente'];
             }
         }
         
-        $mensajes = $this->model->obtenerMensajes($id_conversacion);
+        $mensajes = $this->chatModel->obtenerMensajes($id_conversacion);
 
         header('Content-Type: application/json');
         echo json_encode([
@@ -64,13 +57,27 @@ class ChatController {
     
     public function enviarMensaje() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id_conversacion = $_POST['id_conversacion'];
-            $id_receptor = $_POST['id_receptor']; 
-            $contenido = $_POST['contenido'];
+            $id_ticket = $_POST['id_ticket'];
+            $target = $_POST['target'];
             $id_emisor = $_SESSION['id_usuario'];
+            $rol_emisor = $_SESSION['rol'];
+            $contenido = $_POST['contenido'];
+            $infoTicket = $this->chatModel->obtenerInfoTicketParaChat($id_ticket);
 
-           
-            $this->model->enviarMensaje($id_conversacion, $id_emisor, $id_receptor, $contenido);
+            $id_conversacion = 0;
+            $id_receptor = 0;
+            
+            if ($target === 'tecnico') {
+                $id_tecnico = $infoTicket['id_tecnico_asignado'];
+                $id_admin = $this->usuarioModel->obtenerAdminId();
+                $id_receptor = ($rol_emisor == 1) ? $id_tecnico : $id_admin;
+                $id_conversacion = $this->chatModel->obtenerOCrearConversacion($id_ticket, 'PRIVADA', $id_admin, $id_tecnico);
+            } else {
+                $id_conversacion = $this->chatModel->obtenerOCrearConversacion($id_ticket, 'TICKET');
+                $id_receptor = ($rol_emisor == 3) ? $infoTicket['id_tecnico_asignado'] : $infoTicket['id_cliente'];
+            }
+            
+            $this->chatModel->enviarMensaje($id_conversacion, $id_emisor, $id_receptor, $contenido);
             header('Content-Type: application/json');
             echo json_encode(['status' => 'success']);
         }
@@ -78,13 +85,27 @@ class ChatController {
 
     public function cargarListaChats() {
         $id_usuario = $_SESSION['id_usuario'];
-        $nombre_rol = '';
-        if ($_SESSION['rol'] == 1) $nombre_rol = 'Administrador';
-        if ($_SESSION['rol'] == 2) $nombre_rol = 'Técnico';
-        if ($_SESSION['rol'] == 3) $nombre_rol = 'Cliente';
-        $conversaciones = $this->model->obtenerConversacionesActivas($id_usuario, $nombre_rol);
+        $id_rol = $_SESSION['rol'];
+        $conversaciones = $this->chatModel->obtenerConversacionesActivas($id_usuario, $id_rol);
         header('Content-Type: application/json');
         echo json_encode($conversaciones);
+    }
+
+    public function marcarMensajesLeidos() {
+        if (isset($_POST['id_conversacion'])) {
+            $id_conversacion = $_POST['id_conversacion'];
+            $id_receptor = $_SESSION['id_usuario'];
+            $this->chatModel->marcarComoLeido($id_conversacion, $id_receptor);
+            header('Content-Type: application/json');
+            echo json_encode(['status' => 'success']);
+        }
+    }
+
+    public function verificarNuevosMensajes() {
+        $id_usuario = $_SESSION['id_usuario'];
+        $total = $this->chatModel->contarNuevosMensajes($id_usuario);
+        header('Content-Type: application/json');
+        echo json_encode(['nuevos_mensajes' => $total]);
     }
 }
 ?>

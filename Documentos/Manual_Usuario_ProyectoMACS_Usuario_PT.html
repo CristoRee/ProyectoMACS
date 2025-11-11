@@ -1,146 +1,226 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Manual do Usuário - ProyectoMACS</title>
-  <style>
-    body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;padding:0;line-height:1.45}
-    .page{max-width:900px;margin:20px auto;padding:24px;border:1px solid #e1e1e1;background:#fff}
-    h1,h2,h3{color:#0d47a1}
-    h1{font-size:26px;margin-bottom:6px}
-    .section{margin-bottom:18px}
-    .note{background:#f1f8ff;border-left:4px solid #0d6efd;padding:8px;margin:8px 0}
-    ul{margin-left:18px}
-    .steps{counter-reset:step}
-  .step{margin:10px 0;padding-left:44px;position:relative}
-  .step:before{counter-increment:step;content:counter(step);position:absolute;left:10px;top:50%;transform:translateY(-50%);background:#0d6efd;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-    footer{font-size:12px;color:#666;margin-top:18px}
-    @media print{ .page{border:none;box-shadow:none;margin:0;padding:0} }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Manual do Cliente - BinaryTEC</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        .page {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 32px;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1, h2, h3 {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        h3 {
+            font-size: 1.3rem;
+            color: #0d6efd;
+            margin-top: 25px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .note {
+            background: #f1f8ff;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        /* Estilo de los pasos */
+        .steps {
+            counter-reset: step;
+            margin-left: 10px;
+        }
+        .step {
+            margin: 15px 0;
+            padding-left: 48px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        .step:before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #0d6efd;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        footer {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        @media print {
+            body { background-color: #fff; }
+            .page { border: none; box-shadow: none; margin: 0; padding: 0; }
+        }
+        .manual-img {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <h1>Manual do Usuário — ProyectoMACS</h1>
-      <p>Guia passo a passo para usar a plataforma pelo navegador (sem referências ao código).</p>
-    </header>
+    <div class="page">
+        <header>
+            <h1>Manual do Cliente — BinaryTEC</h1>
+            <p>Guia de boas-vindas para gerenciar suas solicitações de reparo.</p>
+        </header>
 
-    <section class="section">
-      <h2>1. Primeiros Passos</h2>
-      <p>Acesse a URL da aplicação fornecida pelo seu administrador. Recomendamos usar um navegador atualizado (Chrome, Edge, Firefox).</p>
-      
-      <h3>Registro e Acesso</h3>
-      <div class="steps">
-        <div class="step">Vá para a página principal</div>
-        <div class="step">Clique em "Registrar" no menu superior</div>
-        <div class="step">Preencha suas informações pessoais (nome, email, telefone)</div>
-        <div class="step">Escolha uma senha segura</div>
-        <div class="step">Clique em "Registrar" para completar o processo</div>
-      </div>
-      
-      <div class="note">
-        <strong>Nota:</strong> Sua conta será ativada pelo administrador e receberá as permissões apropriadas.
-      </div>
-    </section>
+        <section class="section">
+            <h2>1. Introdução</h2>
+            <p>Bem-vindo à BinaryTEC. Este guia mostrará como criar uma conta, solicitar um reparo para seus dispositivos e como acompanhar o progresso do seu ticket até que seja resolvido.</p>
+        </section>
 
-    <section class="section">
-      <h2>2. Navegação e Interface</h2>
-      <p>A interface do sistema é intuitiva e organizada em várias seções principais:</p>
-      
-      <ul>
-        <li><strong>Início:</strong> Painel principal com acesso rápido às funções principais</li>
-        <li><strong>Meu Perfil:</strong> Gerencie suas informações pessoais e preferências</li>
-        <li><strong>Tickets:</strong> Visualize e gerencie solicitações de reparo</li>
-        <li><strong>Chat:</strong> Comunique-se com técnicos ou clientes</li>
-        <li><strong>Sobre Nós:</strong> Informações sobre a BinaryTEC</li>
-      </ul>
-    </section>
+        <section class="section">
+            <h2>2. Criar sua Conta e Iniciar Sessão</h2>
+            <p>Para usar nossos serviços, você primeiro precisa de uma conta.</p>
+            
+            <h3>Registrar uma Nova Conta</h3>
+            <div class="steps">
+                <div class="step">No canto superior direito da página inicial, clique no ícone de usuário e selecione <strong>"Registrar-se"</strong>.</div>
+                <img src="../assets/images/ComoRegistrarse.jpg" alt="Imagem indicando onde está o botão para se registrar" class="manual-img">
+                <div class="step">Complete o formulário com seu nome de usuário, e-mail e uma senha segura.</div>
+                <div class="step">Confirme sua senha e clique em <strong>"Registrar Usuário"</strong>.</div>
+                <img src="../assets/images/RellenarFormulario.jpg" alt="Imagem do formulário de registro" class="manual-img">
+            </div>
 
-    <section class="section">
-      <h2>3. Criando uma Solicitação de Reparo</h2>
-      <p>Para solicitar reparo de dispositivo:</p>
-      
-      <div class="steps">
-        <div class="step">Clique em "Solicitar Reparo" na página inicial</div>
-        <div class="step">Selecione o tipo de dispositivo da lista</div>
-        <div class="step">Descreva o problema em detalhes</div>
-        <div class="step">Anexe fotos se necessário (opcional)</div>
-        <div class="step">Clique em "Enviar Solicitação"</div>
-      </div>
-      
-      <div class="note">
-        <strong>Dica:</strong> Seja o mais detalhado possível ao descrever o problema para ajudar nossos técnicos a fornecer um melhor serviço.
-      </div>
-    </section>
+            <h3>Iniciar Sessão</h3>
+            <div class="steps">
+                <div class="step">Clique no ícone de usuário e selecione <strong>"Iniciar Sessão"</strong>.</div>
+                <div class="step">Digite seu nome de usuário e senha.</div>
+                <div class="step">Clique em <strong>"Entrar"</strong>. Se seus dados estiverem corretos, você acessará sua conta.</div>
+                <img src="../assets/images/ComoLogearse.jpg" alt="Formulário de login" class="manual-img">
+            </div>
+        </section>
 
-    <section class="section">
-      <h2>4. Acompanhamento de Solicitações</h2>
-      <p>Você pode acompanhar o status de suas solicitações em "Minhas Solicitações":</p>
-      
-      <ul>
-        <li><strong>Pendente:</strong> Solicitação recebida, aguardando atribuição de técnico</li>
-        <li><strong>Em Progresso:</strong> Técnico atribuído e trabalhando em seu dispositivo</li>
-        <li><strong>Concluído:</strong> Reparo finalizado com sucesso</li>
-        <li><strong>Cancelado:</strong> Solicitação cancelada por vários motivos</li>
-      </ul>
-    </section>
+        <section class="section">
+            <h2>3. Gerenciar suas Solicitações</h2>
+            <p>Uma vez dentro da sua conta, o processo é muito simples.</p>
 
-    <section class="section">
-      <h2>5. Chat em Tempo Real</h2>
-      <p>O sistema de chat permite comunicação direta com os técnicos atribuídos:</p>
-      
-      <div class="steps">
-        <div class="step">Acesse "Chats Ativos" no menu flutuante</div>
-        <div class="step">Selecione a conversa relacionada ao seu ticket</div>
-        <div class="step">Digite sua mensagem no campo de texto</div>
-        <div class="step">Pressione Enter ou clique no botão enviar</div>
-      </div>
-      
-      <div class="note">
-        <strong>Importante:</strong> O chat está disponível após um técnico ser atribuído à sua solicitação.
-      </div>
-    </section>
+            <h3>Passo 1: Solicitar um Reparo</h3>
+            <p>Quando você tiver um dispositivo com problemas, este é o primeiro passo:</p>
+            <div class="steps">
+                <div class="step">Na página inicial, clique no botão grande <strong>"Solicitar Reparo"</strong>.</div>
+                <img src="../assets/images/ComoSolicitar.jpg" alt="Botão de solicitar reparo na página inicial" class="manual-img">
+                <div class="step">Complete o formulário com os detalhes do seu equipamento (ex: Laptop, HP, Pavilion 15).</div>
+                <div class="step">Descreva o problema que está enfrentando. (Ex: "A tela pisca", "Não liga").</div>
+                <div class="step">(Opcional) Se você tiver fotos do problema, pode anexá-las para ajudar o técnico.</div>
+                <div class="step">Clique em <strong>"Enviar Solicitação"</strong>.</div>
+                <img src="../assets/images/FormularioSolicitud.jpg" alt="Formulário de criação de solicitação" class="manual-img">
+            </div>
+            <div class="note">
+                <strong>Importante:</strong> Se você não estiver logado, o botão "Solicitar Reparo" o levará primeiro para a página de login.
+            </div>
 
-    <section class="section">
-      <h2>6. Gerenciamento de Perfil</h2>
-      <p>Em seu perfil você pode:</p>
-      
-      <ul>
-        <li>Atualizar suas informações pessoais</li>
-        <li>Alterar sua foto de perfil</li>
-        <li>Modificar sua senha</li>
-        <li>Selecionar idioma da interface</li>
-        <li>Ativar/desativar modo escuro</li>
-      </ul>
-    </section>
+            <h3>Passo 2: Ver suas Solicitações</h3>
+            <p>Para ver o status de todos os seus tickets, clique na sua foto de perfil (canto superior direito) e selecione <strong>"Minhas Solicitações"</strong>, ou use o botão de atalho na página inicial.</p>
+            <img src="../assets/images/VerSolicitudes.jpg" alt="Botões para ver solicitações, na página inicial" class="manual-img">
+            <p>Nesta tela, você encontrará duas listas:</p>
+            <ul>
+                <li><strong>Solicitações Ativas:</strong> Tickets que estão atualmente em processo (Recebidos, Em diagnóstico, etc.).</li>
+                <img src="../assets/images/ListaSolicitud.png" alt="Lista de solicitações ativas" class="manual-img">
+                <li><strong>Solicitações Concluídas:</strong> Um histórico de todos os trabalhos que já foram concluídos.</li>
+                <img src="../assets/images/ListaFinalizados.png" alt="Lista de solicitações concluídas" class="manual-img">
+            </ul>
 
-    <section class="section">
-      <h2>7. Dicas e Recomendações</h2>
-      
-      <ul>
-        <li>Mantenha suas informações de contato atualizadas</li>
-        <li>Verifique suas solicitações regularmente para atualizações de status</li>
-        <li>Use o chat para esclarecer dúvidas com os técnicos</li>
-        <li>Tire fotos claras de dispositivos danificados</li>
-        <li>Seja específico ao descrever problemas</li>
-      </ul>
-    </section>
+            <h3>Passo 3: Entender o Status do seu Ticket</h3>
+            <p>Na lista de solicitações, você verá um emblema colorido que indica o status do seu reparo. Os status mais comuns são:</p>
+            <ul>
+                <li><strong>Recebido:</strong> Recebemos sua solicitação e ela será atribuída em breve.</li>
+                <li><strong>Em diagnóstico:</strong> Um técnico está analisando seu dispositivo.</li>
+                <li><strong>Aguardando aprovação:</strong> O técnico enviou um orçamento ou consulta e aguarda sua resposta.</li>
+                <li><strong>Em reparo:</strong> Estamos trabalhando na solução!</li>
+                <li><strong>Pronto para retirada:</strong> Seu dispositivo está reparado e você pode buscá-lo.</li>
+            </ul>
 
-    <section class="section">
-      <h2>8. Suporte Técnico</h2>
-      <p>Se precisar de ajuda adicional:</p>
-      
-      <ul>
-        <li>Use o sistema de chat para questões técnicas</li>
-        <li>Contate o administrador para problemas de conta</li>
-        <li>Consulte este manual para procedimentos passo a passo</li>
-      </ul>
-    </section>
+            <h3>Passo 4: Ações do Ticket (Chat e Excluir)</h3>
+            <p>Na coluna "Ações" de suas solicitações ativas, você tem duas opções:</p>
+            
+            <h4><i class="fas fa-comments"></i> Conversar com o Técnico</h4>
+            <p>Este botão permite que você fale diretamente com o técnico designado para o seu caso. Observe que:</p>
+            <ul>
+                <li>O botão do chat aparecerá **cinza e desativado** inicialmente.</li>
+                <img src="../assets/images/ChatGris.png" alt="Botão do chat em cinza" class="manual-img">
+                <li>Ele se tornará **azul e funcional** no momento em que um técnico for designado para o seu ticket.</li>
+                <img src="../assets/images/ChatAzul.png" alt="Botão do chat em azul" class="manual-img">
+            </ul>
 
-    <footer>
-      <p>Manual do Usuário — ProyectoMACS. Para material adicional ou treinamento, solicite suporte.</p>
-    </footer>
-  </div>
+            <h4><i class="fas fa-trash"></i> Excluir Solicitação</h4>
+            <p>Se você deseja cancelar uma solicitação que acabou de criar ou não precisa mais, pode usar este botão. O sistema pedirá uma confirmação antes de excluí-la.</p>
+        </section>
+
+        <section class="section">
+            <h2>4. Sua Conta e Preferências</h2>
+            <p>Você tem controle total sobre sua conta e a aparência da plataforma.</p>
+            <img src="../assets/images/BotonMiPerfil.jpg" alt="Botão Meu Perfil" class="manual-img">
+            <h3>Meu Perfil</h3>
+            <p>Ao clicar na sua foto de perfil e selecionar <strong>"Meu Perfil"</strong>, você pode:</p>
+            <ul>
+                <li><strong>Alterar sua Foto de Perfil:</strong> Enviar uma nova imagem do seu dispositivo.</li>
+                <li><strong>Atualizar seus Dados:</strong> Alterar seu nome de usuário, e-mail ou telefone.</li>
+                <li><strong>Alterar sua Senha:</strong> Sua senha atual será solicitada por segurança.</li>
+                <li><strong>Ativar Modo Escuro:</strong> Usar o interruptor para mudar para um tema visual escuro, que é mais confortável para os olhos em condições de pouca luz. O sistema lembrará sua escolha.</li>
+            </ul>
+
+            <h3>Notificações por E-mail</h3>
+            <p>Você não precisa fazer nada para ativá-las. Quando seu ticket atingir um status importante (como <strong>"Pronto para retirada"</strong>), nosso sistema enviará automaticamente uma **notificação para o seu e-mail** para mantê-lo informado.</p>
+        </section>
+
+        <footer>
+            <p>Manual do Cliente — BinaryTEC (ProyectoMACS). Obrigado por confiar em nós.</p>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
 </body>
 </html>

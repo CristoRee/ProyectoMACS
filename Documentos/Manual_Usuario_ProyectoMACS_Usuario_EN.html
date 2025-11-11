@@ -1,146 +1,226 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>User Manual - ProyectoMACS</title>
-  <style>
-    body{font-family:Arial,Helvetica,sans-serif;color:#222;margin:0;padding:0;line-height:1.45}
-    .page{max-width:900px;margin:20px auto;padding:24px;border:1px solid #e1e1e1;background:#fff}
-    h1,h2,h3{color:#0d47a1}
-    h1{font-size:26px;margin-bottom:6px}
-    .section{margin-bottom:18px}
-    .note{background:#f1f8ff;border-left:4px solid #0d6efd;padding:8px;margin:8px 0}
-    ul{margin-left:18px}
-    .steps{counter-reset:step}
-  .step{margin:10px 0;padding-left:44px;position:relative}
-  .step:before{counter-increment:step;content:counter(step);position:absolute;left:10px;top:50%;transform:translateY(-50%);background:#0d6efd;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-    footer{font-size:12px;color:#666;margin-top:18px}
-    @media print{ .page{border:none;box-shadow:none;margin:0;padding:0} }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Client Manual - BinaryTEC</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        .page {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 32px;
+            border-radius: 8px;
+            border: 1px solid #e1e1e1;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1, h2, h3 {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #0d6efd;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        h3 {
+            font-size: 1.3rem;
+            color: #0d6efd;
+            margin-top: 25px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .note {
+            background: #f1f8ff;
+            border-left: 4px solid #0d6efd;
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        /* Step styles */
+        .steps {
+            counter-reset: step;
+            margin-left: 10px;
+        }
+        .step {
+            margin: 15px 0;
+            padding-left: 48px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        .step:before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #0d6efd;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        footer {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        @media print {
+            body { background-color: #fff; }
+            .page { border: none; box-shadow: none; margin: 0; padding: 0; }
+        }
+        .manual-img {
+            width: 100%;
+            max-width: 700px;
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <h1>User Manual — ProyectoMACS</h1>
-      <p>Step-by-step guide to use the platform from the browser (without code references).</p>
-    </header>
+    <div class="page">
+        <header>
+            <h1>Client Manual — BinaryTEC</h1>
+            <p>Welcome guide to managing your repair requests.</p>
+        </header>
 
-    <section class="section">
-      <h2>1. Getting Started</h2>
-      <p>Access the application URL provided by your administrator. We recommend using an updated browser (Chrome, Edge, Firefox).</p>
-      
-      <h3>Registration and Access</h3>
-      <div class="steps">
-        <div class="step">Go to the main page</div>
-        <div class="step">Click "Register" in the top menu</div>
-        <div class="step">Fill in your personal information (name, email, phone)</div>
-        <div class="step">Choose a secure password</div>
-        <div class="step">Click "Register" to complete the process</div>
-      </div>
-      
-      <div class="note">
-        <strong>Note:</strong> Your account will be activated by the administrator and assigned appropriate permissions.
-      </div>
-    </section>
+        <section class="section">
+            <h2>1. Introduction</h2>
+            <p>Welcome to BinaryTEC. This guide will show you how to create an account, request a repair for your devices, and how to track the progress of your ticket until it is resolved.</p>
+        </section>
 
-    <section class="section">
-      <h2>2. Navigation and Interface</h2>
-      <p>The system interface is intuitive and organized into several main sections:</p>
-      
-      <ul>
-        <li><strong>Home:</strong> Main dashboard with quick access to key functions</li>
-        <li><strong>My Profile:</strong> Manage your personal information and preferences</li>
-        <li><strong>Tickets:</strong> View and manage repair requests</li>
-        <li><strong>Chat:</strong> Communicate with technicians or clients</li>
-        <li><strong>About Us:</strong> Information about BinaryTEC</li>
-      </ul>
-    </section>
+        <section class="section">
+            <h2>2. Creating Your Account and Logging In</h2>
+            <p>To use our services, you first need an account.</p>
+            
+            <h3>Register a New Account</h3>
+            <div class="steps">
+                <div class="step">In the upper right corner of the homepage, click the user icon and select <strong>"Register"</strong>.</div>
+                <img src="../assets/images/ComoRegistrarse.jpg" alt="Image indicating where the register button is" class="manual-img">
+                <div class="step">Complete the form with your username, email, and a secure password.</div>
+                <div class="step">Confirm your password and click <strong>"Register User"</strong>.</div>
+                <img src="../assets/images/RellenarFormulario.jpg" alt="Image of the registration form" class="manual-img">
+            </div>
 
-    <section class="section">
-      <h2>3. Creating a Repair Request</h2>
-      <p>To request device repair:</p>
-      
-      <div class="steps">
-        <div class="step">Click "Request Repair" on the home page</div>
-        <div class="step">Select the device type from the list</div>
-        <div class="step">Describe the problem in detail</div>
-        <div class="step">Attach photos if necessary (optional)</div>
-        <div class="step">Click "Submit Request"</div>
-      </div>
-      
-      <div class="note">
-        <strong>Tip:</strong> Be as detailed as possible when describing the problem to help our technicians provide better service.
-      </div>
-    </section>
+            <h3>Sign In</h3>
+            <div class="steps">
+                <div class="step">Click the user icon and select <strong>"Sign In"</strong>.</div>
+                <div class="step">Enter your username and password.</div>
+                <div class="step">Click <strong>"Enter"</strong>. If your details are correct, you will access your account.</div>
+                <img src="../assets/images/ComoLogearse.jpg" alt="Login form" class="manual-img">
+            </div>
+        </section>
 
-    <section class="section">
-      <h2>4. Request Tracking</h2>
-      <p>You can track the status of your requests in "My Requests":</p>
-      
-      <ul>
-        <li><strong>Pending:</strong> Request received, awaiting technician assignment</li>
-        <li><strong>In Progress:</strong> Technician assigned and working on your device</li>
-        <li><strong>Completed:</strong> Repair finished successfully</li>
-        <li><strong>Cancelled:</strong> Request cancelled for various reasons</li>
-      </ul>
-    </section>
+        <section class="section">
+            <h2>3. Managing Your Requests</h2>
+            <p>Once inside your account, the process is very simple.</p>
 
-    <section class="section">
-      <h2>5. Real-time Chat</h2>
-      <p>The chat system allows direct communication with assigned technicians:</p>
-      
-      <div class="steps">
-        <div class="step">Access "Active Chats" from the floating menu</div>
-        <div class="step">Select the conversation related to your ticket</div>
-        <div class="step">Type your message in the text field</div>
-        <div class="step">Press Enter or click the send button</div>
-      </div>
-      
-      <div class="note">
-        <strong>Important:</strong> Chat is available once a technician has been assigned to your request.
-      </div>
-    </section>
+            <h3>Step 1: Request a Repair</h3>
+            <p>When you have a device with issues, this is the first step:</p>
+            <div class="steps">
+                <div class="step">On the homepage, click the large <strong>"Request Repair"</strong> button.</div>
+                <img src="../assets/images/ComoSolicitar.jpg" alt="Request Repair button on the homepage" class="manual-img">
+                <div class="step">Complete the form with your device details (e.g., Laptop, HP, Pavilion 15).</div>
+                <div class="step">Describe the problem you are experiencing (e.g., "The screen flickers," "It won't turn on").</div>
+                <div class="step">(Optional) If you have photos of the problem, you can attach them to help the technician.</div>
+                <div class="step">Click <strong>"Submit Request"</strong>.</div>
+                <img src="../assets/images/FormularioSolicitud.jpg" alt="Create request form" class="manual-img">
+            </div>
+            <div class="note">
+                <strong>Important:</strong> If you are not logged in, the "Request Repair" button will take you to the login page first.
+            </div>
 
-    <section class="section">
-      <h2>6. Profile Management</h2>
-      <p>In your profile you can:</p>
-      
-      <ul>
-        <li>Update your personal information</li>
-        <li>Change your profile picture</li>
-        <li>Modify your password</li>
-        <li>Select interface language</li>
-        <li>Enable/disable dark mode</li>
-      </ul>
-    </section>
+            <h3>Step 2: View Your Requests</h3>
+            <p>To see the status of all your tickets, click on your profile picture (top right) and select <strong>"My Requests"</strong>, or use the shortcut button on the homepage.</p>
+            <img src="../assets/images/VerSolicitudes.jpg" alt="Buttons to view requests on the homepage" class="manual-img">
+            <p>On this screen, you will find two lists:</p>
+            <ul>
+                <li><strong>Active Requests:</strong> Tickets that are currently in process (Submitted, In diagnosis, etc.).</li>
+                <img src="../assets/images/ListaSolicitud.png" alt="List of active requests" class="manual-img">
+                <li><strong>Completed Requests:</strong> A history of all jobs that have already been completed.</li>
+                <img src="../assets/images/ListaFinalizados.png" alt="List of completed requests" class="manual-img">
+            </ul>
 
-    <section class="section">
-      <h2>7. Tips and Recommendations</h2>
-      
-      <ul>
-        <li>Keep your contact information up to date</li>
-        <li>Check your requests regularly for status updates</li>
-        <li>Use chat to clarify doubts with technicians</li>
-        <li>Take clear photos of damaged devices</li>
-        <li>Be specific when describing problems</li>
-      </ul>
-    </section>
+            <h3>Step 3: Understanding Your Ticket Status</h3>
+            <p>In the request list, you will see a colored badge that indicates the status of your repair. The most common statuses are:</p>
+            <ul>
+                <li><strong>Submitted:</strong> We have received your request and it will be assigned soon.</li>
+                <li><strong>In Diagnosis:</strong> A technician is reviewing your device.</li>
+                <li><strong>Awaiting Approval:</strong> The technician has sent you a quote or question and is waiting for your response.</li>
+                <li><strong>In Repair:</strong> We are working on the solution!</li>
+                <li><strong>Ready for Pickup:</strong> Your device is repaired and you can come get it.</li>
+            </ul>
 
-    <section class="section">
-      <h2>8. Technical Support</h2>
-      <p>If you need additional help:</p>
-      
-      <ul>
-        <li>Use the chat system for technical questions</li>
-        <li>Contact the administrator for account issues</li>
-        <li>Check this manual for step-by-step procedures</li>
-      </ul>
-    </section>
+            <h3>Step 4: Ticket Actions (Chat and Delete)</h3>
+            <p>In the "Actions" column of your active requests, you have two options:</p>
+            
+            <h4><i class="fas fa-comments"></i> Chat with Technician</h4>
+            <p>This button allows you to talk directly with the technician assigned to your case. Please note:</p>
+            <ul>
+                <li>The chat button will appear **gray and disabled** at first.</li>
+                <img src="../assets/images/ChatGris.png" alt="Grayed out chat button" class="manual-img">
+                <li>It will turn **blue and become functional** the moment a technician is assigned to your ticket.</li>
+                <img src="../assets/images/ChatAzul.png" alt="Active blue chat button" class="manual-img">
+            </ul>
 
-    <footer>
-      <p>User Manual — ProyectoMACS. For additional material or training, request support.</p>
-    </footer>
-  </div>
+            <h4><i class="fas fa-trash"></i> Delete Request</h4>
+            <p>If you wish to cancel a request you just created or no longer need, you can use this button. The system will ask for confirmation before deleting it.</p>
+        </section>
+
+        <section class="section">
+            <h2>4. Your Account and Preferences</h2>
+            <p>You have full control over your account and the platform's appearance.</p>
+            <img src="../assets/images/BotonMiPerfil.jpg" alt="My Profile button" class="manual-img">
+            <h3>My Profile</h3>
+            <p>By clicking your profile picture and selecting <strong>"My Profile"</strong>, you can:</p>
+            <ul>
+                <li><strong>Change your Profile Picture:</strong> Upload a new image from your device.</li>
+                <li><strong>Update your Details:</strong> Change your username, email, or phone number.</li>
+                <li><strong>Change your Password:</strong> You will be asked for your current password for security.</li>
+                <li><strong>Activate Dark Mode:</strong> Use the toggle to switch to a dark visual theme, which is more comfortable for your eyes in low-light conditions. The system will remember your choice.</li>
+            </ul>
+
+            <h3>Email Notifications</h3>
+            <p>You don't need to do anything to activate them. When your ticket reaches an important status (like <strong>"Ready for Pickup"</strong>), our system will automatically send a **notification to your email** to keep you informed.</p>
+        </section>
+
+        <footer>
+            <p>Client Manual — BinaryTEC (ProyectoMACS). Thank you for trusting us.</p>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"></script>
 </body>
 </html>
